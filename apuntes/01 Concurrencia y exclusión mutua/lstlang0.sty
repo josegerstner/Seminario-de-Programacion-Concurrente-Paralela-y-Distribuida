@@ -1,0 +1,106 @@
+\ProvidesFile{lstlang0.sty}
+\lst@definelanguage{Ada}%
+  {morekeywords={abstract,abort,abs,accept,access,aliased,all,and,array,at,begin,body,%
+      case,constant,declare,delay,delta,digits,do,else,elsif,end,entry,%
+      exception,exit,for,function,generic,goto,if,in,is,limited,loop,%
+      mod,new,not,null,of,or,others,out,package,pragma,private,%
+      procedure,protected,raise,range,record,rem,renames,requeue,return,reverse,select,%
+      separate,subtype,tagged,task,terminate,then,type,until,use,when,while,with,%
+      xor},%
+   sensitive=false,%
+   morecomment=[l]--,%
+   morestring=[m]",% percent not defined as stringizer so far
+   morestring=[m]'%
+  }[keywords,comments,strings]%
+%
+\lst@definelanguage{C}%
+  {morekeywords={auto,break,case,char,cobegin,condition,const,continue,default,do,double,%
+      else,empty,enum,extern,float,for,goto,if,int,long,monitor,register,return,%
+      short,signal,signalc,signed,sizeof,static,struct,switch,typedef,union,unsigned,%
+      void,volatile,wait,waitc,while},%
+   sensitive=true,%
+   morecomment=[s]{/*}{*/},%
+   morecomment=[l]//,% nonstandard
+   morestring=[b]",%
+   morestring=[b]',%
+   moredelim=*[directive]\#,%
+   moredirectives={define,elif,else,endif,error,if,ifdef,ifndef,line,%
+      include,pragma,undef,warning}%
+  }[keywords,comments,strings,directives]%
+%
+\lst@definelanguage{Java}%
+  {morekeywords={abstract,boolean,break,byte,case,catch,char,class,%
+      const,continue,default,do,double,else,extends,false,final,%
+      finally,float,for,goto,if,implements,import,instanceof,int,%
+      interface,label,long,native,new,null,package,private,protected,%
+      public,return,short,static,super,switch,synchronized,this,throw,%
+      throws,transient,true,try,void,volatile,while},%
+   sensitive=true,%
+   morecomment=[l]//,%
+   morecomment=[s]{/*}{*/},%
+   morestring=[b]",%
+   morestring=[b]',%
+  }[keywords,comments,strings]%
+%
+\lst@definelanguage{Pascal}%
+  {morekeywords={alfa,and,array,begin,boolean,byte,case,char,cobegin,coend,const,div,%
+      do,downto,else,end,false,file,for,function,get,goto,if,in,%
+      integer,label,maxint,mod,new,not,of,or,pack,packed,page,program,%
+      put,procedure,read,readln,real,record,repeat,reset,rewrite,set,%
+      text,then,to,true,type,unpack,until,var,while,with,write,%
+      writeln},%
+   sensitive=false,%
+   morecomment=[s]{(*}{*)},%
+   morecomment=[s]{\{}{\}},%
+   morestring=[d]'%
+  }[keywords,comments,strings]%
+%
+%  Language definition for Promela - Moti Ben-Ari, 2004
+%
+\lst@definelanguage{Promela}%
+  {morekeywords={%
+     active,assert,atomic,bit,bool,break,byte,chan,%
+     c_code,c_decl,c_expr,c_state,c_track,chan,D_proctype,do,d_step,%
+     else,empty,enabled,eval,false,fi,full,goto,hidden,if,init,inline,%
+     int,len,local,mtype,nempty,never,nfull,notrace,np_,od,of,%
+     pc_value,pid,printf,printm,priority,proctype,provided,%
+     run,short,show,skip,timeout,trace,true,typedef,
+     unless,unsigned,xr,xs},%
+   sensitive=true,%
+   morecomment=[s]{/*}{*/},%
+   morestring=[b]",%
+   morestring=[b]',%
+   moredelim=*[directive]\#,%
+   moredirectives={define,elif,else,endif,error,if,ifdef,ifndef,line,%
+      include,pragma,undef,warning}%
+  }[keywords,comments,strings,directives]%
+%
+%  Language definition for Spark
+%
+\lst@definelanguage{SPARK}%
+  {morekeywords={abstract,abort,abs,accept,access,aliased,all,and,array,assert,at,begin,body,%
+      case,constant,declare,delay,delta,derives,digits,do,else,elsif,end,entry,%
+      exception,exit,for,from,function,generic,goto,if,in,is,limited,loop,%
+      main\_program,mod,new,not,null,of,or,others,out,package,post,pragma,pre,private,%
+      procedure,protected,raise,range,record,rem,renames,requeue,return,reverse,select,%
+      separate,subtype,tagged,task,terminate,then,type,until,use,when,while,with,%
+      xor},%
+   sensitive=false,%
+%   morecomment=[l]--,%
+   morestring=[m]",% percent not defined as stringizer so far
+   morestring=[m]'%
+  }[keywords,comments,strings]%
+%
+%  For algorithms
+%
+\lst@definelanguage{alg}%
+  {morekeywords={},%
+   sensitive=true,%
+   morecomment=[s]{/*}{*/},%
+   morecomment=[l]//,% nonstandard
+   morestring=[b]",%
+   morestring=[b]',%
+   moredelim=*[directive]\#,%
+  }[keywords,comments,strings,directives]%
+%
+\endinput

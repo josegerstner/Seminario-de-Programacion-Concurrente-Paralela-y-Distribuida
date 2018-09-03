@@ -1,0 +1,65 @@
+\documentclass[style=jefka]{powerdot}
+
+\usepackage{listings}
+\usepackage{latexsym}
+\usepackage{epic}
+\usepackage{curves}
+\usepackage{slides}
+\usepackage{pics}
+
+\title{Principles of Concurrent and Distributed Programming\\\mbox{}\\
+\large (Second Edition)\\\mbox{}\\
+\large Addison-Wesley, 2006}
+\author{Mordechai (Moti) Ben-Ari\\\mbox{}\\
+\url{http://www.weizmann.ac.il/sci-tea/benari/}}
+\date{}
+
+\pdsetup{
+  method=normal,
+  palette=white,
+  rf=Principles of Concurrent and Distributed Programming. Slides \copyright{} 2006 by M. Ben-Ari. \ \ \ Slide,
+  theslide=\arabic{lesson}.\arabic{slide},
+}
+
+%\includeonly{}
+
+\begin{document}
+\newlesson
+\maketitle
+\include{intro}
+\newlesson
+\include{cp}
+\newlesson
+\include{cs}
+\newlesson
+\include{tl}
+\newlesson
+\include{adv}
+\newlesson
+\include{sm}
+\newlesson
+\include{mn}
+\newlesson
+\include{sy}
+\newlesson
+\include{ln}
+\newlesson
+\include{da}
+\newlesson
+\include{gl}
+\newlesson
+\include{co}
+\newlesson
+\include{rt}
+
+% Reset for Appendix but doesn't given alpha A, B, C, D
+\setcounter{lesson}{0}
+\newlesson
+\include{pseudo}
+\newlesson
+\include{logic}
+\newlesson
+\include{prob}
+\newlesson
+\include{tools}
+\end{document}

@@ -1,0 +1,411 @@
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Atomicity of monitor operations}{}
+\proc{monitor CS}
+\proc{\idt{}integer n \la{} 0}
+\proc{}
+\proc{\idt{}operation increment}
+\proc{\idt{}\idt{}integer temp}
+\proc{\idt{}\idt{}temp \la{} n}
+\proc{\idt{}\idt{}n \la{} temp $+$ 1}
+\hline
+\procname{p}{q}
+%\st{loop ten times}{loop ten times}
+\st{\idt{}CS.increment}{\idt{}CS.increment}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Executing a Monitor Operation}
+\begin{center}
+\begin{paenv}
+\unitlength=1.2pt
+\begin{picture}(100,105)
+\thicklines
+%\put(0,0){\framebox(100,105){}}
+\put(0,0){\line(1,0){100}}
+\multiput(0,0)(100,0){2}{\line(0,1){85}}
+\put(0,85){\line(1,0){40}}
+\put(60,85){\line(1,0){40}}
+\put(100,0){\line(0,1){50}}
+\put(40,85){\line(2,-1){20}}
+\put(0,55){\makebox(100,10){monitor CS}}
+\put(20,10){\makebox(20,10){n}}
+\put(40,10){\framebox(20,10)[r]{0\ }}
+\multiput(40,87)(6,2){3}{\smallperson}
+\put(45,30){\smallperson}
+\end{picture}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Semaphore simulated with a monitor}{}
+\proc{monitor Sem}
+\proc{\idt{}integer s \la{} k}
+\proc{\idt{}condition notZero}
+%\proc{}
+\proc{\idt{}operation wait}
+\proc{\idt{}\idt{}if s = 0}
+\proc{\idt{}\idt{}\idt{}waitC(notZero)}
+\proc{\idt{}\idt{}s \la{} s $-$ 1}
+%\proc{}
+\proc{\idt{}operation signal}
+\proc{\idt{}\idt{}s \la{} s $+$ 1}
+\proc{\idt{}\idt{}signalC(notZero)}
+\hline
+\procname{p}{q}
+\stn{loop forever}{loop forever}
+\stn{\idt{}non-critical section}{\idt{}non-critical section}
+\st{\idt{}Sem.wait}{\idt{}Sem.wait}
+\stn{\idt{}critical section}{\idt{}critical section}
+\st{\idt{}Sem.signal}{\idt{}Sem.signal}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Condition Variable in a Monitor}
+\begin{center}
+\begin{paenv}
+\unitlength=1.2pt
+\begin{picture}(140,105)
+\thicklines
+%\put(0,0){\framebox(140,105){}}
+\put(0,0){\line(1,0){140}}
+\multiput(0,0)(140,0){2}{\line(0,1){85}}
+\put(0,85){\line(1,0){40}}
+\put(60,85){\line(1,0){80}}
+\put(100,0){\line(0,1){35}}
+\put(100,55){\line(0,1){30}}
+\put(40,84){\line(2,-1){20}}
+\put(100,55){\line(-1,-2){10}}
+\put(100,55){\makebox(40,10){notZero}}
+\multiput(110,25)(6,2){3}{\smallperson}
+\put(0,55){\makebox(100,10){monitor Sem}}
+\put(20,10){\makebox(20,10){s}}
+\put(40,10){\framebox(20,10)[r]{0\ }}
+\multiput(40,87)(6,2){3}{\smallperson}
+\put(45,30){\smallperson}
+\end{picture}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large State Diagram for the Semaphore Simulation}
+\vspace*{2ex}
+\begin{center}
+\unitlength=1.4pt
+\begin{picture}(260,90)
+\thicklines
+\nod{0}{60}{\shortstack[c]{p1: Sem.wait,\\q1: Sem.wait,\\$1$, $<>$}}
+\nod{0}{0}{\shortstack[c]{p1: Sem.wait,\\q2: Sem.signal,\\$0$, $<>$}}
+\nod{100}{60}{\shortstack[c]{p2: Sem.signal,\\q1: Sem.wait,\\$0$, $<>$}}
+\nod{100}{0}{\shortstack[c]{blocked,\\q2: Sem.signal\\$0$, $<p>$}}
+\nod{200}{60}{\shortstack[c]{p2: Sem.signal,\\blocked,\\$0$, $<q>$}}
+%\nod{200}{0}{\shortstack[c]{wait,\\signal,\\$0$, $<>$}}
+\put(59,80){\vector(1,0){42}}
+\put(101,70){\vector(-1,0){41}}
+\put(160,75){\vector(1,0){40}}
+%\put(230,59){\vector(0,-1){30}}
+\put(25,29){\vector(0,1){30}}
+\put(35,59){\vector(0,-1){30}}
+\put(60,15){\vector(1,0){40}}
+\put(130,29){\vector(0,1){30}}
+\put(204,63){\vector(-4,-1){149}}
+\end{picture}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\vspace*{-1ex}
+\begin{alg}{Producer-consumer (finite buffer, monitor)}{}
+\proc{monitor PC}
+\proc{\idt{}bufferType buffer \la{} empty}
+\proc{\idt{}condition notEmpty}
+\proc{\idt{}condition notFull}
+%\proc{}
+\proc{\idt{}operation append(datatype V)}
+\proc{\idt{}\idt{}if buffer is full}
+\proc{\idt{}\idt{}\idt{}waitC(notFull)}
+\proc{\idt{}\idt{}append(V, buffer)}
+\proc{\idt{}\idt{}signalC(notEmpty)}
+%\proc{}
+\proc{\idt{}operation take()}
+\proc{\idt{}\idt{}datatype W}
+\proc{\idt{}\idt{}if buffer is empty}
+\proc{\idt{}\idt{}\idt{}waitC(notEmpty)}
+\proc{\idt{}\idt{}W \la{} head(buffer)}
+\proc{\idt{}\idt{}signalC(notFull)}
+\proc{\idt{}\idt{}return W}
+\sttn{}
+\hline
+\end{alg}
+\end{wideslide}
+
+\addtocounter{algcounter}{-1}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Producer-consumer (finite buffer, monitor) (continued)}{}
+\procname{producer}{consumer}
+\stn{datatype D}{datatype D}
+\stn{loop forever}{loop forever}
+\st{\idt{}D \la{} produce}{\idt{}D \la{} PC.take}
+\st{\idt{}PC.append(D)}{\idt{}consume(D)}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large The Immediate Resumption Requirement}
+\begin{center}
+\begin{paenv}
+\unitlength=1.2pt
+\begin{picture}(200,140)
+\thicklines
+%\put(0,0){\framebox(200,140){}}
+\put(0,0){\line(1,0){200}}
+\multiput(0,0)(200,0){2}{\line(0,1){120}}
+\multiput(0,120)(110,0){2}{\line(1,0){90}}
+\multiput(50,0)(100,0){2}{\line(0,1){25}}
+\multiput(50,45)(100,0){2}{\line(0,1){30}}
+\multiput(50,95)(100,0){2}{\line(0,1){25}}
+\multiput(50,45)(0,50){2}{\line(1,-2){10}}
+\multiput(150,45)(0,50){2}{\line(-1,-2){10}}
+\put(90,120){\line(2,-1){20}}
+\multiput(0,60)(150,0){2}{\line(1,0){50}}
+\put(50,80){\makebox(100,10){monitor}}
+\put(0,105){\makebox(50,10){condition 1}}
+\put(0,40){\makebox(50,10){condition 2}}
+\put(150,105){\makebox(50,10){waiting}}
+\put(150,40){\makebox(50,10){signaling}}
+\multiput(90,120)(6,2){3}{\smallperson}
+\put(95,50){\smallperson}
+\multiput(15,70)(6,2){3}{\smallperson}
+\multiput(15,15)(6,2){2}{\smallperson}
+\multiput(170,70)(6,2){2}{\smallperson}
+\put(170,15){\smallperson}
+\end{picture}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Readers and writers with a monitor}{}
+\proc{monitor RW}
+\proc{\idt{}integer readers \la{} 0}
+\proc{\idt{}integer writers \la{} 0}
+\proc{\idt{}condition OKtoRead, OKtoWrite}
+\proc{\idt{}operation StartRead}
+\proc{\idt{}\idt{}if writers $\neq$ 0 or not empty(OKtoWrite)}
+\proc{\idt{}\idt{}\idt{}waitC(OKtoRead)}
+\proc{\idt{}\idt{}readers \la{} readers $+$ 1}
+\proc{\idt{}\idt{}signalC(OKtoRead)}
+\proc{\idt{}operation EndRead}
+\proc{\idt{}\idt{}readers \la{} readers $-$ 1}
+\proc{\idt{}\idt{}if readers $=$ 0}
+\proc{\idt{}\idt{}\idt{}signalC(OKtoWrite)}
+\sttn{}
+\end{alg}
+\end{wideslide}
+
+\addtocounter{algcounter}{-1}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Readers and writers with a monitor (continued)}{}
+\proc{\idt{}operation StartWrite}
+\proc{\idt{}\idt{}if writers $\neq$ 0 or readers $\neq$ 0}
+\proc{\idt{}\idt{}\idt{}waitC(OKtoWrite)}
+\proc{\idt{}\idt{}writers \la{} writers $+$ 1}
+\proc{\idt{}}
+\proc{\idt{}operation EndWrite}
+\proc{\idt{}\idt{}writers \la{} writers $-$ 1}
+\proc{\idt{}\idt{}if empty(OKtoRead)}
+\proc{\idt{}\idt{}\idt{}then signalC(OKtoWrite)}
+\proc{\idt{}\idt{}\idt{}else signalC(OKtoRead)}\hline
+\procname{reader}{writer}
+\st{RW.StartRead}{RW.StartWrite}
+\st{read the database}{write to the database}
+\st{RW.EndRead}{RW.EndWrite}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Dining philosophers with a monitor }{}
+\proc{monitor ForkMonitor}
+\proc{\idt{}integer array[0..4] fork \la{} [2, \ldots, 2]}
+\proc{\idt{}condition array[0..4] OKtoEat}
+\proc{\idt{}operation takeForks(integer i)}
+\proc{\idt{}\idt{}if fork[i] $\neq$ 2}
+\proc{\idt{}\idt{}\idt{}waitC(OKtoEat[i])}
+\proc{\idt{}\idt{}fork[i$+$1] \la{} fork[i$+$1] $-$ 1}
+\proc{\idt{}\idt{}fork[i$-$1] \la{} fork[i$-$1] $-$ 1}
+\sttn{}
+\proc{\idt{}operation releaseForks(integer i)}
+\proc{\idt{}\idt{}fork[i$+$1] \la{} fork[i$+$1] $+$ 1}
+\proc{\idt{}\idt{}fork[i$-$1] \la{} fork[i$-$1] $+$ 1}
+\proc{\idt{}\idt{}if fork[i$+$1] = 2}
+\proc{\idt{}\idt{}\idt{}signalC(OKtoEat[i$+$1])}
+\proc{\idt{}\idt{}if fork[i$-$1] = 2}
+\proc{\idt{}\idt{}\idt{}signalC(OKtoEat[i$-$1])}\hline
+\end{alg}
+\end{wideslide}
+
+\addtocounter{algcounter}{-1}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Dining philosophers with a monitor (continued)}{}
+\multicolumn{2}{|c|}{\bfseries philosopher i}\\\hline
+\sttn{loop forever}
+\stt{\idt{}think}
+\stt{\idt{}takeForks(i)}
+\stt{\idt{}eat}
+\stt{\idt{}releaseForks(i)}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Scenario for Starvation of Philosopher 2}
+\begin{center}
+\begin{paenv}
+\begin{tabular}{|c|l|l|l|c|c|c|c|c|}
+\hline
+n& phil1 & phil2 & phil3 & $f0$ & $f1$ & $f2$ & $f3$ & $f4$\\ \hline
+1&\bfseries take(1) & take(2) & take(3) & $2$ & $2$ & $2$ & $2$ & $2$\\\hline
+2&release(1) & take(2) & \bfseries take(3) & $1$ & $2$ & $1$ & $2$ & $2$\\\hline
+3& release(1) & \bfseries take(2) and & release(3) & $1$ & $2$ & $0$ & $2$ & $1$\\
+& & \bfseries waitC(OK[2]) & & & & & & \\\hline
+4& \bfseries release(1) & (blocked) & release(3) & $1$ & $2$ & $0$ & $2$ & $1$\\\hline
+5& \bfseries take(1) & (blocked) & release(3) & $2$ & $2$ & $1$ & $2$ & $1$\\\hline
+6& release(1) & (blocked) & \bfseries release(3) & $1$ & $2$ & $0$ & $2$ & $1$\\\hline
+7& release(1) & (blocked) & \bfseries take(3) & $1$ & $2$ & $1$ & $2$ & $2$\\\hline
+\end{tabular}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Readers and Writers in C}
+\vspace*{-2ex}
+\program{C}{r-w-mon.cm}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\vspace*{-2ex}
+\begin{alg}{Readers and writers with a protected object}{}
+\proc{protected object RW}
+\proc{\idt{}integer readers \la{} 0}
+\proc{\idt{}boolean writing \la{} false}
+%\proc{}
+\proc{\idt{}operation StartRead when not writing}
+\proc{\idt{}\idt{}readers \la{} readers $+$ 1}
+%\proc{}
+\proc{\idt{}operation EndRead}
+\proc{\idt{}\idt{}readers \la{} readers $-$ 1}
+%\proc{}
+\proc{\idt{}operation StartWrite when not writing and readers = 0}
+\proc{\idt{}\idt{}writing \la{} true}
+\proc{}
+\proc{\idt{}operation EndWrite}
+\proc{\idt{}\idt{}writing \la{} false}
+\hline
+\procname{reader}{writer}
+\stn{loop forever}{loop forever}
+\st{\idt{}RW.StartRead}{\idt{}RW.StartWrite}
+\st{\idt{}read the database}{\idt{}write to the database}
+\st{\idt{}RW.EndRead}{\idt{}RW.EndWrite}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Context Switches in a Monitor}
+\begin{center}
+\begin{paenv}
+\begin{tabular}{|l|l|}\hline
+Process reader & Process writer  \\\hline
+\bfseries waitC(OKtoRead) & operation EndWrite \\\hline\hline
+(blocked) & \bfseries writing \la{} false \\\hline
+(blocked) & \bfseries signalC(OKtoRead) \\\hline\hline
+\bfseries readers \la{} readers $+$ 1 & return from EndWrite \\\hline
+\bfseries signalC(OKtoRead) & return from EndWrite \\\hline\hline
+read the data & \bfseries return from EndWrite \\\hline\hline
+\bfseries read the data & \ldots{} \\\hline
+\end{tabular}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Context Switches in a Protected Object}
+\begin{center}
+\begin{paenv}
+\begin{tabular}{|l|l|}\hline
+Process reader & Process writer  \\\hline
+\bfseries when not writing & operation EndWrite \\\hline\hline
+(blocked) & \bfseries writing \la{} false \\\hline
+(blocked) & \bfseries when not writing \\\hline
+(blocked) & \bfseries readers \la{} readers $+$ 1 \\\hline\hline
+\bfseries read the data & \ldots{} \\\hline
+\end{tabular}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Simple Readers and Writers in Ada}
+\program{Ada}{rw.ada}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Readers and Writers in Ada (1)}
+\program{Ada}{readerswriters.ada}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Readers and Writers in Ada (2)}
+\program{Ada}{readerswriters1.ada}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Producer-Consumer in Java (1)}
+\program{Java}{PCMonitor.java}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Producer-Consumer in Java (2)}
+\program{Java}{PCMonitor1.java}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large A Monitor in Java With notifyAll}
+\begin{center}
+\begin{paenv}
+\unitlength=1.2pt
+\begin{picture}(150,95)
+\thicklines
+%\put(0,0){\framebox(150,100){}}
+\put(0,0){\line(1,0){150}}
+\multiput(0,0)(150,0){2}{\line(0,1){80}}
+\put(0,80){\line(1,0){60}}
+\put(80,80){\line(1,0){70}}
+\put(100,0){\line(0,1){40}}
+\put(100,60){\line(0,1){20}}
+\put(100,60){\line(-1,-2){10}}
+\put(60,80){\line(2,-1){20}}
+\put(0,20){\makebox(100,10){object}}
+\put(100,20){\makebox(50,10){waiting}}
+\multiput(60,80)(6,2){3}{\smallperson}
+\put(45,35){\smallperson}
+\multiput(115,35)(6,2){3}{\smallperson}
+\put(125,45){\circle{28}}
+\put(115,55){\vector(-1,1){32}}
+\end{picture}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Java Monitor for RW (\texttt{try-catch} omitted)}
+\vspace*{-2ex}
+\program{Java}{RWMonitor.java}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Simulating Monitors in Promela (1)}
+\program{Promela}{monitor.h}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Simulating Monitors in Promela (2)}
+\program{Promela}{monitor1.h}
+\end{wideslide}
+
+
+\begin{wideslide}[bm=,toc=]{\large Readers and Writers in Ada (1)}
+\program{Ada}{rw-starve-1.ada}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Readers and Writers in Ada (2)}
+\program{Ada}{rw-starve-2.ada}
+\end{wideslide}

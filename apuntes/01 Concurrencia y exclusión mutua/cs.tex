@@ -1,0 +1,495 @@
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Critical section problem}{global variables}\hline
+\procname{p}{q}
+\stn{local variables}{local variables}
+\stn{loop forever}{loop forever}
+\stn{\idt{}non-critical section}{\idt{}non-critical section}
+\stn{\idt{}preprotocol}{\idt{}preprotocol}
+\stn{\idt{}critical section}{\idt{}critical section}
+\stn{\idt{}postprotocol}{\idt{}postprotocol}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Critical Section}
+\begin{center}
+\unitlength=1.2pt
+\begin{picture}(150,105)
+\thicklines
+%\put(0,0){\framebox(150,105){}}
+\put(0,0){\line(1,0){150}}
+\multiput(0,0)(150,0){2}{\line(0,1){80}}
+\put(0,80){\line(1,0){60}}
+\put(80,80){\line(1,0){70}}
+\put(60,80){\line(2,-1){20}}
+\multiput(60,85)(6,2){3}{\smallperson}
+\put(66,35){\smallperson}
+\end{picture}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{First attempt}{integer turn \la{} 1}\hline
+\procname{p}{q}
+\stn{loop forever}{loop forever}
+\st{\idt{}non-critical section}{\idt{}non-critical section}
+\st{\idt{}await turn = 1}{\idt{}await turn = 2}
+\st{\idt{}critical section}{\idt{}critical section}
+\st{\idt{}turn \la{} 2}{\idt{}turn \la{} 1}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{History in a sequential algorithm}{integer a \la{} 1, b \la{} 2}\hline
+\stt{Millions of statements}
+\stt{a \la{} (a+b)*5}
+\stt{\ldots}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{History in a concurrent algorithm}{integer a \la{} 1, b \la{} 2}\hline
+\procname{p}{q}
+\st{Millions of statements}{Millions of statements}
+\st{a \la{} (a+b)*5}{b \la{} (a+b)*5}
+\st{\ldots}{\ldots}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large First States of the State Diagram}
+\begin{center}
+\unitlength=1.3pt
+\begin{picture}(130,100)
+\thicklines
+\put(-20,90){\vector(1,0){20}}
+\put(-20,90){\circle*{4}}
+\nodsm{0}{80}{p1,q1,$1$}
+\nodsm{80}{80}{p1,q2,$1$}
+\selfrsm{80}{80}
+\nodsm{0}{30}{p2,q1,$1$}
+\nodsm{80}{30}{p2,q2,$1$}
+\selfrsm{80}{30}
+\multiput(10,80)(80,0){2}{\multiput(0,0)(0,-50){2}{\vector(0,-1){30}}}
+\multiput(40,40)(0,50){2}{\vector(1,0){40}}
+\end{picture}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large State Diagram for the First Attempt}
+\vspace*{-1ex}
+\begin{center}
+\begin{footnotesize}
+\unitlength=.75pt
+\begin{picture}(140,340)
+\thicklines
+\nodsm{0}{0}{p2,q4,$2$}
+\selflsm{0}{0}
+\nodsm{0}{40}{p2,q3,$2$}
+\selflsm{0}{40}
+\nodsm{0}{80}{p2,q2,$2$}
+\selflsm{0}{80}
+\nodsm{0}{120}{p2,q1,$2$}
+\selflsm{0}{120}
+\nodsm{0}{160}{p1,q1,$2$}
+\nodsm{0}{200}{p4,q1,$1$}
+\nodsm{0}{240}{p3,q1,$1$}
+\nodsm{0}{280}{p2,q1,$1$}
+
+\nodsm{100}{40}{p1,q4,$2$}
+\nodsm{100}{80}{p1,q3,$2$}
+\nodsm{100}{120}{p1,q2,$2$}
+\nodsm{100}{160}{p4,q2,$1$}
+\selfrsm{100}{160}
+\nodsm{100}{200}{p3,q2,$1$}
+\selfrsm{100}{200}
+\nodsm{100}{240}{p2,q2,$1$}
+\selfrsm{100}{240}
+\nodsm{100}{280}{p1,q2,$1$}
+\selfrsm{100}{280}
+\nodsm{100}{320}{p1,q1,$1$}
+
+\multiput(20,40)(0,40){7}{\vector(0,-1){20}}
+\multiput(120,80)(0,40){7}{\vector(0,-1){20}}
+
+\put(100,330){\vector(-2,-1){63}}
+\multiput(100,50)(0,40){3}{\vector(-2,-1){63}}
+\multiput(40,170)(0,40){4}{\vector(2,-1){63}}
+
+\put(0,12){\line(-1,0){20}}
+\put(-20,12){\line(0,1){278}}
+\put(-20,290){\vector(1,0){20}}
+
+\put(140,50){\line(1,0){20}}
+\put(160,50){\line(0,1){280}}
+\put(160,330){\vector(-1,0){20}}
+
+\put(80,335){\vector(1,0){20}}
+\put(80,335){\circle*{4}}
+
+\end{picture}
+\end{footnotesize}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Alternate Layout for First Attempt (Not in book)}
+\begin{center}
+\unitlength=1.1pt
+\begin{picture}(280,210)
+\thicklines
+\put(10,210){\vector(0,-1){20}}
+\put(10,210){\circle*{4}}
+\put(0,20){
+\nodsm{0}{150}{p1,q1,$1$}
+\nodsm{80}{150}{p1,q2,$1$}
+\selfrsm{80}{150}
+\nodsm{160}{150}{p1,q1,$2$}
+\nodsm{240}{150}{p1,q2,$2$}
+
+\nodsm{0}{100}{p2,q1,$1$}
+\nodsm{80}{100}{p2,q2,$1$}
+\selfrsm{80}{100}
+\nodsm{160}{100}{p2,q1,$2$}
+\selflsm{160}{100}
+\nodsm{240}{100}{p1,q3,$2$}
+
+\nodsm{0}{50}{p3,q1,$1$}
+\nodsm{80}{50}{p3,q2,$1$}
+\selfrsm{80}{50}
+\nodsm{160}{50}{p2,q2,$2$}
+\selflsm{160}{50}
+\nodsm{240}{50}{p1,q4,$2$}
+
+\nodsm{0}{0}{p4,q1,$1$}
+\nodsm{80}{0}{p4,q2,$1$}
+\selfrsm{80}{0}
+\nodsm{160}{0}{p2,q3,$2$}
+\selflsm{160}{0}
+\nodsm{240}{0}{p2,q4,$2$}
+\selflsm{240}{0}
+
+\multiput(10,150)(80,0){2}{\multiput(0,0)(0,-50){3}{\vector(0,-1){30}}}
+\multiput(270,150)(0,-50){2}{\vector(0,-1){30}}
+\put(250,50){\vector(0,-1){30}}
+\multiput(190,100)(0,-50){2}{\vector(0,-1){30}}
+\put(170,150){\vector(0,-1){30}}
+\multiput(40,10)(0,50){4}{\vector(1,0){40}}
+\put(200,10){\vector(1,0){40}}
+\put(200,160){\vector(1,0){40}}
+\rightup{30}{0}{20}{120}{190}{10}{10}
+\rightup{90}{0}{50}{110}{205}{15}{20}
+\leftup{270}{50}{40}{200}{145}{10}{15}
+\leftup{270}{0}{200}{40}{150}{20}{10}
+\leftdown{250}{150}{30}{50}{50}{15}{15}
+\leftdown{250}{100}{30}{50}{45}{20}{15}
+}
+\end{picture}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{First attempt (abbreviated)}{integer turn \la{} 1}\hline
+\procname{p}{q}
+\stn{loop forever}{loop forever}
+\st{\idt{}await turn = 1}{\idt{}await turn = 2}
+\st{\idt{}turn \la{} 2}{\idt{}turn \la{} 1}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large State Diagram for the Abbreviated First Attempt}
+\begin{center}
+\unitlength=1.5pt
+\begin{picture}(200,150)
+\thicklines
+\put(160,129){\vector(0,-1){10}}
+\put(160,130){\circle*{3}}
+\put(0,20){
+\nod{120}{70}{\shortstack[c]{\rule{0pt}{1ex}\\p1: await turn=1,\\q1: await turn=2,\\$\mathit{turn}=1$}}
+\nod{0}{70}{\shortstack[c]{\rule{0pt}{1ex}\\p1: await turn=1,\\q1: await turn=2,\\$\mathit{turn}=2$}}
+\nod{120}{0}{\shortstack[c]{\rule{0pt}{1ex}\\p2: turn\la{}2,\\q1: await turn=2,\\$\mathit{turn}=1$}}
+\nod{0}{0}{\shortstack[c]{\rule{0pt}{1ex}\\p1: await turn=1,\\q2: turn\la{}1,\\$\mathit{turn}=2$}}
+\selfl{0}{70}
+\selfl{0}{0}
+\selfr{120}{70}
+\selfr{120}{0}
+\put(40,69){\vector(0,-1){40}}
+\put(140,69){\vector(0,-1){40}}
+\rightup{40}{-1}{40}{70}{130}{10}{20}
+\leftup{140}{-1}{40}{70}{130}{20}{10}
+}
+\end{picture}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\normalsize Fragment of the State Diagram for the First Attempt}
+\begin{center}
+\unitlength=1.5pt
+\begin{picture}(200,110)
+\thicklines
+%\put(-10,95){\vector(1,0){10}}
+%\put(-10,95){\circle*{3}}
+\put(0,10){
+\nod{0}{70}{\shortstack[c]{\rule{0pt}{1ex}\\p1: NCS,\\q1: NCS,\\$\mathit{turn}=2$}}
+\nod{120}{70}{\shortstack[c]{\rule{0pt}{1ex}\\p1: NCS,\\q2: await turn=2,\\$\mathit{turn}=2$}}
+\nod{0}{0}{\shortstack[c]{\rule{0pt}{1ex}\\p2: await turn=1,\\q1: NCS,\\$\mathit{turn}=2$}}
+\nod{120}{0}{\shortstack[c]{\rule{0pt}{1ex}\\p2: await turn=1,\\q2: await turn=2,\\$\mathit{turn}=2$}}
+\selfl{0}{0}
+\selfl{120}{0}
+\put(60,85){\vector(1,0){60}}
+\put(60,15){\vector(1,0){60}}
+\put(20,69){\vector(0,-1){40}}
+\put(140,69){\vector(0,-1){40}}
+\put(180,15){\vector(1,0){20}}
+\put(180,85){\vector(1,0){20}}
+}
+\end{picture}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Second attempt}{boolean wantp \la{} false, wantq \la{} false}\hline
+\procname{p}{q}
+\stn{loop forever}{loop forever}
+\st{\idt{}non-critical section}{\idt{}non-critical section}
+\st{\idt{}await wantq = false}{\idt{}await wantp = false}
+\st{\idt{}wantp \la{} true}{\idt{}wantq \la{} true}
+\st{\idt{}critical section}{\idt{}critical section}
+\st{\idt{}wantp \la{} false}{\idt{}wantq \la{} false}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Second attempt (abbreviated)}{boolean wantp \la{} false, wantq \la{} false}\hline
+\procname{p}{q}
+\stn{loop forever}{loop forever}
+\st{\idt{}await wantq = false}{\idt{}await wantp = false}
+\st{\idt{}wantp \la{} true}{\idt{}wantq \la{} true}
+\st{\idt{}wantp \la{} false}{\idt{}wantq \la{} false}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\normalsize Fragment of State Diagram for the Second Attempt}
+\begin{center}
+\unitlength=1.5pt
+\begin{picture}(220,90)
+\thicklines
+%\put(0,0){\framebox(220,90){}}
+\put(30,49){\vector(0,1){10}}
+\put(30,49){\circle*{2}}
+\nod{0}{60}{\shortstack[c]{\rule{0pt}{2ex}\\ p1: await !wantq,\\q1: await !wantp,\\
+$\mathit{false}$,$\mathit{false}$}}
+\nod{80}{60}{\shortstack[c]{\rule{0pt}{2ex}\\p2: wantp\la{}true,\\q1: await !wantp,\\
+$\mathit{false}$,$\mathit{false}$}}
+\nod{160}{60}{\shortstack[c]{\rule{0pt}{2ex}\\p2: wantp\la{}true,\\q2: wantq\la{}true,\\
+$\mathit{false}$,$\mathit{false}$}}
+\nod{160}{0}{\shortstack[c]{\rule{0pt}{2ex}\\p3: wantp\la{}false,\\q2: wantq\la{}true,\\
+$\mathit{true}$,$\mathit{false}$}}
+\nod{80}{0}{\shortstack[c]{\rule{0pt}{2ex}\\p3: wantp\la{}false,\\q3: wantq\la{}false,
+\\$\mathit{true}$,$\mathit{true}$}}
+\put(60,80){\vector(1,0){20}}
+\put(140,70){\vector(1,0){20}}
+\put(180,59){\vector(0,-1){30}}
+\put(160,10){\vector(-1,0){20}}
+\end{picture}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Scenario: Mutual Exclusion Does Not Hold}
+\begin{center}
+\begin{paenv}
+\begin{tabular}{|l|l|c|c|}\hline
+Process p & Process q & wantp & wantq \\\hline
+\bfseries p1: await wantq=false & q1: await wantp=false & $\mathit{false}$ & $\mathit{false}$ \\\hline
+p2: wantp\la{}true & \bfseries q1: await wantp=false  & $\mathit{false}$ & $\mathit{false}$ \\\hline
+\bfseries p2: wantp\la{}true  & q2: wantq\la{}true & $\mathit{false}$ & $\mathit{false}$ \\\hline
+p3: wantp\la{}false  & \bfseries q3: wantq\la{}true & $\mathit{true}$ & $\mathit{false}$ \\\hline
+p3: wantp\la{}false  & q3: wantq\la{}false  & $\mathit{true}$ & $\mathit{true}$ \\\hline
+\end{tabular}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Third attempt}{boolean wantp \la{} false, wantq \la{} false}\hline
+\procname{p}{q}
+\stn{loop forever}{loop forever}
+\st{\idt{}non-critical section}{\idt{}non-critical section}
+\st{\idt{}wantp \la{} true}{\idt{}wantq \la{} true}
+\st{\idt{}await wantq = false}{\idt{}await wantp = false}
+\st{\idt{}critical section}{\idt{}critical section}
+\st{\idt{}wantp \la{} false}{\idt{}wantq \la{} false}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Scenario Showing Deadlock in the Third Attempt}
+\begin{center}
+\begin{paenv}
+\begin{tabular}{|l|l|c|c|}\hline
+Process p & Process q & wantp & wantq \\\hline
+\bfseries p1: non-critical section & q1: non-critical section & $\mathit{false}$ & $\mathit{false}$ \\\hline
+p2: wantp\la{}true & \bfseries q1: non-critical section & $\mathit{false}$ & $\mathit{false}$ \\\hline
+\bfseries p2: wantp\la{}true  & q2: wantq\la{}true & $\mathit{false}$ & $\mathit{false}$ \\\hline
+p3: await wantq=false & \bfseries q2: wantq\la{}true & $\mathit{true}$ & $\mathit{false}$ \\\hline
+p3: await wantq=false & q3: await wantp=false & $\mathit{true}$ & $\mathit{true}$ \\\hline
+\end{tabular}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Fragment of the State Diagram Showing Deadlock}
+\begin{center}
+\unitlength=1.5pt
+\begin{picture}(240,40)
+\thicklines
+%\put(0,0){\framebox(240,40){}}
+\put(30,-1){\vector(0,1){10}}
+\put(30,-1){\circle*{2}}
+\put(0,10){
+\nod{0}{0}{\shortstack[c]{\rule{0pt}{2ex}\\p2: wantp\la{}true,\\q2: wantq\la{}true,\\
+$\mathit{false}$,$\mathit{false}$}}
+\nod{80}{0}{\shortstack[c]{\rule{0pt}{2ex}\\p3: await !wantq,\\q2: wantq\la{}true,\\
+$\mathit{true}$,$\mathit{false}$}}
+\nod{160}{0}{\shortstack[c]{\rule{0pt}{2ex}\\p3: await !wantq,\\q3: await !wantp,\\
+$\mathit{true}$,$\mathit{true}$}}
+\put(60,20){\vector(1,0){20}}
+\put(140,10){\vector(1,0){20}}
+\unitlength=0.8pt
+\selfr{351}{-2}
+\selfl{303}{-2}
+}
+\end{picture}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Fourth attempt}{boolean wantp \la{} false, wantq \la{} false}\hline
+\procname{p}{q}
+\stn{loop forever}{loop forever}
+\st{\idt{}non-critical section}{\idt{}non-critical section}
+\st{\idt{}wantp \la{} true}{\idt{}wantq \la{} true}
+\st{\idt{}while wantq}{\idt{}while wantp}
+\st{\idt{}\idt{}wantp \la{} false}{\idt{}\idt{}wantq \la{} false}
+\st{\idt{}\idt{}wantp \la{} true}{\idt{}\idt{}wantq \la{} true}
+\st{\idt{}critical section}{\idt{}critical section}
+\st{\idt{}wantp \la{} false}{\idt{}wantq \la{} false}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\normalsize Cycle in the State Diagram for the Fourth Attempt}
+\begin{center}
+\unitlength=1.42pt
+\begin{picture}(250,100)
+\thicklines
+%\put(0,0){\framebox(260,90){}}
+\put(30,100){\vector(0,-1){10}}
+\put(30,100){\circle*{2}}
+\nod{0}{60}{\shortstack[c]{\rule{0pt}{1ex}\\p3: while wantq,\\q3: while wantp,\\$\mathit{true}$,$\mathit{true}$}}
+\nod{95}{60}{\shortstack[c]{\rule{0pt}{1ex}\\p3: while wantq,\\q4: wantq\la{}false,\\$\mathit{true}$,$\mathit{true}$}}
+\nod{190}{60}{\shortstack[c]{\rule{0pt}{1ex}\\p4: wantp\la{}false, \\q4: wantq\la{}false,\\$\mathit{true}$,$\mathit{true}$}}
+\nod{190}{0}{\shortstack[c]{\rule{0pt}{1ex}\\p4: wantp\la{}false,\\q5: wantq\la{}true,\\$\mathit{true}$,$\mathit{false}$}}
+\nod{95}{0}{\shortstack[c]{\rule{0pt}{1ex}\\p5: wantp\la{}true,\\q5: wantq\la{}true,\\$\mathit{false}$,$\mathit{false}$}}
+\nod{0}{0}{\shortstack[c]{\rule{0pt}{1ex}\\p5: wantp\la{}true,\\q3: while wantp,\\$\mathit{false}$,$\mathit{true}$}}
+\put(60,70){\vector(1,0){35}}
+\put(155,70){\vector(1,0){35}}
+\put(220,59){\vector(0,-1){30}}
+\put(40,29){\vector(0,1){30}}
+\put(190,20){\vector(-1,0){35}}
+\put(95,20){\vector(-1,0){35}}
+\end{picture}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Dekker's algorithm}{boolean wantp \la{} false, wantq \la{} false}
+\decl{integer turn \la{} 1}\hline
+\procname{p}{q}
+\stn{loop forever}{loop forever}
+\st{\idt{}non-critical section}{\idt{}non-critical section}
+\st{\idt{}wantp \la{} true}{\idt{}wantq \la{} true}
+\st{\idt{}while wantq}{\idt{}while wantp}
+\st{\idt{}\idt{}if turn = 2}{\idt{}\idt{}if turn = 1}
+\st{\idt{}\idt{}\idt{}wantp \la{} false}{\idt{}\idt{}\idt{}wantq \la{} false}
+\st{\idt{}\idt{}\idt{}await turn = 1}{\idt{}\idt{}\idt{}await turn = 2}
+\st{\idt{}\idt{}\idt{}wantp \la{} true}{\idt{}\idt{}\idt{}wantq \la{} true}
+\st{\idt{}critical section}{\idt{}critical section}
+\st{\idt{}turn \la{} 2}{\idt{}turn \la{} 1}
+\st{\idt{}wantp \la{} false}{\idt{}wantq \la{} false}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Critical section problem with test-and-set}{integer common \la{} 0}\hline
+\procname{p}{q}
+\stn{integer local1}{integer local2}
+\stn{loop forever}{loop forever}
+\st{\idt{}non-critical section}{\idt{}non-critical section}
+\stn{\idt{}repeat}{\idt{}repeat}
+\st{\idt{}\idt{}test-and-set(}{\idt{}\idt{}test-and-set(}
+\stn{\idt{}\idt{}\idt{}common, local1)}{\idt{}\idt{}\idt{}common, local2)}
+\st{\idt{}until local1 = 0}{\idt{}until local2 = 0}
+\st{\idt{}critical section}{\idt{}critical section}
+\st{\idt{}common \la{} 0}{\idt{}common \la{} 0}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Critical section problem with exchange}{integer common \la{} 1}\hline
+\procname{p}{q}
+\stn{integer local1 \la{} 0}{integer local2 \la{} 0}
+\stn{loop forever}{loop forever}
+\st{\idt{}non-critical section}{\idt{}non-critical section}
+\stn{\idt{}repeat}{\idt{}repeat}
+\st{\idt{}\idt{}exchange(common, local1)}{\idt{}\idt{}exchange(common, local2)}
+\st{\idt{}until local1 = 1}{\idt{}until local2 = 1}
+\st{\idt{}critical section}{\idt{}critical section}
+\st{\idt{}exchange(common, local1)}{\idt{}exchange(common, local2)}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Peterson's algorithm}{boolean wantp \la{} false, wantq \la{} false}
+\decl{integer last \la{} 1}\hline
+\procname{p}{q}
+\stn{loop forever}{loop forever}
+\st{\idt{}non-critical section}{\idt{}non-critical section}
+\st{\idt{}wantp \la{} true}{\idt{}wantq \la{} true}
+\st{\idt{}last \la{} 1}{\idt{}last \la{} 2}
+\st{\idt{}await wantq = false or}{\idt{}await wantp = false or}
+\stn{\idt{}\idt{}\idt{}last = 2}{\idt{}\idt{}\idt{}last = 1}
+\st{\idt{}critical section}{\idt{}critical section}
+\st{\idt{}wantp \la{} false}{\idt{}wantq \la{} false}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Manna-Pnueli algorithm}%
+{integer wantp \la{} 0, wantq \la{} 0}\hline
+\procname{p}{q}
+\stn{loop forever}{loop forever}
+\st{\idt{}non-critical section}{\idt{}non-critical section}
+\st{\idt{}if wantq $=$ $-$1}{\idt{}if wantp $=$ $-$1}
+\stn{\idt{}\idt{}wantp \la{} $-$1}{\idt{}\idt{}wantq \la{} 1}
+\stn{\idt{}else wantp \la{} 1}{\idt{}else wantq \la{} $-$1}
+\st{\idt{}await wantq $\neq$ wantp}{\idt{}await wantp $\neq$ $-$ wantq}
+\st{\idt{}critical section}{\idt{}critical section}
+\st{\idt{}wantp \la{} 0}{\idt{}wantq \la{} 0}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Doran-Thomas algorithm}{boolean wantp \la{} false, wantq \la{} false}
+\decl{integer turn \la{} 1}\hline
+\procname{p}{q}
+\stn{loop forever}{loop forever}
+\st{\idt{}non-critical section}{\idt{}non-critical section}
+\st{\idt{}wantp \la{} true}{\idt{}wantq \la{} true}
+\st{\idt{}if wantq}{\idt{}if wantp}
+\st{\idt{}\idt{}if turn = 2}{\idt{}\idt{}if turn = 1}
+\st{\idt{}\idt{}\idt{}wantp \la{} false}{\idt{}\idt{}\idt{}wantq \la{} false}
+\st{\idt{}\idt{}\idt{}await turn = 1}{\idt{}\idt{}\idt{}await turn = 2}
+\st{\idt{}\idt{}\idt{}wantp \la{} true}{\idt{}\idt{}\idt{}wantq \la{} true}
+\st{\idt{}\idt{}await wantq = false}{\idt{}\idt{}await wantp = false}
+\st{\idt{}critical section}{\idt{}critical section}
+\st{\idt{}wantp \la{} false}{\idt{}wantq \la{} false}
+\st{\idt{}turn \la{} 2}{\idt{}turn \la{} 1}
+\end{alg}
+\end{wideslide}
+

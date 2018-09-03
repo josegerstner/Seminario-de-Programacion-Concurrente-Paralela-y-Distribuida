@@ -1,0 +1,293 @@
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Producer-consumer (channels)}{channel of integer ch}\hline
+\procname{producer}{consumer}
+\stn{integer x}{integer y}
+\stn{loop forever}{loop forever}
+\st{\idt{}x \la{} produce}{\idt{}ch \chin{} y}
+\st{\idt{}ch \chout{} x}{\idt{}consume(y)}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\vspace*{-2ex}
+\begin{alg}{Conway's problem}{constant integer MAX \la{} 9 }
+\decl{constant integer K \la{} 4}
+\decl{channel of integer inC, pipe, outC}\hline
+\procname{compress}{output}
+\stn{char c, previous \la{} 0}{char c}
+\stn{integer n \la{} 0}{integer m \la{} 0}
+\stn{inC \chin{} previous}{}
+\stn{loop forever}{loop forever}
+\st{\idt{}inC \chin{} c}{\idt{}pipe \chin{} c}
+\st{\idt{}if (c = previous) and}{\idt{}outC \chout{} c}
+\stn{\idt{}\idt{}\idt{}(n $<$ MAX $-$ 1)}{}
+\st{\idt{}\idt{}n \la{} n $+$ 1}{\idt{}m \la{} m $+$ 1}
+\stn{\idt{}else}{}
+\st{\idt{}\idt{}if n $>$ 0}{\idt{}if m $>=$ K}
+\st{\idt{}\idt{}\idt{}pipe \chout{} intToChar(n$+$1)}{\idt{}\idt{}outC \chout{} newline}
+\st{\idt{}\idt{}\idt{}n \la{} 0}{\idt{}\idt{}m \la{} 0}
+\st{\idt{}\idt{}pipe \chout{} previous}{}
+\st{\idt{}\idt{}previous \la{} c}{}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Conway's Problem}
+\begin{center}
+\begin{paenv}
+\unitlength=1pt
+\begin{picture}(250,30)
+\thicklines
+%\put(0,0){\framebox(250,30){}}
+\multiput(0,15)(100,0){3}{\vector(1,0){50}}
+\put(50,0){\framebox(50,30){compress}}
+\put(150,0){\framebox(50,30){output}}
+\put(0,15){\makebox(50,15){inC}}
+\put(100,15){\makebox(50,15){pipe}}
+\put(200,15){\makebox(50,15){outC}}
+\end{picture}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Process Array for Matrix Multiplication}
+\begin{center}
+\begin{footnotesize}
+\begin{paenv}
+\unitlength=.67pt
+\begin{picture}(360,360)
+\thicklines
+\put(80,0){\multiput(0,0)(80,0){3}{\framebox(40,40){Sink}}}
+\put(0,80){\multiput(0,0)(0,80){3}{\framebox(40,40){Result}}}
+\put(320,80){\multiput(0,0)(0,80){3}{\framebox(40,40){Zero}}}
+\put(80,320){\multiput(0,0)(80,0){3}{\framebox(40,40){Source}}}
+\put(320,100){
+   \multiput(0,0)(0,80){3}{\multiput(0,0)(-80,0){4}{\vector(-1,0){40}}}}
+\put(100,320){
+   \multiput(0,0)(80,0){3}{\multiput(0,0)(0,-80){4}{\vector(0,-1){40}}}}
+
+\put(80,240){\framebox(40,40){1}}
+\put(160,240){\framebox(40,40){2}}
+\put(240,240){\framebox(40,40){3}}
+\put(80,160){\framebox(40,40){4}}
+\put(160,160){\framebox(40,40){5}}
+\put(240,160){\framebox(40,40){6}}
+\put(80,80){\framebox(40,40){7}}
+\put(160,80){\framebox(40,40){8}}
+\put(240,80){\framebox(40,40){9}}
+
+\put( 40,262){\makebox(40,10)[c]{4,2,6}}
+\put(120,262){\makebox(40,10)[c]{3,2,4}}
+\put(200,262){\makebox(40,10)[c]{3,0,0}}
+\put(280,262){\makebox(40,10)[c]{0,0,0}}
+
+\put( 40,182){\makebox(40,10)[c]{10,5,18}}
+\put(120,182){\makebox(40,10)[c]{6,5,10}}
+\put(200,182){\makebox(40,10)[c]{6,0,0}}
+\put(280,182){\makebox(40,10)[c]{0,0,0}}
+
+\put( 40,102){\makebox(40,10)[c]{16,8,30}}
+\put(120,102){\makebox(40,10)[c]{9,8,16}}
+\put(200,102){\makebox(40,10)[c]{9,0,0}}
+\put(280,102){\makebox(40,10)[c]{0,0,0}}
+
+\put(100,280){\multiput(0,0)(0,-80){4}{
+  \makebox(10,40){\shortstack{2\\0\\1}}}}
+\put(180,280){\multiput(0,0)(0,-80){4}{
+  \makebox(10,40){\shortstack{2\\1\\0}}}}
+\put(260,280){\multiput(0,0)(0,-80){4}{
+  \makebox(10,40){\shortstack{0\\0\\1}}}}
+
+\end{picture}
+\end{paenv}
+\end{footnotesize}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Computation of One Element}
+\begin{center}
+\begin{paenv}
+\unitlength=1pt
+\begin{picture}(360,60)
+\thicklines
+\put(0,0){\framebox(40,40){Result}}
+\put(320,00){\framebox(40,40){Zero}}
+\put(80,0){\framebox(40,40){7}}
+\put(160,0){\framebox(40,40){8}}
+\put(240,0){\framebox(40,40){9}}
+\multiput(320,20)(-80,0){4}{\vector(-1,0){40}}
+\multiput(100,60)(80,0){3}{\vector(0,-1){20}}
+\put(100,40){\makebox(15,20){\small 2}}
+\put(180,40){\makebox(15,20){\small 2}}
+\put(260,40){\makebox(15,20){\small 0}}
+\put(280,20){\makebox(40,15){\small 0}}
+\put(200,20){\makebox(40,15){\small 0}}
+\put(120,20){\makebox(40,15){\small 16}}
+\put(40,20){\makebox(40,15){\small 30}}
+\end{picture}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Multiplier process with channels}%
+{integer FirstElement}
+\decl{channel of integer North, East, South, West}%
+\decl{integer Sum, integer SecondElement}\hline
+\sttn{loop forever}
+\stt{\idt{}North \chin{} SecondElement}
+\stt{\idt{}East \chin{} Sum}
+\stt{\idt{}Sum \la{} Sum $+$ FirstElement $\cdot$ SecondElement}
+\stt{\idt{}South \chout{} SecondElement}
+\stt{\idt{}West \chout{} Sum}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Multiplier with channels and selective input}%
+{integer FirstElement}
+\decl{channel of integer North, East, South, West}%
+\decl{integer Sum, integer SecondElement}\hline
+\sttn{loop forever}
+\sttn{\idt{}either}
+\stt{\idt{}\idt{}North \chin{} SecondElement}
+\stt{\idt{}\idt{}East \chin{} Sum}
+\sttn{\idt{}or}
+\stt{\idt{}\idt{}East \chin{} Sum}
+\stt{\idt{}\idt{}North \chin{} SecondElement}
+\stt{\idt{}South \chout{} SecondElement}
+\stt{\idt{}Sum \la{} Sum $+$ FirstElement $\cdot$ SecondElement}
+\stt{\idt{}West \chout{} Sum}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Dining philosophers with channels}{channel of boolean forks[5]}\hline
+\procname{philosopher i}{fork i}
+\stn{boolean dummy}{boolean dummy}
+\stn{loop forever}{loop forever}
+\st{\idt{}think}{\idt{}forks[i] \chout{} true}
+\st{\idt{}forks[i] \chin{} dummy}{\idt{}forks[i] \chin{} dummy}
+\st{\idt{}forks[i+1] \chin{} dummy}{}
+\st{\idt{}eat}{}
+\st{\idt{}forks[i] \chout{} true}{}
+\st{\idt{}forks[i+1] \chout{} true}{}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Conway's Problem in Promela (1)}
+\vspace*{-2ex}
+\program{Promela}{conway.pml}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Conway's Problem in Promela (2)}
+\program{Promela}{conway1.pml}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Multiplier Process in Promela}
+\program{Promela}{matrix.pml}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Rendezvous}{}\hline
+\procname{client}{server}
+\stn{integer parm, result}{integer p, r}
+\stn{loop forever}{loop forever}
+\st{\idt{}parm \la{} \ldots}{}
+\st{\idt{}server.service(parm, result)}{\idt{}accept service(p, r)}
+\st{\idt{}use(result)}{\idt{}\idt{}r \la{} do the service(p)}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Timing Diagram for a Rendezvous}
+\begin{center}
+\begin{paenv}
+\unitlength=2.5pt
+\begin{picture}(100,60)
+\thicklines
+\put(20,0){\makebox(80,10){time$\;\;\;\rightarrow$}}
+\put(2,45){\makebox(20,10)[l]{calling}}
+\put(2,15){\makebox(20,10)[l]{accepting}}
+\put(20,10){\line(1,0){80}}
+\put(20,10){\line(0,1){50}}
+\put(20,20){
+\put(20,30){\dashbox{2}(40,0){}}
+\put(0,0){\line(1,0){80}}
+\put(0,30){\line(1,0){20}}
+\put(60,30){\line(1,0){20}}
+\put(40,30){\vector(0,-1){30}}
+\put(60,0){\vector(0,1){30}}
+\put(18,10){\makebox(20,10)[r]{parameters}}
+\put(62,10){\makebox(20,10)[l]{results}}
+\put(15,30){\makebox(10,10)[c]{$t_{1}$}}
+\put(35,30){\makebox(10,10)[c]{$t_{2}$}}
+\put(55,30){\makebox(10,10)[c]{$t_{3}$}}
+}
+\end{picture}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Bounded Buffer in Ada}
+\program{Ada}{Bounded.ada}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Remote Procedure Call}
+\begin{center}
+\begin{paenv}
+\unitlength=1pt
+\begin{picture}(360,180)
+\thicklines
+%\put(0,0){\framebox(360,180){}}
+\put(0,140){\dashbox{2}(50,40){\shortstack[l]{Remote\\interface}}}
+\put(310,140){\dashbox{2}(50,40){\shortstack[l]{Remote\\interface}}}
+\put(70,0){
+  \put(0,0){\framebox(80,40){Communications}}
+  \put(0,70){\framebox(80,40){Sending stub}}
+  \put(40,70){\vector(0,-1){30}}
+  \put(0,140){\framebox(80,40){Client program}}
+  \put(40,140){\vector(0,-1){30}}
+}
+\put(210,0){
+  \put(0,0){\framebox(80,40){Communications}}
+  \put(40,40){\vector(0,1){30}}
+  \put(0,70){\framebox(80,40){Receiving stub}}
+  \put(40,110){\vector(0,1){30}}
+  \put(0,140){\framebox(80,40){Server program}}
+}
+\put(150,20){\vector(1,0){59}}
+\end{picture}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Pipeline Sort}
+\begin{center}
+\unitlength=0.6pt
+\begin{picture}(550,30)
+\thicklines
+%\put(0,0){\framebox(550,30){}}
+\multiput(0,0)(300,0){2}{
+\multiput(0,15)(100,0){3}{\vector(1,0){50}}
+\multiput(50,0)(100,0){2}{\framebox(50,30){}}
+}
+\put(250,0){\makebox(50,30){$\cdots$}}
+\end{picture}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Hoare's Game}
+\begin{center}
+\unitlength=1pt
+\begin{picture}(100,60)
+\thicklines
+\put(0,0){\framebox(100,60){}}
+\multiput(20,0)(20,0){4}{\line(0,1){60}}
+\multiput(0,20)(0,20){2}{\line(1,0){100}}
+\put(10,10){\circle*{10}}
+\put(20,20){\put(0,0){\line(1,1){20}}\put(0,20){\line(1,-1){20}}}
+\put(40,40){\put(0,0){\line(1,1){20}}\put(0,20){\line(1,-1){20}}}
+\put(60,0){\put(0,0){\line(1,1){20}}\put(0,20){\line(1,-1){20}}}
+\end{picture}
+\end{center}
+\end{wideslide}
+

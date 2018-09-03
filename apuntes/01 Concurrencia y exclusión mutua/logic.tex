@@ -1,0 +1,89 @@
+\begin{wideslide}[bm=,toc=]{\large Semantics of Propositional Operators}
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+$A$ & $v(A_{1})$ & $v(A_{2})$ & $v(A)$ \\ \hline \hline
+$\ngg A_{1}$ & $T$ & & $F$  \\
+$\ngg A_{1}$ & $F$ & & $T$ \\ \hline
+$A_{1} \vee A_{2}$ & $F$ & $F$ & $F$ \\
+$A_{1} \vee A_{2}$ & \multicolumn{2}{c|}{otherwise}  & $T$ \\ \hline
+$A_{1} \wedge A_{2}$ & $T$ & $T$ & $T$ \\
+$A_{1} \wedge A_{2}$ & \multicolumn{2}{c|}{otherwise}  & $F$ \\ \hline
+$A_{1} \imp A_{2}$ & $T$ & $F$ & $F$ \\
+$A_{1} \imp  A_{2}$ &
+   \multicolumn{2}{c|}{otherwise}  & $T$ \\ \hline
+$A_{1} \eqv A_{2}$ & \multicolumn{2}{c|}{$v(A_{1})=v(A_{2})$} & $T$ \\
+$A_{1} \eqv A_{2}$ & \multicolumn{2}{c|}{$v(A_{1})\neq v(A_{2})$} &
+  $F$ \\ \hline
+\end{tabular}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Wason Selection Task}
+\begin{center}
+\begin{picture}(290,20)
+\put(0,0){\framebox(50,20){$p3$}}
+\put(80,0){\framebox(50,20){$p5$}}
+\put(160,0){\framebox(50,20){$\mathit{flag}=1$}}
+\put(240,0){\framebox(50,20){$\mathit{flag}=0$}}
+\end{picture}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Verification example}{integer x1, integer x2}
+\decl{integer y1 \la{} 0, integer y2 \la{} 0, integer y3}\hline
+\stt{read(x1,x2)}
+\stt{y3 \la{} x1}
+\stt{while y3 $\neq$ 0}
+\stt{\idt{}if y2$+$1 $=$ x2}
+\stt{\idt{}\idt{}y1 \la{} y1 $+$ 1}
+\stt{\idt{}\idt{}y2 \la{} 0}
+\stt{\idt{}else}
+\stt{\idt{}\idt{}y2 \la{} y2 $+$ 1}
+\stt{\idt{}y3 \la{} y3 $-$ 1}
+\stt{write(y1,y2)}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Spark Program for Integer Division}
+\program{Spark}{Divide.ada}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Integer Division}
+\program{Spark}{Divide1.ada}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Verification Conditions for Integer Division}
+\textsf{Precondition to assertion:}
+\begin{displaymath}
+\begin{array}{l}
+(X1 \geq 0) \wedge (X2 > 0) \: \imp \: \\
+(X1 = Q \cdot X2 + R + N) \wedge (X2 > R) \wedge (R \geq 0).
+\end{array}
+\end{displaymath}
+\textsf{Assertion to postcondition:}
+\begin{displaymath}
+\begin{array}{l}
+(X1 = Q \cdot X2 + R + N) \wedge (X2 > R) \wedge (R \geq 0)
+\wedge (N = 0) \:\imp\:\\
+(X1 = Q \cdot X2 + R) \wedge (X2 > R) \wedge (R \geq 0).
+\end{array}
+\end{displaymath}
+\textsf{Assertion to assertion by \textsf{then} branch:}
+\begin{displaymath}
+\begin{array}{l}
+(X1 = Q \cdot X2 + R + N) \wedge (X2 > R) \wedge (R \geq 0)
+\wedge (R+1 = X2) \:\imp\:\\
+(X1 = Q' \cdot X2 + R' + N') \wedge (X2 > R') \wedge (R' \geq 0).
+\end{array}
+\end{displaymath}
+\textsf{Assertion to assertion by \textsf{else} branch:}
+\begin{displaymath}
+\begin{array}{l}
+(X1 = Q \cdot X2 + R + N) \wedge (X2 > R) \wedge (R \geq 0)
+\wedge (R+1 \neq X2) \:\imp\:\\
+(X1 = Q' \cdot X2 + R' + N') \wedge (X2 > R') \wedge (R' \geq 0).
+\end{array}
+\end{displaymath}
+\end{wideslide}

@@ -1,0 +1,325 @@
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Third attempt}{boolean wantp \la{} false, wantq \la{} false}\hline
+\procname{p}{q}
+\stn{loop forever}{loop forever}
+\st{\idt{}non-critical section}{\idt{}non-critical section}
+\st{\idt{}wantp \la{} true}{\idt{}wantq \la{} true}
+\st{\idt{}await wantq = false}{\idt{}await wantp = false}
+\st{\idt{}critical section}{\idt{}critical section}
+\st{\idt{}wantp \la{} false}{\idt{}wantq \la{} false}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large $\Box A$}
+\begin{center}
+\begin{paenv}
+\unitlength=1.5pt
+\begin{picture}(120,75)
+\put(0,-5){
+\put(0,60){\makebox(20,20)[t]{A}}
+\usebox{\tlaxis}
+\thicklines
+\put(20,60){\line(1,0){100}}
+}
+\end{picture}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large $\Diamond A$}
+\begin{center}
+\begin{paenv}
+\unitlength=1.5pt
+\begin{picture}(120,75)
+\put(0,-5){
+\usebox{\tlaxis}
+\put(0,60){\makebox(20,20)[t]{A}}
+\thicklines
+\put(20,40){\line(1,0){30}}
+\put(50,40){\line(0,1){20}}
+\put(50,60){\line(1,0){20}}
+\put(70,40){\line(0,1){20}}
+\put(70,40){\line(1,0){60}}
+}
+\end{picture}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Duality: $\ngg \Box A$}
+\begin{center}
+\begin{paenv}
+\unitlength=1.5pt
+\begin{picture}(120,75)
+%\put(0,0){\framebox(120,75){}}
+\put(0,-5){
+\put(0,60){\makebox(20,20)[t]{A}}
+\usebox{\tlaxis}
+\thicklines
+\put(20,60){\line(1,0){30}}
+\put(50,60){\line(0,-1){20}}
+\put(50,40){\line(1,0){30}}
+\put(80,60){\line(0,-1){20}}
+\put(80,60){\line(1,0){40}}
+}
+\end{picture}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Duality: $\ngg \Diamond A$}
+\begin{center}
+\begin{paenv}
+\unitlength=1.5pt
+\begin{picture}(120,75)
+%\put(0,0){\framebox(265,80){}}
+\put(0,-5){
+\usebox{\tlaxis}
+\put(0,60){\makebox(20,20)[t]{A}}
+\thicklines
+\put(20,40){\line(1,0){100}}
+}
+\end{picture}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large $\Diamond \Box A$}
+\begin{center}
+\begin{paenv}
+\unitlength=1.5pt
+\begin{picture}(120,75)
+%\put(0,0){\framebox(265,80){}}
+\put(0,-5){
+\put(0,60){\makebox(20,20)[t]{A}}
+\usebox{\tlaxis}
+\thicklines
+\put(20,40){\line(1,0){30}}
+\put(50,40){\line(0,1){20}}
+\put(50,60){\line(1,0){70}}
+}
+\end{picture}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large $\Box \Diamond A$}
+\begin{center}
+\begin{paenv}
+\unitlength=1.5pt
+\begin{picture}(120,75)
+%\put(0,0){\framebox(265,80){}}
+\put(0,-5){
+\put(0,60){\makebox(20,20)[t]{A}}
+\usebox{\tlaxis}
+\thicklines
+\put(20,40){\line(1,0){10}}
+\put(30,40){\line(0,1){20}}
+\put(30,60){\line(1,0){20}}
+\put(50,40){\line(0,1){20}}
+\put(50,40){\line(1,0){10}}
+\put(60,40){\line(0,1){20}}
+\put(60,60){\line(1,0){20}}
+\put(80,40){\line(0,1){20}}
+\put(80,40){\line(1,0){20}}
+\put(100,40){\line(0,1){20}}
+\put(100,60){\line(1,0){10}}
+\put(110,40){\line(0,1){20}}
+\put(110,40){\line(1,0){10}}
+}
+\end{picture}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large $A \mathcal{U} B$}
+\begin{center}
+\unitlength=1.5pt
+\begin{picture}(120,75)
+%\put(0,0){\framebox(265,80){}}
+\put(0,-5){
+\put(0,60){\makebox(20,20)[t]{\textsf{A, {\bfseries B}}}}
+\usebox{\tlaxis}
+\thicklines
+\put(20,40){\line(1,0){49}}
+\put(69,40){\line(0,1){20}}
+\put(69,60){\line(1,0){31}}
+\put(100,40){\line(0,1){20}}
+\put(100,40){\line(1,0){20}}
+\thinlines
+\put(0,1){
+\put(20,60){\line(1,0){50}}
+\put(70,40){\line(0,1){20}}
+\put(70,40){\line(1,0){20}}
+\put(90,40){\line(0,1){20}}
+\put(90,60){\line(1,0){20}}
+\put(110,40){\line(0,1){20}}
+\put(110,40){\line(1,0){10}}
+}
+}
+%\put(140,0){
+%\put(0,60){\makebox(20,20)[t]{\textsf{A, B}}}
+%\usebox{\tlaxis}
+%\thicklines
+%\put(20,40){\line(1,0){100}}
+%\thinlines
+%\put(0,1){
+%\put(20,60){\line(1,0){100}}
+%}
+%}
+\end{picture}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large $\Diamond\Box A1 \wedge \Diamond\Box A2$}
+\begin{center}
+\unitlength=1.5pt
+\begin{picture}(120,75)
+%\put(0,0){\framebox(265,80){}}
+\thicklines
+\put(0,-5){
+\put(-2,60){\makebox(20,20)[t]{\textsf{A1,{\bfseries A2}}}}
+\put(40,60){\makebox(20,20)[t]{\textsf{s$_{k_{2}}$}}}
+\put(50,74){\vector(0,-1){10}}
+\usebox{\tlaxis}
+\put(20,40){\line(1,0){30}}
+\put(50,40){\line(0,1){20}}
+\put(50,60){\line(1,0){70}}
+}
+\thinlines
+\put(0,-4){
+\put(70,60){\makebox(20,20)[t]{\textsf{s$_{k_{1}}$}}}
+\put(80,74){\vector(0,-1){10}}
+\put(20,40){\line(1,0){60}}
+\put(80,40){\line(0,1){20}}
+\put(80,60){\line(1,0){40}}
+}
+\end{picture}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large $\Box\Diamond A1 \wedge \Box\Diamond A2$}
+\begin{center}
+\unitlength=1.5pt
+\begin{picture}(125,75)
+%\put(0,0){\framebox(125,80){}}
+\put(0,-5){
+\put(-2,60){\makebox(20,20)[t]{\textsf{A1,{\bfseries A2}}}}
+\usebox{\tlaxis}
+\thicklines
+\put(20,40){\line(1,0){10}}
+\put(30,40){\line(0,1){20}}
+\put(30,60){\line(1,0){19}}
+\put(49,40){\line(0,1){20}}
+\put(49,40){\line(1,0){12}}
+\put(61,40){\line(0,1){20}}
+\put(61,60){\line(1,0){18}}
+\put(79,40){\line(0,1){20}}
+\put(79,40){\line(1,0){12}}
+\put(91,40){\line(0,1){20}}
+\put(91,60){\line(1,0){18}}
+\put(109,40){\line(0,1){20}}
+\put(109,40){\line(1,0){10}}
+\thinlines
+\put(0,1){
+\put(20,40){\line(1,0){30}}
+\put(50,40){\line(0,1){20}}
+\put(50,60){\line(1,0){10}}
+\put(60,40){\line(0,1){20}}
+\put(60,40){\line(1,0){20}}
+\put(80,40){\line(0,1){20}}
+\put(80,60){\line(1,0){10}}
+\put(90,40){\line(0,1){20}}
+\put(90,40){\line(1,0){20}}
+\put(110,40){\line(0,1){20}}
+\put(110,60){\line(1,0){10}}
+}
+}
+\end{picture}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\normalsize Overtaking: $\mathit{try}_{p} \imp (\ngg \mathit{cs}_{q}) \;\mathcal{W}\;
+(\mathit{cs}_{q}) \;\mathcal{W}\; (\ngg \mathit{cs}_{q}) \;\mathcal{W}\;
+(\mathit{cs}_{p})$}
+\begin{center}
+\unitlength=1.5pt
+\begin{picture}(150,85)
+%\put(0,0){\framebox(140,85){}}
+\put(0,65){\makebox(20,20)[t]{\textsf{p, {\bfseries q}}}}
+\put(20,-5){\makebox(100,20){\textsf{time}$\;\;\;\rightarrow$}}
+\put(5,20){\makebox(15,20)[l]{$\mathit{ncs}$}}
+\put(5,40){\makebox(15,20)[l]{$\mathit{try}$}}
+\put(5,60){\makebox(15,20)[l]{$\mathit{cs}$}}
+\put(20,20){\line(1,0){130}}
+\put(20,20){\line(0,1){60}}
+\multiput(20,17)(10,0){14}{\line(0,1){6}}
+\put(15,10){\makebox(10,5){\textsf{\scriptsize 0}}}
+\put(25,10){\makebox(10,5){\textsf{\scriptsize 1}}}
+\put(35,10){\makebox(10,5){\textsf{\scriptsize 2}}}
+\put(45,10){\makebox(10,5){\textsf{\scriptsize 3}}}
+\put(55,10){\makebox(10,5){\textsf{\scriptsize 4}}}
+\put(65,10){\makebox(10,5){\textsf{\scriptsize 5}}}
+\put(75,10){\makebox(10,5){\textsf{\scriptsize 6}}}
+\put(85,10){\makebox(10,5){\textsf{\scriptsize 7}}}
+\put(95,10){\makebox(10,5){\textsf{\scriptsize 8}}}
+\put(105,10){\makebox(10,5){\textsf{\scriptsize 9}}}
+\put(115,10){\makebox(10,5){\textsf{\scriptsize 10}}}
+\put(125,10){\makebox(10,5){\textsf{\scriptsize 11}}}
+\put(135,10){\makebox(10,5){\textsf{\scriptsize 12}}}
+\put(145,10){\makebox(10,5){\textsf{\scriptsize 13}}}
+\thinlines
+\put(0,1){
+\put(20,30){\line(1,0){10}}
+\put(30,30){\line(0,1){20}}
+\put(30,50){\line(1,0){70}}
+\put(100,50){\line(0,1){20}}
+\put(100,70){\line(1,0){20}}
+\put(120,70){\line(0,-1){40}}
+\put(120,30){\line(1,0){30}}
+}
+\thicklines
+\put(20,30){\line(1,0){30}}
+\put(50,30){\line(0,1){20}}
+\put(50,50){\line(1,0){10}}
+\put(60,50){\line(0,1){20}}
+\put(60,70){\line(1,0){20}}
+\put(80,70){\line(0,-1){40}}
+\put(80,30){\line(1,0){50}}
+\put(130,30){\line(0,1){20}}
+\put(130,50){\line(1,0){10}}
+\put(140,50){\line(0,1){20}}
+\put(140,70){\line(1,0){10}}
+\end{picture}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Dekker's algorithm}{boolean wantp \la{} false, wantq \la{} false}
+\decl{integer turn \la{} 1}\hline
+\procname{p}{q}
+\stn{loop forever}{loop forever}
+\st{\idt{}non-critical section}{\idt{}non-critical section}
+\st{\idt{}wantp \la{} true}{\idt{}wantq \la{} true}
+\st{\idt{}while wantq}{\idt{}while wantp}
+\st{\idt{}\idt{}if turn = 2}{\idt{}\idt{}if turn = 1}
+\st{\idt{}\idt{}\idt{}wantp \la{} false}{\idt{}\idt{}\idt{}wantq \la{} false}
+\st{\idt{}\idt{}\idt{}await turn = 1}{\idt{}\idt{}\idt{}await turn = 2}
+\st{\idt{}\idt{}\idt{}wantp \la{} true}{\idt{}\idt{}\idt{}wantq \la{} true}
+\st{\idt{}critical section}{\idt{}critical section}
+\st{\idt{}turn \la{} 2}{\idt{}turn \la{} 1}
+\st{\idt{}wantp \la{} false}{\idt{}wantq \la{} false}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Dekker's Algorithm in Promela}
+\program{Promela}{dekker.pml}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Specifying Correctness in Promela}
+\program{Promela}{dekker1.pml}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large LTL Translation to Never Claims}
+\program{Promela}{dekker2.pml}
+\end{wideslide}

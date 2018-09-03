@@ -1,0 +1,580 @@
+\begin{wideslide}[bm=,toc=]{\large State Changes of a Process}
+\begin{center}\label{p.schedule}
+\begin{paenv}
+\unitlength=1pt
+\begin{picture}(145,80)
+\thicklines
+\put(-95,50){\framebox(50,30){inactive}}
+\put(0,50){\framebox(50,30){ready}}
+\put(95,50){\framebox(50,30){running}}
+\put(95,0){\framebox(50,30){blocked}}
+\put(190,50){\framebox(50,30){completed}}
+\put(-45,65){\vector(1,0){45}}
+\put(145,65){\vector(1,0){45}}
+\put(50,60){\vector(1,0){45}}
+\put(95,70){\vector(-1,0){45}}
+\put(120,50){\vector(0,-1){20}}
+\put(95,15){\vector(-2,1){70}}
+\end{picture}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Critical section with semaphores (two processes)}%
+{binary semaphore S \la{} $(1,\emptyset)$}\hline
+\procname{p}{q}
+\stn{loop forever}{loop forever}
+\st{\idt{}non-critical section}{\idt{}non-critical section}
+\st{\idt{}wait(S)}{\idt{}wait(S)}
+\st{\idt{}critical section}{\idt{}critical section}
+\st{\idt{}signal(S)}{\idt{}signal(S)}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Critical section with semaphores (two proc., abbrev.)}%
+{binary semaphore S \la{} $(1,\emptyset)$}\hline
+\procname{p}{q}
+\stn{loop forever}{loop forever}
+\st{\idt{}wait(S)}{\idt{}wait(S)}
+\st{\idt{}signal(S)}{\idt{}signal(S)}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large State Diagram for the Semaphore Solution}
+\begin{center}
+\unitlength=1.4pt
+\begin{picture}(210,100)
+\thicklines
+%\put(0,0){\framebox(210,100){}}
+\nodmd{0}{60}{\shortstack[c]{p1: wait(S),\\q1: wait(S),\\$(1,\emptyset)$}}
+\nodmd{80}{60}{\shortstack[c]{p2: signal(S),\\q1: wait(S),\\$(0,\emptyset)$}}
+\nodmd{160}{60}{\shortstack[c]{p2: signal(S),\\q1: blocked,\\$(0,\{q\})$}}
+\nodmd{80}{0}{\shortstack[c]{p1: wait(S),\\q2: signal(S),\\$(0,\emptyset)$}}
+\nodmd{160}{0}{\shortstack[c]{p1: blocked,\\q2: signal(S),\\$(0,\{p\})$}}
+\put(50,85){\vector(1,0){30}}
+\put(130,80){\vector(1,0){30}}
+\put(130,20){\vector(1,0){30}}
+\put(80,75){\vector(-1,0){30}}
+\put(46,64){\vector(1,-1){34}}
+\put(84,36){\vector(-1,1){34}}
+\put(164,64){\vector(-1,-1){34}}
+\put(164,36){\vector(-1,1){34}}
+\put(151,59){\makebox(10,10){\textsf{p}}}
+\put(151,31){\makebox(10,10){\textsf{q}}}
+\end{picture}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Critical section with semaphores ($N$ proc.)}%
+{binary semaphore S \la{} $(1,\emptyset)$}\hline
+\sttn{loop forever}
+\stt{\idt{}non-critical section}
+\stt{\idt{}wait(S)}
+\stt{\idt{}critical section}
+\stt{\idt{}signal(S)}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Critical section with semaphores ($N$ proc., abbrev.)}%
+{binary semaphore S \la{} $(1,\emptyset)$}\hline
+\sttn{loop forever}
+\stt{\idt{}wait(S)}
+\stt{\idt{}signal(S)}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Scenario for Starvation}
+\begin{center}\label{p.sem-starve}
+\begin{paenv}
+\begin{tabular}{|c|l|l|l|c|}\hline
+n&Process  p & Process  q & Process  r &  S \\\hline
+1& \bfseries p1: wait(S)  &  q1: wait(S) &  r1: wait(S) &
+$(1,\emptyset)$ \\\hline
+2& p2: signal(S)  &  \bfseries q1: wait(S) &  r1: wait(S) &
+$(0,\emptyset)$ \\\hline
+3& p2: signal(S)  &  q1: blocked &  \bfseries r1: wait(S) &
+$(0,\{q\})$ \\\hline
+4& \bfseries p1: signal(S)  &  q1: blocked &  r1: blocked &
+$(0,\{q,r\})$ \\\hline
+5& \bfseries p1: wait(S)  &  q1: blocked &  r2: signal(S) &
+$(0,\{q\})$ \\\hline
+6& p1: blocked  &  q1: blocked &  \bfseries r2: signal(S) &
+$(0,\{p,q\})$ \\\hline
+7& p2: signal(S)  &  q1: blocked &  \bfseries r1: wait(S) &
+$(0,\{q\})$ \\\hline
+\end{tabular}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{algthree}{Mergesort}
+\declthree{integer array A}
+\declthree{binary semaphore S1 \la{} $(0,\emptyset)$}
+\declthree{binary semaphore S2 \la{} $(0,\emptyset)$}\hline
+\procnamethree{sort1}{sort2}{merge}
+\stthree{sort 1st half of A}{sort 2nd half of A}{wait(S1)}
+\stthree{signal(S1)}{signal(S2)}{wait(S2)}
+\stthree{}{}{merge halves of A}
+\end{algthree}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Producer-consumer (infinite buffer)}%
+{infinite queue of dataType buffer \la{} empty queue}
+\decl{semaphore notEmpty \la{} $(0,\emptyset)$}\hline
+\procname{producer}{consumer}
+\stn{dataType d}{dataType d}
+\stn{loop forever}{loop forever}
+\st{\idt{}d \la{} produce}{\idt{}wait(notEmpty)}
+\st{\idt{}append(d, buffer)}{\idt{}d \la{} take(buffer)}
+\st{\idt{}signal(notEmpty)}{\idt{}consume(d)}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Partial State Diagram for Producer-Consumer with Infinite Buffer}
+\vspace*{2ex}
+\begin{center}
+\unitlength=1.4pt
+\begin{picture}(240,100)
+\thicklines
+\nodmd{0}{60}{\shortstack[c]{p1: append,\\q1: wait(S),\\$(0,\emptyset),[\,]$}}
+\nodmd{80}{60}{\shortstack[c]{p2: signal(S),\\q1: wait(S),\\$(0,\emptyset),[x]$}}
+\nodmd{160}{60}{\shortstack[c]{p1: append,\\q1: wait(S),\\$(1,\emptyset),[x]$}}
+\nodmd{0}{0}{\shortstack[c]{p1: append,\\q1: blocked,\\$(0,\{\mathit{con}\}),[\,]$}}
+\nodmd{80}{0}{\shortstack[c]{p2: signal(S),\\q1: blocked,\\$(0,\{\mathit{con}\}),[x]$}}
+\nodmd{160}{0}{\shortstack[c]{p1: append,\\q2: take,\\$(0,\emptyset),[x]$}}
+\multiput(50,80)(80,0){3}{\vector(1,0){30}}
+\multiput(50,20)(80,0){3}{\vector(1,0){30}}
+\multiput(25,60)(80,0){3}{\vector(0,-1){20}}
+\put(175,40){\line(0,1){10}}
+\put(175,50){\line(-1,0){140}}
+\put(35,50){\vector(0,1){10}}
+\end{picture}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Producer-consumer (infinite buffer, abbreviated)}%
+{infinite queue of dataType buffer \la{} empty queue}
+\decl{semaphore notEmpty \la{} $(0,\emptyset)$}\hline
+\procname{producer}{consumer}
+\stn{dataType d}{dataType d}
+\stn{loop forever}{loop forever}
+\st{\idt{}append(d, buffer)}{\idt{}wait(notEmpty)}
+\st{\idt{}signal(notEmpty)}{\idt{}d \la{} take(buffer)}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Producer-consumer (finite buffer, semaphores)}%
+{finite queue of dataType buffer \la{} empty queue}
+\decl{semaphore notEmpty \la{} $(0,\emptyset)$}
+\decl{semaphore notFull \la{} $(N,\emptyset)$}\hline
+\procname{producer}{consumer}
+\stn{dataType d}{dataType d}
+\stn{loop forever}{loop forever}
+\st{\idt{}d \la{} produce}{\idt{}wait(notEmpty)}
+\st{\idt{}wait(notFull)}{\idt{}d \la{} take(buffer)}
+\st{\idt{}append(d, buffer)}{\idt{}signal(notFull)}
+\st{\idt{}signal(notEmpty)}{\idt{}consume(d)}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Scenario with Busy Waiting}
+\begin{center}
+\begin{paenv}
+\begin{tabular}{|c|l|l|c|}\hline
+n&Process p & Process q & S \\\hline
+1&\bfseries p1: wait(S)  & q1: wait(S) & $1$ \\\hline
+2&p2: signal(S)  & \bfseries q1: wait(S) & $0$ \\\hline
+3&\bfseries p2: signal(S)  & q1: wait(S) & $0$ \\\hline
+4&\bfseries p1: wait(S)  & q1: wait(S) & $1$ \\\hline
+\end{tabular}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Dining philosophers (outline)}{}
+\sttn{loop forever}
+\stt{\idt{}think}
+\stt{\idt{}preprotocol}
+\stt{\idt{}eat}
+\stt{\idt{}postprotocol}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large The Dining Philosophers}
+\begin{center}
+\begin{paenv}
+\unitlength=0.9pt
+\begin{picture}(200,200)
+\thicklines
+%\put(0,0){\framebox(200,200){}}
+\put(100,100){\bigcircle{200}}
+\put(100,100){\bigcircle{60}}
+\put(0,0){\makebox(200,200){Spaghetti}}
+\put(60,45){\bigcircle{40}}
+\put(40,25){\makebox(40,40){phil1}}
+\put(80,-6){\makebox(40,40){fork1}}
+\put(140,45){\bigcircle{40}}
+\put(120,25){\makebox(40,40){phil2}}
+\put(156,45){\makebox(40,40){fork2}}
+\put(35,120){\bigcircle{40}}
+\put(15,100){\makebox(40,40){phil5}}
+\put(5,45){\makebox(40,40){fork5}}
+\put(165,120){\bigcircle{40}}
+\put(145,100){\makebox(40,40){phil3}}
+\put(145,134){\makebox(40,40){fork3}}
+\put(100,170){\bigcircle{40}}
+\put(80,150){\makebox(40,40){phil4}}
+\put(15,134){\makebox(40,40){fork4}}
+\put(100,20){\vector(0,1){30}}
+\put(180,70){\vector(-2,1){30}}
+\put(20,70){\vector(2,1){30}}
+\put(165,165){\vector(-2,-1){30}}
+\put(35,165){\vector(2,-1){30}}
+\end{picture}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Dining philosophers (first attempt)}%
+{semaphore array [0..4] fork \la{} [1,1,1,1,1]}\hline
+\sttn{loop forever}
+\stt{\idt{}think}
+\stt{\idt{}wait(fork[i])}
+\stt{\idt{}wait(fork[i+1])}
+\stt{\idt{}eat}
+\stt{\idt{}signal(fork[i])}
+\stt{\idt{}signal(fork[i+1])}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Dining philosophers (second attempt)}%
+{semaphore array [0..4] fork \la{} [1,1,1,1,1]}
+\decl{semaphore room \la{} 4}\hline
+\sttn{loop forever}
+\stt{\idt{}think}
+\stt{\idt{}wait(room)}
+\stt{\idt{}wait(fork[i])}
+\stt{\idt{}wait(fork[i+1])}
+\stt{\idt{}eat}
+\stt{\idt{}signal(fork[i])}
+\stt{\idt{}signal(fork[i+1])}
+\stt{\idt{}signal(room)}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Dining philosophers (third attempt)}%
+{semaphore array [0..4] fork \la{} [1,1,1,1,1]}\hline
+\sttn{\bfseries philosopher 4}\hline
+\sttn{loop forever}
+\stt{\idt{}think}
+\stt{\idt{}wait(fork[0])}
+\stt{\idt{}wait(fork[4])}
+\stt{\idt{}eat}
+\stt{\idt{}signal(fork[0])}
+\stt{\idt{}signal(fork[4])}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Barz's algorithm for simulating general semaphores}{binary semaphore S \la{} 1}
+\decl{binary semaphore gate \la{} 1}
+\decl{integer count \la{} k}\hline
+\sttn{loop forever}
+\sttn{\idt{}non-critical section}
+\stt{\idt{}wait(gate)}
+\stt{\idt{}wait(S)\idt{}\hspace{4cm}// Simulated wait}
+\stt{\idt{}count \la{} count $-$ 1}
+\stt{\idt{}if count $>$ 0 then}
+\stt{\idt{}\idt{}signal(gate)}
+\stt{\idt{}signal(S)}
+\sttn{\idt{}critical section}
+\stt{\idt{}wait(S)\idt{}\hspace{4cm}// Simulated signal}
+\stt{\idt{}count \la{} count $+$ 1}
+\stt{\idt{}if count = 1 then}
+\stt{\idt{}\idt{}signal(gate)}
+\stt{\idt{}signal(S)}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\vspace*{-2ex}
+\begin{alg}{Udding's starvation-free algorithm}{%
+semaphore gate1 \la{} 1, gate2 \la{} 0}
+\decl{integer numGate1 \la{} 0, numGate2 \la{} 0}\hline
+%\sttn{loop forever}
+%\sttn{\idt{}non-critical section}
+\stt{\idt{}wait(gate1)}
+\stt{\idt{}numGate1 \la{} numGate1 $+$ 1}
+\stt{\idt{}signal(gate1)}
+\stt{\idt{}wait(gate1)}
+\stt{\idt{}numGate2 \la{} numGate2 $+$ 1}
+\sttn{\idt{}\hspace{-1pt}numGate1 \la{} numGate1 $-$ 1\hspace{3em}// Statement is missing in the book}
+\stt{\idt{}if numGate1 > 0}
+\stt{\idt{}\idt{}signal(gate1)}
+\stt{\idt{}else signal(gate2)}
+\stt{\idt{}wait(gate2)}
+\stt{\idt{}numGate2 \la{} numGate2 $-$ 1}
+\sttn{\idt{}critical section}
+\stt{\idt{}if numGate2 > 0}
+\stt{\idt{}\idt{}signal(gate2)}
+\stt{\idt{}else signal(gate1)}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Udding's Starvation-Free Algorithm}
+\begin{center}
+\begin{paenv}
+\unitlength=1.4pt
+\begin{picture}(170,70)
+\thicklines
+\multiput(0,0)(5,0){3}{\person}
+\multiput(80,0)(5,0){2}{\person}
+\put(40,0){\gatepair{}{}}
+\put(0,50){
+\put(0,0){\makebox(20,20){numGate1}}
+\put(40,0){\makebox(30,20){gate1}}
+\put(80,0){\makebox(20,20){numGate2}}
+\put(110,0){\makebox(30,20){gate2}}
+\put(150,0){\makebox(20,20){CS}}
+}
+\end{picture}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Scenario for Starvation in Udding's Algorithm}
+\begin{center}\label{p.udding}
+\begin{paenv}
+\begin{tabular}{|c|l|l|l|l|c|c|}\hline
+n&Process p & Process q & gate1 & gate2 & nGate1 & nGate2\\\hline
+1&\bfseries p4: wait(g1)  & q4: wait(g1) &1&0 & $2$ & $0$\\\hline
+2&\bfseries p9: wait(g2)  & q9: wait(g2) &0&1& $0$ & $2$\\\hline
+3&\bfseries CS  & q9: wait(g2) &0&0& $0$ & $1$\\\hline
+4&\bfseries p12: signal(g2)  & q9: wait(g2) &0&0& $0$ & $1$\\\hline
+5&p1: wait(g1)  & \bfseries CS &0&0& $0$ & $0$\\\hline
+6&\bfseries p1: wait(g1)  & q13: signal(g1) &0&0& $0$ & $0$\\\hline
+7&p1: blocked  & \bfseries q13: signal(g1) &0&0& $0$ & $0$\\\hline
+8&p4: wait(g1)  & \bfseries q1: wait(g1) &1&0 & $1$ & $0$\\\hline
+9&\bfseries p4: wait(g1) & q4: wait(g1) &1&0& $2$ & $0$\\\hline
+\end{tabular}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Semaphores in Java}
+\program{Java}{CountSem.java}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Semaphores in Ada}
+\program{Ada}{semaphore.ada}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Busy-Wait Semaphores in Promela}
+\program{Promela}{sem.h}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Weak Semaphores in Promela (3 processes) (1)}
+\program{Promela}{weak-sem-3.h}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Weak Semaphores in Promela (3 processes) (2)}
+\program{Promela}{weak-sem-3-1.h}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Weak Semaphores in Promela ($N$ processes) (1)}
+\program{Promela}{weak-sem-N.h}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Weak Semaphores in Promela ($N$ processes) (2)}
+\program{Promela}{weak-sem-N-1.h}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\normalsize Barz's Algorithm in Promela (N processes, K in CS)}
+\program{Promela}{barz.pml}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Semaphore algorithm A}{semaphore S \la{} 1, semaphore T \la{} 0}\hline
+\procname{p}{q}
+\st{wait(S)}{wait(T)}
+\st{write("p")}{write("q")}
+\st{signal(T)}{signal(S)}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{algthree}{Semaphore algorithm B}
+\declthree{semaphore S1 \la{} 0, S2 \la{} 0}\hline
+\procnamethree{p}{q}{r}
+\stthree{write("p")}{wait(S1)}{wait(S2)}
+\stthree{signal(S1)}{write("q")}{write("r")}
+\stthree{signal(S2)}{}{}
+\end{algthree}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Semaphore algorithm with a loop}{semaphore S \la{} 1}
+\decl{boolean B \la{} false}\hline
+\procname{p}{q}
+\st{wait(S)}{wait(S)}
+\st{B \la{} true}{while not B}
+\st{signal(S)}{\idt{}write("*")}
+\st{}{signal(S)}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Critical section problem ($k$ out of $N$ processes)}%
+{binary semaphore S \la{} 1, delay \la{} 0}
+\decl{integer count \la{} k}\hline
+\hline
+\sttn{integer m}
+\sttn{loop forever}
+\stt{\idt{}non-critical section}
+\stt{\idt{}wait(S)}
+\stt{\idt{}count \la{} count $-$ 1}
+\stt{\idt{}m \la{} count}
+\stt{\idt{}signal(S)}
+\stt{\idt{}if m $\leq$ $-$1 wait(delay)}
+\stt{\idt{}critical section}
+\stt{\idt{}wait(S)}
+\stt{\idt{}count \la{} count $+$ 1}
+\stt{\idt{}if count $\leq$ 0 signal(delay)}
+\stt{\idt{}signal(S)}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Circular Buffer}
+\begin{center}
+\begin{paenv}
+\unitlength=1pt
+\begin{picture}(240,100)
+\thicklines
+\put(0,20){
+    \put(0,0){\framebox(240,20){}}
+    \multiput(40,0)(40,0){5}{\line(0,1){20}}
+    \multiput(40,0)(40,0){3}{\usebox{\hatch}}
+    \put(160,-20){\makebox(40,20)[b]{in}}
+    \put(40,-20){\makebox(40,20)[b]{out}}
+    \multiput(60,-10)(120,0){2}{\vector(0,1){10}}
+}
+\put(0,80){
+    \put(0,0){\framebox(240,20){}}
+    \multiput(40,0)(40,0){5}{\line(0,1){20}}
+    \multiput(0,0)(40,0){3}{\usebox{\hatch}}
+    \put(200,0){\usebox{\hatch}}
+    \put(120,-20){\makebox(40,20)[b]{in}}
+    \put(200,-20){\makebox(40,20)[b]{out}}
+    \multiput(140,-10)(80,0){2}{\vector(0,1){10}}
+}
+\end{picture}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Producer-consumer (circular buffer)}%
+{dataType array [0..N] buffer}
+\decl{integer in, out \la{} 0}
+\decl{semaphore notEmpty \la{} $(0,\emptyset)$}
+\decl{semaphore notFull \la{} $(N,\emptyset)$}\hline
+\procname{producer}{consumer}
+\stn{dataType d}{dataType d}
+\stn{loop forever}{loop forever}
+\st{\idt{}d \la{} produce}{\idt{}wait(notEmpty)}
+\st{\idt{}wait(notFull)}{\idt{}d \la{} buffer[out]}
+\st{\idt{}buffer[in] \la{} d}{\idt{}out \la{} (out+1) modulo N}
+\st{\idt{}in \la{} (in+1) modulo N}{\idt{}signal(notFull)}
+\st{\idt{}signal(notEmpty)}{\idt{}consume(d)}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Simulating general semaphores}{binary semaphore S \la{} 1, gate \la{} 0}
+\decl{integer count \la{} 0}\hline
+\sttn{\bfseries wait}\hline
+\stt{wait(S)}
+\stt{count \la{} count $-$ 1}
+\stt{if count $<$ 0}
+\stt{\idt{}signal(S)}
+\stt{\idt{}wait(gate)}
+\stt{else signal(S)}\hline
+\sttn{\bfseries signal}\hline
+\stt{wait(S)}
+\stt{count \la{} count $+$ 1}
+\stt{if count $\leq$ 0}
+\stt{\idt{}signal(gate)}
+\stt{signal(S)}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Weak Semaphores in Promela with Channels}
+\program{Promela}{weak-sem-ch.h}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Readers and writers with semaphores}%
+{semaphore readerSem \la{} 0, writerSem \la{} 0}
+\decl{integer delayedReaders \la{} 0, delayedWriters \la{} 0}
+\decl{semaphore entry \la{} 1}
+\decl{integer readers \la{} 0, writers \la{} 0}\hline
+\proc{\bfseries SignalProcess}\hline
+\proc{\idt{}if writers $=$ 0 or delayedReaders $>$ 0}
+\proc{\idt{}\idt{}delayedReaders \la{} delayedReaders $-$ 1}
+\proc{\idt{}\idt{}signal(readerSem)}
+\proc{\idt{}else if readers $=$ 0 and writers $=$ 0 and delayedWriters $>$ 0}
+\proc{\idt{}\idt{}delayedWriters \la{} delayedWriters $-$ 1}
+\proc{\idt{}\idt{}signal(writerSem)}
+\proc{\idt{}else signal(entry)}
+\sttn{}\hline
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\addtocounter{algcounter}{-1}
+\begin{alg}{Readers and writers with semaphores}{}%
+\sttn{\bfseries StartRead}\hline
+\stt{wait(entry)}
+\stt{if writers $>$ 0}
+\stt{\idt{}delayedReaders \la{} delayedReaders $+$ 1}
+\stt{\idt{}signal(entry)}
+\stt{\idt{}wait(readerSem)}
+\stt{readers \la{} readers $+$ 1}
+\stt{SignalProcess}\hline
+\sttn{\bfseries EndRead}\hline
+\stt{wait(entry)}
+\stt{readers \la{} readers $-$ 1}
+\stt{SignalProcess}\hline
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\addtocounter{algcounter}{-1}
+\begin{alg}{Readers and writers with semaphores}{}%
+\sttn{\bfseries StartWrite\setcounter{lctr}{10}}\hline
+\stt{wait(entry)}
+\stt{if writers $>$ 0 or readers $>$ 0}
+\stt{\idt{}delayedWriters \la{} delayedWriters + 1}
+\stt{\idt{}signal(entry)}
+\stt{\idt{}wait(writerSem)}
+\stt{writers \la{} writers $+$ 1}
+\stt{SignalProcess}\hline
+\sttn{\bfseries EndWrite}\hline
+\stt{wait(entry)}
+\stt{writers \la{} writers $-$ 1}
+\stt{SignalProcess}\hline
+\end{alg}
+\end{wideslide}
+

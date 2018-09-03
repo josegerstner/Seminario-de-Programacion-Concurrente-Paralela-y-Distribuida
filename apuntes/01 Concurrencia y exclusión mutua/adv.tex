@@ -1,0 +1,314 @@
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Bakery algorithm (two processes)}%
+{integer np \la{} 0, nq \la{} 0}\hline
+\procname{p}{q}
+\stn{loop forever}{loop forever}
+\st{\idt{}non-critical section}{\idt{}non-critical section}
+\st{\idt{}np \la{} nq $+$ 1}{\idt{}nq \la{} np $+$ 1}
+\st{\idt{}await nq = 0 or np $\le$ nq}{\idt{}await np = 0 or nq $<$ np}
+\st{\idt{}critical section}{\idt{}critical section}
+\st{\idt{}np \la{} 0}{\idt{}nq \la{} 0}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Bakery algorithm ($N$ processes)}{integer array[1..n] number \la{} [0,\ldots,0]}\hline
+\sttn{loop forever}
+\stt{\idt{}non-critical section}
+\stt{\idt{}number[i] \la{} 1 $+$ max(number)}
+\stt{\idt{}for all {\itshape other} processes j}
+\stt{\idt{}\idt{}await (number[j] = 0) or (number[i] $\ll$ number[j])}
+\stt{\idt{}critical section}
+\stt{\idt{}number[i] \la{} 0}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Bakery algorithm without atomic assignment}%
+{boolean array[1..n] choosing \la{} [false,\ldots,false]}
+\decl{integer array[1..n] number \la{} [0,\ldots,0]}\hline
+\sttn{loop forever}
+\stt{\idt{}non-critical section}
+\stt{\idt{}choosing[i] \la{} true}
+\stt{\idt{}number[i] \la{} 1 $+$ max(number)}
+\stt{\idt{}choosing[i] \la{} false}
+\stt{\idt{}for all {\itshape other} processes j}
+\stt{\idt{}\idt{}await choosing[j] = false}
+\stt{\idt{}\idt{}await (number[j] = 0) or (number[i] $\ll$ number[j])}
+\stt{\idt{}critical section}
+\stt{\idt{}number[i] \la{} 0}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Fast algorithm for two processes (outline)}%
+{integer gate1 \la{} 0, gate2 \la{} 0}\hline
+\procname{p}{q}
+\stn{loop forever}{loop forever}
+\stn{\idt{}non-critical section}{\idt{}non-critical section}
+\st{\idt{}gate1 \la{} p}{\idt{}gate1 \la{} q}
+\st{\idt{}if gate2 $\neq$ 0 goto p1}{\idt{}if gate2 $\neq$ 0 goto q1}
+%\stn{\idt{}\idt{}goto p1}{\idt{}\idt{}goto q1}
+\st{\idt{}gate2 \la{} p}{\idt{}gate2 \la{} q}
+\st{\idt{}if gate1 $\neq$ p}{\idt{}if gate1 $\neq$ q}
+\st{\idt{}\idt{}if gate2 $\neq$ p goto p1}{\idt{}\idt{}if gate2 $\neq$ q goto q1}
+%\stn{\idt{}\idt{}\idt{}goto p1}{\idt{}\idt{}\idt{}goto q1}
+\stn{\idt{}critical section}{\idt{}critical section}
+\st{\idt{}gate2 \la{} 0}{\idt{}gate2 \la{} 0}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Fast Algorithm - No Contention (1)}
+\begin{center}
+\unitlength=1pt
+\begin{picture}(360,170)
+\thicklines
+\put(0,100){
+    \put(30,0){\makebox(100,10){(a)}}
+    \put(0,20){\person}
+    \put(5,55){\makebox(10,10){\textsf{p}}}
+    \put(30,20){\gatepair{}{}}
+    \put(25,43){\vector(1,0){40}}
+}
+\put(180,100){
+    \put(30,0){\makebox(100,10){(b)}}
+    \put(70,20){\person}
+    \put(75,55){\makebox(10,10){\textsf{p}}}
+    \put(30,20){\gatepair{p}{}}
+    \put(88,60){\vector(1,0){10}}
+}
+\put(0,0){
+    \put(30,0){\makebox(100,10){(c)}}
+    \put(70,20){\person}
+    \put(75,55){\makebox(10,10){\textsf{p}}}
+    \put(30,20){\gatepair{p}{p}}
+}
+\put(180,0){
+    \put(30,0){\makebox(100,10){(d)}}
+    \put(70,20){\person}
+    \put(75,55){\makebox(10,10){\textsf{p}}}
+    \put(30,20){\gatepair{p}{p}}
+    \put(95,43){\vector(1,0){40}}
+    \put(73,60){\vector(-1,0){10}}
+}
+\end{picture}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Fast Algorithm - No Contention (2)}
+\begin{center}
+\unitlength=1pt
+\begin{picture}(360,70)
+\thicklines
+\put(0,0){
+    \put(30,0){\makebox(100,10){(e)}}
+    \put(140,20){\person}
+    \put(145,55){\makebox(10,10){\textsf{p}}}
+    \put(30,20){\gatepair{p}{p}}
+}
+\put(180,0){
+    \put(0,20){\person}
+    \put(5,55){\makebox(10,10){\textsf{p}}}
+    \put(30,0){\makebox(100,10){(f)}}
+    \put(30,20){\gatepair{p}{}}
+}
+\end{picture}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Fast Algorithm - Contention At Gate 2}
+\begin{center}
+\unitlength=1pt
+\begin{picture}(360,170)
+\thicklines
+\put(0,100){
+    \put(30,0){\makebox(100,10){(a)}}
+    \put(0,20){\person}
+    \put(5,55){\makebox(10,10){\textsf{p}}}
+    \put(30,20){\gatepair{q}{}}
+    \put(25,43){\vector(1,0){40}}
+}
+\put(180,100){
+    \put(30,0){\makebox(100,10){(b)}}
+    \put(70,20){\person}
+    \put(75,55){\makebox(10,10){\textsf{p}}}
+    \put(30,20){\gatepair{p}{q}}
+    \put(88,60){\vector(1,0){10}}
+}
+\put(0,0){
+    \put(30,0){\makebox(100,10){(c)}}
+    \put(70,20){\person}
+    \put(75,55){\makebox(10,10){\textsf{p}}}
+    \put(30,20){\gatepair{p}{q}}
+%    \put(88,60){\vector(1,0){10}}
+    \put(65,43){\vector(-1,0){40}}
+}
+\put(180,0){
+    \put(30,0){\makebox(100,10){(d)}}
+    \put(0,20){\person}
+    \put(5,55){\makebox(10,10){\textsf{p}}}
+    \put(25,43){\vector(1,0){40}}
+    \put(30,20){\gatepair{p}{q}}
+}
+\end{picture}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Fast Algorithm - Contention At Gate 1 (1)}
+\begin{center}
+\unitlength=1pt
+\begin{picture}(360,170)
+\thicklines
+\put(0,100){
+    \put(30,0){\makebox(100,10){(a)}}
+    \put(0,20){\person}
+    \put(5,55){\makebox(10,10){\textsf{p}}}
+    \put(30,20){\gatepair{}{}}
+    \put(25,43){\vector(1,0){40}}
+}
+\put(180,100){
+    \put(30,0){\makebox(100,10){(b)}}
+    \put(70,20){\person}
+    \put(75,55){\makebox(10,10){\textsf{p}}}
+    \put(30,20){\gatepair{p}{}}
+    \put(88,60){\vector(1,0){10}}
+}
+\put(0,0){
+    \put(30,0){\makebox(100,10){(c)}}
+    \put(70,20){\person}
+    \put(75,55){\makebox(10,10){\textsf{p}}}
+    \put(30,20){\gatepair{p}{p}}
+}
+\put(180,0){
+    \put(30,0){\makebox(100,10){(d)}}
+    \put(70,20){\person}
+    \put(75,55){\makebox(10,10){\textsf{p}}}
+    \put(73,60){\vector(-1,0){10}}
+    \put(30,20){\gatepair{q}{p}}
+}
+\end{picture}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Fast Algorithm - Contention At Gate 1 (2)}
+\begin{center}
+\unitlength=1pt
+\begin{picture}(360,70)
+\thicklines
+\put(0,0){
+    \put(30,0){\makebox(100,10){(e)}}
+    \put(70,20){\person}
+    \put(75,55){\makebox(10,10){\textsf{p}}}
+    \put(30,20){\gatepair{q}{p}}
+    \put(88,60){\vector(1,0){10}}
+    \put(95,43){\vector(1,0){40}}
+}
+\put(180,0){
+    \put(30,0){\makebox(100,10){(f)}}
+    \put(70,20){\person}
+    \put(75,55){\makebox(10,10){\textsf{p}}}
+    \put(30,20){\gatepair{q}{q}}
+    \put(88,60){\vector(1,0){10}}
+    \put(65,43){\vector(-1,0){40}}
+}
+\end{picture}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Fast algorithm for two processes (outline)}%
+{integer gate1 \la{} 0, gate2 \la{} 0}\hline
+\procname{p}{q}
+\stn{loop forever}{loop forever}
+\stn{\idt{}non-critical section}{\idt{}non-critical section}
+\st{\idt{}gate1 \la{} p}{\idt{}gate1 \la{} q}
+\st{\idt{}if gate2 $\neq$ 0 goto p1}{\idt{}if gate2 $\neq$ 0 goto q1}
+%\stn{\idt{}\idt{}goto p1}{\idt{}\idt{}goto q1}
+\st{\idt{}gate2 \la{} p}{\idt{}gate2 \la{} q}
+\st{\idt{}if gate1 $\neq$ p}{\idt{}if gate1 $\neq$ q}
+\st{\idt{}\idt{}if gate2 $\neq$ p goto p1}{\idt{}\idt{}if gate2 $\neq$ q goto q1}
+%\stn{\idt{}\idt{}\idt{}goto p1}{\idt{}\idt{}\idt{}goto q1}
+\stn{\idt{}critical section}{\idt{}critical section}
+\st{\idt{}gate2 \la{} 0}{\idt{}gate2 \la{} 0}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Fast algorithm for two processes}%
+{integer gate1 \la{} 0, gate2 \la{} 0}
+\decl{boolean wantp \la{} false, wantq \la{} false}\hline
+\procname{p}{q}
+%\stn{loop forever}{loop forever}
+%\stn{\idt{}non-critical section}{\idt{}non-critical section}
+\st{\idt{}gate1 \la{} p}{\idt{}gate1 \la{} q}
+\stn{\idt{}wantp \la{} true}{\idt{}wantq \la{} true}
+\st{\idt{}if gate2 $\neq$ 0}{\idt{}if gate2 $\neq$ 0}
+\stn{\idt{}\idt{}wantp \la{} false}{\idt{}\idt{}wantq \la{} false}
+%\stn{\idt{}\idt{}await gate2 = 0}{\idt{}\idt{}await gate2 = 0}
+\stn{\idt{}\idt{}goto p1}{\idt{}\idt{}goto q1}
+\st{\idt{}gate2 \la{} p}{\idt{}gate2 \la{} q}
+\st{\idt{}if gate1 $\neq$ p}{\idt{}if gate1 $\neq$ q}
+\stn{\idt{}\idt{}wantp \la{} false}{\idt{}\idt{}wantq \la{} false}
+\stn{\idt{}\idt{}await wantq = false}{\idt{}\idt{}await wantp = false}
+\st{\idt{}\idt{}if gate2 $\neq$ p goto p1}{\idt{}\idt{}if gate2 $\neq$ q goto q1}
+%\stn{\idt{}\idt{}\idt{}await gate2 = 0}{\idt{}\idt{}\idt{}await gate2 = 0}
+%\stn{\idt{}\idt{}\idt{}goto p1}{\idt{}\idt{}\idt{}goto q1}
+\stn{\idt{}\idt{}else wantp \la{} true}{\idt{}\idt{}else wantq \la{} true}
+\stn{\idt{}critical section}{\idt{}critical section}
+\st{\idt{}gate2 \la{} 0}{\idt{}gate2 \la{} 0}
+\stn{\idt{}wantp \la{} false}{\idt{}wantq \la{} false}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Fisher's algorithm}%
+{integer gate \la{} 0}\hline
+\sttn{loop forever}
+\sttn{\idt{}non-critical section}
+\sttn{\idt{}loop}
+\stt{\idt{}\idt{}await gate = 0}
+\stt{\idt{}\idt{}gate \la{} i}
+\stt{\idt{}\idt{}delay}
+\stt{\idt{}until gate = i}
+\sttn{\idt{}critical section}
+\stt{\idt{}gate \la{} 0}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Lamport's one-bit algorithm}{boolean array[1..n]
+want \la{} [false,\ldots,false]}\hline
+\sttn{loop forever}
+\sttn{\idt{}non-critical section}
+\stt{\idt{}want[i] \la{} true}
+\stt{\idt{}for all processes j < i}
+\stt{\idt{}\idt{}if want[j]}
+\stt{\idt{}\idt{}\idt{}want[i] \la{} false}
+\stt{\idt{}\idt{}\idt{}await not want[j]}
+\sttn{\idt{}\idt{}\idt{}goto p1}
+\stt{\idt{}for all processes j > i}
+\stt{\idt{}\idt{}await not want[j]}
+\sttn{\idt{}critical section}
+\stt{\idt{}want[i] \la{} false}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Manna-Pnueli central server algorithm}%
+{integer request \la{} 0, respond \la{} 0}\hline
+\multicolumn{2}{|c|}{\bfseries client process i}\\\hline
+\sttn{loop forever}
+\sttn{\idt{}non-critical section}
+\stt{\idt{}while respond $\neq$ i}
+\stt{\idt{}\idt{}request \la{} i}
+\sttn{\idt{}critical section}
+\stt{\idt{}respond \la{} 0}\hline
+\multicolumn{2}{|c|}{\bfseries server process}\\\hline
+\sttn{loop forever}
+\stt{\idt{}await request $\neq$ 0}
+\stt{\idt{}respond \la{} request}
+\stt{\idt{}await respond $=$ 0}
+\stt{\idt{}request \la{} 0}
+\end{alg}
+\end{wideslide}
+

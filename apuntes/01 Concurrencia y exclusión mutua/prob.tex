@@ -1,0 +1,108 @@
+\begin{wideslide}[bm=,toc=]{\large The Sleeping Barber}
+\begin{center}
+\begin{paenv}
+\begin{tabular}{|c|l|l|c|c|}\hline
+n&producer & consumer & Buffer &  notEmpty \\\hline
+1&\bfseries append(d, Buffer) & wait(notEmpty) & [$\,$] & 0\\\hline
+2&\bfseries signal(notEmpty) & wait(notEmpty) & [1] & 0\\\hline
+3&append(d, Buffer) & \bfseries wait(notEmpty) & [1] & 1\\\hline
+4&append(d, Buffer) & \bfseries d \la{} take(Buffer) & [1] & 0\\\hline
+5&\bfseries append(d, Buffer) & wait(notEmpty) & [$\,$] & 0\\\hline
+\end{tabular}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Synchronizing Precedence}
+\begin{center}
+\begin{paenv}
+\unitlength=1pt
+\begin{picture}(210,100)
+\thicklines
+%\put(0,0){\framebox(210,100){}}
+\put(0,40){\framebox(50,20){node1}}
+\put(80,0){\framebox(50,20){node3}}
+\put(80,80){\framebox(50,20){node2}}
+\put(160,40){\framebox(50,20){node4}}
+\put(25,60){\vector(2,1){55}}
+\put(25,39){\vector(2,-1){54}}
+\put(131,88){\vector(2,-1){55}}
+\put(185,39){\vector(-2,-1){54}}
+%\put(115,20){\vector(0,1){60}}
+\put(95,80){\vector(0,-1){60}}
+\end{picture}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Barrier synchronization}{global variables for synchronization}\hline
+\sttn{loop forever}
+\stt{\idt{}wait to be released}
+\stt{\idt{}computation}
+\stt{\idt{}wait for all processes to finish their computation}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large The Stable Marriage Problem}
+\begin{center}
+\begin{sffamily}
+\begin{tabular}{|c|cccc|}\hline
+\mbox{\ \ Man\ \ } & \multicolumn{4}{|c|}{List of women}\\\hline
+1 & 2 & 4 & 1 & 3\\\hline
+2 & 3 & 1 & 4 & 2\\\hline
+3 & 2 & 3 & 1 & 4\\\hline
+4 & 4 & 1 & 3 & 2\\\hline
+\end{tabular}\hspace{3em}
+\begin{tabular}{|c|cccc|}\hline
+Woman & \multicolumn{4}{|c|}{\ \ \ List of men\ \ \ }\\\hline
+1 & 2 & 1 & 4 & 3\\\hline
+2 & 4 & 3 & 1 & 2\\\hline
+3 & 1 & 4 & 3 & 2\\\hline
+4 & 2 & 1 & 4 & 3\\\hline
+\end{tabular}
+\end{sffamily}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Gale-Shapley algorithm for stable marriage}%
+{integer list freeMen \la{} \{1,\ldots,n\}}
+\decl{integer list freeWomen \la{} \{1,\ldots,n\}}
+\decl{integer pair-list matched \la{} $\emptyset$}
+\decl{integer array[1..n, 1..n] menPrefs \la{} \ldots}
+\decl{integer array[1..n, 1..n] womenPrefs \la{} \ldots}
+\decl{integer array[1..n] next \la{} 1}
+\hline
+\stt{while freeMen $\neq \emptyset$, choose some m from freeMen}
+\stt{\idt{}w \la{} menPrefs[m, next[m]]}
+\stt{\idt{}next[m] \la{} next[m] + 1}
+\stt{\idt{}if w in freeWomen}
+\stt{\idt{}\idt{}add (m,w) to matched, and remove w from freeWomen}
+\stt{\idt{}else if w prefers m to m' // where (m',w) in matched}
+\stt{\idt{}\idt{}replace (m',w) in matched by (m,w), and remove m' from freeMen}
+\stt{\idt{}else // w rejects m, and nothing is changed}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large The n-Queens Problem}
+\begin{center}
+\unitlength=1pt
+\begin{picture}(170,170)
+\multiputlist(20,0)(20,0){1,2,3,4,5,6,7,8}
+\multiputlist(0,20)(0,20){8,7,6,5,4,3,2,1}
+\put(10,10){
+  \put(0,0){\grid(160,160)(20,20)}
+  \put(  0,140){\makebox(20,20){Q}}
+  \put( 20, 60){\makebox(20,20){Q}}
+  \put( 40,  0){\makebox(20,20){Q}}
+  \put( 60, 40){\makebox(20,20){Q}}
+  \put( 80,100){\makebox(20,20){Q}}
+  \put(100, 20){\makebox(20,20){Q}}
+  \put(120,120){\makebox(20,20){Q}}
+  \put(140, 80){\makebox(20,20){Q}}
+}
+\end{picture}
+\end{center}
+\end{wideslide}
+

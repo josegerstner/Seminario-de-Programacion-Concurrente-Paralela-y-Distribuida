@@ -1,0 +1,498 @@
+\begin{wideslide}[bm=,toc=]{\large Release Time, Execution Time and\\Relative Deadline}
+\vspace*{4ex}
+\begin{center}
+\unitlength=1pt
+\begin{picture}(300,30)
+\thicklines
+\put(0,15){\line(1,0){300}}
+\put(0,11){\line(0,1){8}}
+\put(80,11){\line(0,1){8}}
+\put(75,0){\makebox(10,10){$r$}}
+\put(80,11){\line(0,1){8}}
+\put(80,20){\makebox(180,10){$D$}}
+\put(160,25){\vector(-1,0){80}}
+\put(180,25){\vector(1,0){80}}
+\put(100,10){\line(0,1){10}}
+\put(100,0){\makebox(80,10){$e$}}
+\put(130,5){\vector(-1,0){30}}
+\put(150,5){\vector(1,0){30}}
+\put(180,11){\line(0,1){8}}
+\put(260,11){\line(0,1){8}}
+\put(300,11){\line(0,1){8}}
+\end{picture}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Periodic Task}
+\begin{center}
+\unitlength=1pt
+\begin{picture}(300,30)
+\thicklines
+\put(0,15){\line(1,0){300}}
+\multiput(0,11)(100,0){4}{\line(0,1){8}}
+\multiput(-5,0)(100,0){4}{\makebox(10,10){$r$}}
+\multiput(0,20)(100,0){3}{
+\put(0,0){\makebox(100,10){$p$}}
+\put(40,5){\vector(-1,0){40}}
+\put(60,5){\vector(1,0){40}}
+}
+\end{picture}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Deadline is a Multiple of the Period}
+\begin{center}
+\unitlength=1pt
+\begin{picture}(300,30)
+\thicklines
+\put(0,15){\line(1,0){300}}
+\multiput(0,11)(100,0){4}{\line(0,1){8}}
+\put(140,20){\makebox(20,10){$D$}}
+\put(140,25){\vector(-1,0){140}}
+\put(160,25){\vector(1,0){140}}
+\put(-5,0){\makebox(10,10){$r$}}
+\put(100,0){\makebox(80,10){$e$}}
+\put(130,5){\vector(-1,0){60}}
+\put(150,5){\vector(1,0){60}}
+\end{picture}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Architecture of Ariane Control System}
+\begin{center}
+\unitlength=1.2pt
+\begin{picture}(260, 30)
+\thicklines
+%\put(0,0){\framebox(260,30){}}
+\put(0,0){\framebox(50,30){\shortstack{Sensors}}}
+\put(70,0){\framebox(50,30){INS}}
+\put(140,0){\framebox(50,30){\shortstack{Main\\Computer}}}
+\put(210,0){\framebox(50,30){\shortstack{Actuators}}}
+\put(50,15){\vector(1,0){20}}
+\put(120,15){\vector(1,0){20}}
+\put(190,15){\vector(1,0){20}}
+\end{picture}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Synchronization Window in the Space Shuttle}
+\begin{center}
+\unitlength=1pt
+\begin{picture}(335,15)
+\thicklines
+\put(0,15){
+\dottedline{2}(0,0)(125,0)
+\dottedline{2}(130,0)(335,0)
+\put(0,-5){\line(0,1){5}}
+\put(125,-5){\line(0,1){5}}
+\put(130,-5){\line(0,1){5}}
+\put(335,-5){\line(0,1){5}}
+\put(-5,-15){\makebox(10,10){\textsf{\footnotesize 0}}}
+\put(111,-15){\makebox(15,10){\textsf{\footnotesize 225}}}
+\put(129,-15){\makebox(15,10){\textsf{\footnotesize 240}}}
+\put(325,-15){\makebox(20,10){\textsf{\footnotesize 1000}}}
+\thicklines
+\put(125,0){\line(1,0){5}}
+}
+\end{picture}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Synchronous System}
+\begin{center}
+\begin{paenv}
+\unitlength=1pt
+\begin{picture}(300,180)
+\thicklines
+\ax{}
+\put(0,160){\dl{0}{20} \dl{100}{120} \dl{200}{220} \dcap{Sample}}
+\put(0,130){\dl{20}{40} \dl{120}{140} \dl{220}{240}\dcap{Compute}}
+\put(0,100){\dl{40}{60} \dl{140}{160} \dl{240}{260}\dcap{Control}}
+\put(0,70){\dl{60}{80} \dl{160}{180}\dl{180}{200} \dl{260}{280}\dcap{Telemetry}}
+\put(0,40){\dl{80}{100} \dl{280}{300}\dcap{Self-test}}
+\put(60,70){\makebox(20,15){\footnotesize T1}}
+\put(160,70){\makebox(20,15){\footnotesize T2}}
+\put(180,70){\makebox(20,15){\footnotesize T1}}
+\put(260,70){\makebox(20,15){\footnotesize T2}}
+\dtl{20}\dtl{40}\dtl{60}\dtl{80}\dtl{100}
+\dtl{120}\dtl{140}\dtl{160}\dtl{180}\dtl{200}
+\dtl{220}\dtl{240}\dtl{260}\dtl{280}\dtl{300}
+\end{picture}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Synchronous System Scheduling Table}
+\begin{center}
+\begin{paenv}
+
+\medskip
+
+\begin{tabular}{|c|c|c|c|c|}\hline
+\multicolumn{1}{|p{2cm}|}{\centering 0} &
+\multicolumn{1}{|p{2cm}|}{\centering 1} &
+\multicolumn{1}{|p{2cm}|}{\centering 2} &
+\multicolumn{1}{|p{2cm}|}{\centering 3} &
+\multicolumn{1}{|p{2cm}|}{\centering 4}  \\\hline
+Sample & Compute & Control & Telemetry 1 & Self-test\\\hline
+\end{tabular}
+
+\medskip
+
+\begin{tabular}{|c|c|c|c|c|}\hline
+\multicolumn{1}{|p{2cm}|}{\centering 5} &
+\multicolumn{1}{|p{2cm}|}{\centering 6} &
+\multicolumn{1}{|p{2cm}|}{\centering 7} &
+\multicolumn{1}{|p{2cm}|}{\centering 8} &
+\multicolumn{1}{|p{2cm}|}{\centering 9}  \\\hline
+Sample & Compute & Control & Telemetry 2 & Telemetry 1 \\\hline
+\end{tabular}
+
+\medskip
+
+\begin{tabular}{|c|c|c|c|c|}\hline
+\multicolumn{1}{|p{2cm}|}{\centering 10} &
+\multicolumn{1}{|p{2cm}|}{\centering 11} &
+\multicolumn{1}{|p{2cm}|}{\centering 12} &
+\multicolumn{1}{|p{2cm}|}{\centering 13} &
+\multicolumn{1}{|p{2cm}|}{\centering 14}  \\\hline
+Sample & Compute & Control & Telemetry 2 & Self-test\\\hline
+\end{tabular}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Synchronous scheduler}%
+{taskAddressType array[0..numberFrames-1] tasks \la{}}
+\decl{\idt{}\idt{}[task address,\ldots,task address]}
+\decl{integer currentFrame \la{} 0}\hline
+\stt{loop}
+\stt{\idt{}await beginning of frame}
+\stt{\idt{}invoke tasks[currentFrame]}
+\stt{\idt{}increment currentFrame modulo numberFrames}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{algthree}{Producer-consumer (synchronous system)}
+\declthree{queue of dataType buffer1, buffer2}\hline
+\procnamethree{sample}{compute}{control}
+\stnthree{\idt{}dataType d}{\idt{}dataType d1, d2}{\idt{}dataType d}
+\stthree{d \la{} sample}{d1 \la{} take(buffer1)}{d \la{} take(buffer2)}
+\stthree{append(d, buffer1)}{d2 \la{} compute(d1)}{control(d)}
+\stthree{}{append(d2, buffer2)}{}
+\end{algthree}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Asynchronous System}
+\begin{center}
+\unitlength=1pt
+\begin{picture}(300,180)
+\ax{}
+\put(0,40){\dl{200}{300} \dcap{Telemetry}}
+\put(0,80){\dl{80}{120} \dcap{Communications}}
+\put(0,120){\dl{0}{80} \dcap{Data management}}
+\dtl{80}\dtl{120}\dtl{200}\dtl{300}
+\end{picture}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Asynchronous scheduler}{queue of taskAddressType readyQueue \la{} \ldots}
+\decl{taskAddressType currentTask}\hline
+\sttn{loop forever}
+\stt{\idt{}await readyQueue not empty}
+\stt{\idt{}\idt{}currentTask \la{} take head of readyQueue}
+\stt{\idt{}\idt{}invoke currentTask}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Preemptive scheduler}{queue of taskAddressType readyQueue \la{} \ldots}
+\decl{taskAddressType currentTask}\hline
+\sttn{loop forever}
+\stt{\idt{}await a scheduling event}
+\stt{\idt{}if currentTask.priority < highest priority of a task on readyQueue}
+\stt{\idt{}\idt{}save partial computation of currentTask and place on readyQueue}
+\stt{\idt{}\idt{}currentTask \la{} take task of highest priority from readyQueue}
+\stt{\idt{}\idt{}invoke currentTask}
+\stt{\idt{}else if currentTask's timeslice is past and}
+\sttn{\idt{}\idt{}\idt{}currentTask.priority = priority of some task on readyQueue}
+\stt{\idt{}\idt{}save partial computation of currentTask and place on readyQueue}
+\stt{\idt{}\idt{}currentTask \la{} take a task of the same priority from readyQueue}
+\stt{\idt{}\idt{}invoke currentTask}
+\stt{\idt{}else resume currentTask}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Preemptive Scheduling}
+\begin{center}
+\unitlength=1pt
+\begin{picture}(300,180)
+\thicklines
+\ax{}
+\put(0,40){\dl{20}{60} \dsh{60}{240} \dl{240}{280} \dcap{Telemetry}}
+\put(0,80){\dsh{80}{140} \dl{140}{180} \dsh{180}{200} \dl{200}{240} \dcap{Communications}}
+\put(0,120){\dl{60}{140} \dcap{Data management}}
+\put(0,160){\dl{0}{20} \dl{180}{200} \dcap{Watchdog}}
+\dtl{20}\dtl{60}\dtl{80}\dtl{140}\dtl{180}\dtl{200}\dtl{240}\dtl{280}
+\end{picture}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Watchdog supervision of response time}{boolean ran \la{} false}\hline
+\procname{data management}{watchdog}
+\stn{loop forever}{loop forever}
+\st{\idt{}do data management}{\idt{}await ninth frame}
+\st{\idt{}ran \la{} true}{\idt{}if ran is false}
+\st{\idt{}rejoin readyQueue}{\idt{}\idt{}notify response-time overflow}
+\st{}{\idt{}ran \la{} false}
+\st{}{\idt{}rejoin readyQueue}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Real-time buffering - throw away new data}%
+{queue of dataType buffer \la{} empty queue}\hline
+\procname{sample}{compute}
+\stn{dataType d}{dataType d}
+\stn{loop forever}{loop forever}
+\st{\idt{}d \la{} sample}{\idt{}await buffer not empty}
+\st{\idt{}if buffer is full do nothing}{\idt{}d \la{} take(buffer)}
+\st{\idt{}else append(d,buffer)}{\idt{}compute(d)}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Real-time buffering - overwrite old data}%
+{queue of dataType buffer \la{} empty queue}\hline
+\procname{sample}{compute}
+\stn{dataType d}{dataType d}
+\stn{loop forever}{loop forever}
+\st{\idt{}d \la{} sample}{\idt{}await buffer not empty}
+\st{\idt{}append(d, buffer)}{\idt{}d \la{} take(buffer)}
+\st{}{\idt{}compute(d)}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Interrupt Overflow on Apollo 11}
+\begin{center}
+\unitlength=1pt
+\begin{picture}(300,180)
+\thicklines
+\ax{}
+\put(0,40){\dl{40}{60} \dsh{60}{80} \dl{80}{100}
+\dsh{100}{120} \dl{120}{160} \dsh{160}{180}
+\dl{180}{220} \dsh{220}{240} \dl{240}{260}\dcap{Main task}}
+\put(0,80){\dl{60}{80} \dsh{80}{100} \dl{100}{120} \dsh{120}{160} \dl{160}{180} \dcap{Counter increments}}
+\put(0,120){\dl{0}{20} \dl{220}{240} \dcap{Watchdog}}
+\dtl{20}\dtl{40}\dtl{60}\dtl{80}\dtl{100}\dtl{120}\dtl{160}\dtl{180}\dtl{240}\dtl{220}\dtl{260}
+\end{picture}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Priority Inversion (1)}
+\begin{center}
+\unitlength=1pt
+\begin{picture}(300,180)
+\thicklines
+\ax{}
+\put(0,50){\dl{0}{20} \dl{20}{40} \dsh{40}{60} \dl{60}{100} \dsh{100}{160} \dl{160}{180}
+\dcap{Telemetry} \put(40,0){\cs{40}}}
+\put(0,150){\dl{40}{60} \dsh{60}{100} \dl{100}{140} \dl{140}{160} \dcap{Data management}
+\put(80,0){\cs{40}}}
+\dtl{20}\dtl{40}\dtl{60}\dtl{100}\dtl{140}\dtl{160}\dtl{180}
+\end{picture}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Priority Inversion (2)}
+\begin{center}
+\unitlength=1pt
+\begin{picture}(300,180)
+\thicklines
+\ax{}
+\put(0,50){\dl{0}{20} \dl{20}{40} \dsh{40}{60} \dl{60}{80} \dsh{80}{200} \dl{200}{220}
+\dsh{220}{280} \dl{280}{300}
+\dcap{Telemetry} \put(40,0){\cs{160}}}
+\put(0,100){\dl{80}{200} \dcap{Communications}}
+\put(0,150){\dl{40}{60} \dsh{60}{220} \dl{220}{260}\dl{260}{280} \dcap{Data management}
+\put(80,0){\cs{160}}}
+\dtl{20}\dtl{40}\dtl{60}\dtl{80}\dtl{200}\dtl{220}\dtl{260}\dtl{280}\dtl{300}
+\end{picture}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Priority Inheritance}
+\begin{center}
+\unitlength=1pt
+\begin{picture}(300,180)
+\thicklines
+\ax{}
+\put(0,50){\dl{0}{20} \dl{20}{40} \dsh{40}{60} \dsh{100}{280} \dl{280}{300}
+\dcap{Telemetry} \put(40,0){\cs{40}}}
+\put(0,125){\dl{60}{100} \dcap{Telemetry}}
+\put(0,100){\dsh{60}{160}\dl{160}{280} \dcap{Communications}}
+\put(0,150){\dl{40}{60} \dsh{60}{100} \dl{100}{140}\dl{140}{160} \dcap{Data management}
+\put(80,0){\cs{40}}}
+\dtl{20}\dtl{40}\dtl{60}\dtl{100}\dtl{140}\dtl{160}\dtl{280}\dtl{300}
+\end{picture}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Priority Inversion in Promela (1)}
+\program{Promela}{inversion1.pml}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Priority Inversion in Promela (2)}
+\program{Promela}{inversion1a.pml}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Priority Inversion in Promela (3)}
+\program{Promela}{inversion2.pml}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Priority Inheritance in Promela}
+\program{Promela}{inversion3.pml}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Data Structures in Simpson's Algorithm}
+\begin{center}
+\begin{paenv}
+\unitlength=1pt
+\begin{picture}(180,160)
+\thicklines
+%\put(0,0){\framebox(180,160){}}
+\put(0,80){\makebox(20,20){0}}
+\put(120,80){\makebox(20,20){1}}
+\multiput(20,80)(120,0){2}{
+  \put(0,0){\framebox(40,20){}}
+  \put(20,0){\line(0,1){20}}
+  \put(0,20){\makebox(20,20){0}}
+  \put(20,20){\makebox(20,20){1}}
+}
+\put(80,20){
+  \put(0,0){\framebox(40,20){}}
+  \put(10,10){\vector(-1,1){60}}
+  \put(30,10){\vector(1,1){60}}
+  \put(20,0){\line(0,1){20}}
+  \put(0,20){\makebox(20,20){0}}
+  \put(20,20){\makebox(20,20){1}}
+  \put(0,-20){\makebox(40,20){currentSlot}}
+}
+\put(60,140){\framebox(20,20){}}
+\put(-20,140){\makebox(80,20)[r]{lastWrittenPair\ \ }}
+\put(70,150){\vector(-1,-1){28}}
+\put(120,140){\framebox(20,20){}}
+\put(140,140){\makebox(80,20)[l]{\ \ lastReadPair}}
+\put(130,150){\vector(1,-1){28}}
+\end{picture}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Simpson's four-slot algorithm}%
+{dataType array[0..1,0..1] data \la{} default initial values}
+\decl{bit array[0..1] currentSlot \la{} \{ 0, 0 \}}
+\decl{bit lastWrittenPair \la{} 1, lastReadPair \la{} 1}\hline
+\sttn{\bfseries writer}\hline
+\sttn{bit writePair, writeSlot}
+\sttn{dataType item}
+\sttn{loop forever}
+\stt{\idt{}item \la{} produce}
+\stt{\idt{}writePair \la{} $1 -$ lastReadPair}
+\stt{\idt{}writeSlot \la{} $1 -$ currentSlot[writePair]}
+\stt{\idt{}data[writePair, writeSlot] \la{} item}
+\stt{\idt{}currentSlot[writePair] \la{} writeSlot}
+\stt{\idt{}lastWrittenPair \la{} writePair}\hline
+\end{alg}
+\end{wideslide}
+
+\addtocounter{algcounter}{-1}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Simpson's four-slot algorithm (continued)}{}
+\sttn{\bfseries reader\setcounter{lctr}{6}}\hline
+\sttn{bit readPair, readSlot}
+\sttn{dataType item}
+\sttn{loop forever}
+\stt{\idt{}readPair \la{} lastWrittenPair}
+\stt{\idt{}lastReadPair \la{} readPair}
+\stt{\idt{}readSlot \la{} currentSlot[readPair]}
+\stt{\idt{}item \la{} data[readPair, readSlot]}
+\stt{\idt{}consume(item)}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Event signaling}{binary semaphore s \la{} 0}\hline
+\procname{p}{q}
+\st{if decision is to wait for event}{do something to cause event}
+\st{\idt{}wait(s)}{signal(s)}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Suspension Objects in Ada}
+\program{Ada}{so.ada}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Suspension object - event signaling}%
+{Suspension\_Object SO \la{} (false by default)}\hline
+\procname{p}{q}
+\st{if decision is to wait for event}{do something to cause event}
+\st{\idt{}Suspend\_Until\_True(SO)}{Set\_True(SO)}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Transition in UPPAAL}
+\begin{center}
+\unitlength=1pt
+\begin{picture}(200,20)
+\thicklines
+\put(20,10){\vector(1,0){180}}
+\multiput(10,10)(200,0){2}{\circle{20}}
+\put(0,10){\makebox(220,10){\textsf{clk $>=$ 12, ch ?, n := n + 1}}}
+\end{picture}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Feasible Priority Assignment}
+\begin{center}
+\unitlength=1pt
+\begin{picture}(300,80)
+\thicklines
+\axxx{}
+\put(0,70){\dl{0}{60} \dsh{60}{120} \dl{120}{180} \dsh{180}{240} \dl{240}{300}\dcap{P1}}
+\put(0,40){\dsh{0}{60} \dl{60}{120} \dsh{120}{180} \dl{180}{240} \dcap{P2}}
+%\dtl{60}\dtl{120}\dtl{180}\dtl{240}\dtl{300}
+\end{picture}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Infeasible Priority Assignment}
+\begin{center}
+\unitlength=1pt
+\begin{picture}(300,80)
+\thicklines
+\axxx{}
+\put(0,70){\dl{0}{120} \dcap{P2}}
+\put(0,40){\dsh{0}{120} \dl{120}{180} \dsh{180}{240} \dl{240}{300}\dcap{P1}}
+%\dtl{60}\dtl{120}\dtl{180}\dtl{240}\dtl{300}
+\end{picture}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Periodic task}{constant integer period \la{} \ldots}\hline
+\sttn{integer next \la{} currentTime}
+\sttn{loop forever}
+\stt{\idt{}delay next $-$ currentTime}
+\stt{\idt{}compute}
+\stt{\idt{}next \la{} next $+$ period}
+\end{alg}
+\end{wideslide}
+

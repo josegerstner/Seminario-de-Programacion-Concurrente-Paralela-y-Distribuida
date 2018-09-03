@@ -1,0 +1,799 @@
+\begin{wideslide}[bm=,toc=]{\large Sending and Receiving Messages}
+\begin{center}
+\begin{paenv}
+\unitlength=1pt
+\begin{picture}(300,45)
+\thicklines
+%\put(0,0){\framebox(300,45){}}
+\put(0,30){\makebox(120,15){node 5}}
+\put(0,0){\framebox(120,30){\shortstack[l]{integer k \la{} 20\\send(request, 3, k, 30)}}}
+\put(180,30){\makebox(120,15){node 3}}
+\put(180,0){\framebox(120,30){\shortstack[l]{integer m, n\\receive(request, m, n)}}}
+\put(120,15){\vector(1,0){60}}
+\end{picture}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Sending a Message and Expecting a Reply}
+\begin{center}
+\begin{paenv}
+\unitlength=1pt
+\begin{picture}(300,45)
+\thicklines
+%\put(0,0){\framebox(300,45){}}
+\put(0,30){\makebox(120,15){node 5}}
+\put(0,0){\framebox(120,30){\shortstack[l]{send(request, 3, myID)}}}
+\put(180,30){\makebox(120,15){node 3}}
+\put(180,0){\framebox(120,30){\shortstack[l]{integer source\\receive(request, source)}}}
+\put(120,15){\vector(1,0){60}}
+\end{picture}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\vspace*{-2ex}
+\begin{alg}{Ricart-Agrawala algorithm (outline)}{integer myNum \la{} 0}
+\decl{set of node IDs deferred \la{} empty set}\hline
+\sttn{\bfseries main}\hline
+%\sttn{loop forever}
+\stt{\idt{}non-critical section}
+\stt{\idt{}myNum \la{} chooseNumber}
+\stt{\idt{}for all {\itshape other} nodes N}
+\stt{\idt{}\idt{}send(request, N, myID, myNum)}
+\stt{\idt{}await reply's from all {\itshape other} nodes}
+\stt{\idt{}critical section}
+\stt{\idt{}for all nodes N in deferred}
+\stt{\idt{}\idt{}remove N from deferred}
+\stt{\idt{}\idt{}send(reply, N, myID)}\hline
+\sttn{\bfseries receive}\hline
+\sttn{integer source, reqNum}
+%\sttn{loop forever}
+\stt{\idt{}receive(request, source, reqNum)}
+\stt{\idt{}if reqNum $<$ myNum}
+\stt{\idt{}\idt{}send(reply,source,myID)}
+\stt{\idt{}else add source to deferred}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large RA Algorithm (1)}
+\begin{center}
+\begin{paenv}
+\unitlength=1pt
+\begin{picture}(220,125)
+\thicklines
+%\put(0,0){\framebox(220,125){}}
+%\put(-50,0){\makebox(10,125){(a)}}
+\put(65,80){\nodebox{Aaron}{10}{}}
+\put(0,0){\nodebox{Becky}{5}{}}
+\put(130,0){\nodebox{Chloe}{15}{}}
+\put(90,15){\vector(1,0){40}}
+\put(90,2){\makebox(40,10){req}}
+\put(130,35){\vector(-1,0){40}}
+\put(90,35){\makebox(40,10){req}}
+\put(75,80){\vector(-1,-1){35}}
+\put(37,60){\makebox(20,10){req}}
+\put(145,80){\vector(1,-1){35}}
+\put(84,60){\makebox(20,10){req}}
+\put(60,45){\vector(1,1){35}}
+\put(114,60){\makebox(20,10){req}}
+\put(160,45){\vector(-1,1){35}}
+\put(161,60){\makebox(20,10){req}}
+\end{picture}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large RA Algorithm (2)}
+\begin{center}
+\begin{paenv}
+\unitlength=1pt
+\begin{picture}(220,125)
+\thicklines
+%\put(-50,0){\makebox(10,125){(b)}}
+\put(65,80){\nodebox{Aaron}{10}{Chloe}}
+\put(0,0){\nodebox{Becky $\bullet$}{5}{Aaron, Chloe}}
+\put(130,0){\nodebox{Chloe}{15}{}}
+\put(130,22){\vector(-1,0){40}}
+\put(90,25){\makebox(40,10){reply}}
+\put(75,80){\vector(-1,-1){35}}
+\put(30,60){\makebox(20,10){reply}}
+\put(180,45){\vector(-1,1){35}}
+\put(170,60){\makebox(20,10){reply}}
+\end{picture}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Virtual Queue in the RA Algorithm}
+\begin{center}
+\begin{paenv}
+\unitlength=1pt
+\begin{picture}(210,20)
+\thicklines
+\put(0,0){\framebox(50,20){Becky}}
+\put(80,0){\framebox(50,20){Aaron}}
+\put(160,0){\framebox(50,20){Chloe}}
+\put(80,10){\vector(-1,0){30}}
+\put(160,10){\vector(-1,0){30}}
+\end{picture}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large RA Algorithm (3)}
+\begin{center}
+\begin{paenv}
+\unitlength=1pt
+\begin{picture}(220,125)
+\thicklines
+%\put(-50,0){\makebox(10,125){(c)}}
+\put(65,80){\nodebox{Aaron $\bullet$}{10}{Chloe}}
+\put(0,0){\nodebox{Becky}{5}{}}
+\put(130,0){\nodebox{Chloe}{15}{}}
+\put(90,25){\makebox(40,10){reply}}
+\put(90,22){\vector(1,0){40}}
+\put(30,60){\makebox(20,10){reply}}
+\put(40,45){\vector(1,1){35}}
+\end{picture}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large RA Algorithm (4)}
+\begin{center}
+\begin{paenv}
+\unitlength=1pt
+\begin{picture}(220,125)
+\thicklines
+%\put(-50,0){\makebox(10,125){(d)}}
+\put(65,80){\nodebox{Aaron}{10}{}}
+\put(0,0){\nodebox{Becky}{5}{}}
+\put(130,0){\nodebox{Chloe $\bullet$}{15}{}}
+\put(145,80){\vector(1,-1){35}}
+\put(169,60){\makebox(20,10){reply}}
+\end{picture}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Equal Ticket Numbers}
+\begin{center}
+\begin{paenv}
+\unitlength=1pt
+\begin{picture}(220,45)
+\thicklines
+\put(0,0){\nodebox{Becky}{5}{}}
+\put(130,0){\nodebox{Aaron}{5}{}}
+\put(90,15){\vector(1,0){40}}
+\put(90,3){\makebox(40,10){req}}
+\put(130,35){\vector(-1,0){40}}
+\put(90,23){\makebox(40,10){req}}
+\end{picture}
+
+\bigskip
+\bigskip
+
+\begin{picture}(220,45)
+\thicklines
+\put(0,0){\nodebox{Becky}{5}{Aaron}}
+\put(130,0){\nodebox{Aaron}{5}{Becky}}
+\end{picture}
+\end{paenv}
+
+\bigskip
+\end{center}
+{\sffamily\small Note: This figure is not in the book.}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Choosing Ticket Numbers (1)}
+\begin{center}
+\begin{paenv}
+\unitlength=1pt
+\begin{picture}(220,45)
+\thicklines
+\put(0,0){\nodebox{Becky}{5}{}}
+\put(130,0){\nodebox{Aaron}{10}{}}
+\put(90,15){\vector(1,0){40}}
+\put(90,3){\makebox(40,10){req}}
+\put(130,35){\vector(-1,0){40}}
+\put(90,23){\makebox(40,10){req}}
+\end{picture}
+
+\bigskip
+\bigskip
+
+\begin{picture}(220,45)
+\thicklines
+\put(0,0){\nodebox{Becky $\bullet$}{5}{Aaron}}
+\put(130,0){\nodebox{Aaron}{10}{}}
+\put(130,35){\vector(-1,0){40}}
+\put(90,23){\makebox(40,10){reply}}
+\end{picture}
+
+\bigskip
+\bigskip
+
+\begin{picture}(220,45)
+\thicklines
+\put(0,0){\nodebox{Becky}{5}{}}
+\put(130,0){\nodebox{Aaron $\bullet$}{10}{}}
+\put(90,15){\vector(1,0){40}}
+\put(90,3){\makebox(40,10){reply}}
+\end{picture}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Choosing Ticket Numbers (2)}
+\begin{center}
+\begin{paenv}
+\unitlength=1pt
+\begin{picture}(220,45)
+\thicklines
+\put(0,0){\nodebox{Becky}{8}{}}
+\put(130,0){\nodebox{Aaron $\bullet$}{10}{}}
+\put(90,15){\vector(1,0){40}}
+\put(90,3){\makebox(40,10){req}}
+\end{picture}
+
+\bigskip
+\bigskip
+
+\begin{picture}(220,45)
+\thicklines
+\put(0,0){\nodebox{Becky $\bullet$}{8}{}}
+\put(130,0){\nodebox{Aaron $\bullet$}{10}{}}
+\put(130,35){\vector(-1,0){40}}
+\put(90,23){\makebox(40,10){reply}}
+\end{picture}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Quiescent Nodes}
+\begin{center}
+\begin{paenv}
+\unitlength=1pt
+\begin{picture}(220,45)
+\thicklines
+\put(0,0){\nodebox{Becky}{5}{}}
+\put(130,0){\nodebox{Aaron}{0}{}}
+\put(90,15){\vector(1,0){40}}
+\put(90,3){\makebox(40,10){req}}
+%\put(130,35){\vector(-1,0){40}}
+%\put(90,23){\makebox(40,10){req}}
+\end{picture}
+
+\bigskip
+\bigskip
+
+\begin{picture}(220,45)
+\thicklines
+\put(0,0){\nodebox{Becky}{5}{}}
+\put(130,0){\nodebox{Aaron}{0}{Becky}}
+\end{picture}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Ricart-Agrawala algorithm}{integer myNum \la{} 0}
+\decl{set of node IDs deferred \la{} empty set}
+\decl{integer highestNum \la{} 0}
+\decl{boolean requestCS \la{} false}\hline
+\sttn{\bfseries Main}\hline
+\sttn{loop forever}
+\stt{\idt{}non-critical section}
+\stt{\idt{}requestCS \la{} true}
+\stt{\idt{}myNum \la{} highestNum $+$ 1}
+\stt{\idt{}for all {\itshape other} nodes N}
+\stt{\idt{}\idt{}send(request, N, myID, myNum)}
+\stt{\idt{}await reply's from all {\itshape other} nodes}
+\stt{\idt{}critical section}
+\stt{\idt{}requestCS \la{} false}
+\stt{\idt{}for all nodes N in deferred}
+\stt{\idt{}\idt{}remove N from deferred}
+\stt{\idt{}\idt{}send(reply, N, myID)}\hline
+\end{alg}
+\end{wideslide}
+
+\addtocounter{algcounter}{-1}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Ricart-Agrawala algorithm (continued)}{}
+\sttn{\bfseries Receive}\hline
+\sttn{integer source, requestedNum}
+\sttn{loop forever}
+\stt{\idt{}receive(request, source, requestedNum)}
+\stt{\idt{}highestNum \la{} max(highestNum, requestedNum)}
+\stt{\idt{}if not requestCS or requestedNum $\ll{}$ myNum}
+\stt{\idt{}\idt{}send(reply, source, myID)}
+\stt{\idt{}else add source to deferred}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Correct of the RA Algorithm (Case 1)}
+\begin{center}
+\begin{paenv}
+\unitlength=1pt
+\begin{picture}(340,55)
+\thicklines
+%\put(0,0){\framebox(340,55){}}
+\put(0,40){
+    \put(0,0){\makebox(10,10){\bfseries i}}
+    \put(20,0){\makebox(40,10){choose}}
+    \put(60,5){\vector(1,0){30}}
+    \put(90,0){\makebox(40,10){\shortstack[l]{send\\request}}}
+    \put(130,5){\line(1,0){15}}
+}
+\put(145,5){\line(0,1){40}}
+\put(0,0){
+    \put(145,5){\vector(1,0){15}}
+    \put(0,0){\makebox(10,10){\bfseries j}}
+    \put(160,0){\makebox(40,10){\shortstack[l]{receive\\request}}}
+    \put(200,5){\vector(1,0){30}}
+    \put(230,0){\makebox(40,10){reply}}
+    \put(270,5){\vector(1,0){30}}
+    \put(300,0){\makebox(40,10){choose}}
+}
+\end{picture}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Correct of the RA Algorithm (Case 2)}
+\begin{center}
+\begin{paenv}
+\unitlength=1pt
+\begin{picture}(290,120)
+\thicklines
+%\put(0,0){\framebox(290,120){}}
+\put(0,85){
+    \put(0,20){\makebox(10,10)[l]{{\bfseries i} main}}
+    \put(0,-10){\makebox(10,10)[l]{{\bfseries i} receive}}
+    \put(40,20){\makebox(40,10){choose}}
+    \put(80,25){\vector(1,0){30}}
+    \put(110,20){\makebox(40,10){\shortstack[l]{send\\request}}}
+    \put(150,25){\line(1,0){10}}
+    \put(170,-5){\vector(1,0){10}}
+    \put(180,-10){\makebox(40,10){\shortstack[l]{receive\\request}}}
+    \put(220,-5){\vector(1,0){30}}
+    \put(250,-10){\makebox(40,10){reply}}
+}
+\put(160,10){\line(0,1){100}}
+\put(170,40){\line(0,1){40}}
+\put(0,5){
+    \put(0,30){\makebox(10,10)[l]{{\bfseries j} main}}
+    \put(0,0){\makebox(10,10)[l]{{\bfseries j} receive}}
+    \put(40,30){\makebox(40,10){choose}}
+    \put(80,35){\vector(1,0){30}}
+    \put(110,30){\makebox(40,10){\shortstack[l]{send\\request}}}
+    \put(150,35){\line(1,0){20}}
+    \put(160,5){\vector(1,0){20}}
+    \put(180,0){\makebox(40,10){\shortstack[l]{receive\\request}}}
+    \put(220,5){\vector(1,0){30}}
+    \put(250,0){\makebox(40,10){reply}}
+}
+\end{picture}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Channels in RA Algorithm in Promela}
+\begin{center}
+\begin{paenv}
+\begin{picture}(160,60)
+\thicklines
+%\put(0,0){\framebox(160,60){}}
+\put(0,0){\framebox(40,20){node j}}
+\put(0,20){\makebox(40,20){$\cdots$}}
+\put(0,40){\framebox(40,20){node i}}
+\put(120,20){\framebox(40,20){node id}}
+\put(40,10){\line(2,1){40}}
+\put(40,50){\line(2,-1){40}}
+\put(80,30){\vector(1,0){40}}
+\put(80,35){\makebox(40,10){ch[id]}}
+\end{picture}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large RA Algorithm in Promela -- Main Process}
+\vspace*{-3ex}
+\program{Promela}{ra-main.pml}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large RA Algorithm in Promela -- Receive Process}
+\program{Promela}{ra-rec.pml}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Ricart-Agrawala token-passing algorithm}%
+{boolean haveToken \la{} true in node 0, false in others}
+\decl{integer array[NODES] requested \la{} [0,\ldots,0]}
+\decl{integer array[NODES] granted \la{} [0,\ldots,0]}
+\decl{integer myNum \la{} 0}
+\decl{boolean inCS \la{} false}\hline
+\proc{\idt{}\textbf{sendToken}}
+\proc{\idt{}\idt{}if exists N such that requested[N] $>$ granted[N]}
+\proc{\idt{}\idt{}\idt{}for some such N}
+\proc{\idt{}\idt{}\idt{}\idt{}send(token, N, granted)}
+\proc{\idt{}\idt{}\idt{}\idt{}haveToken \la{} false}
+\sttn{}\hline
+\end{alg}
+\end{wideslide}
+
+\addtocounter{algcounter}{-1}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Ricart-Agrawala token-passing algorithm (continued)}{}
+\sttn{\bfseries Main}\hline
+\sttn{loop forever}
+\stt{\idt{}non-critical section}
+\stt{\idt{}if not haveToken}
+\stt{\idt{}\idt{}myNum \la{} myNum $+$ 1}
+\stt{\idt{}\idt{}for all other nodes N}
+\stt{\idt{}\idt{}\idt{}send(request, N, myID, myNum)}
+\stt{\idt{}\idt{}receive(token, granted)}
+\stt{\idt{}\idt{}haveToken \la{} true}
+\stt{\idt{}inCS \la{} true}
+\stt{\idt{}critical section}
+\stt{\idt{}granted[myID] \la{} myNum}
+\stt{\idt{}inCS \la{} false}
+\stt{\idt{}sendToken}\hline
+\end{alg}
+\end{wideslide}
+
+\addtocounter{algcounter}{-1}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Ricart-Agrawala token-passing algorithm (continued)}{}
+\sttn{\setcounter{lctr}{12}\bfseries Receive}\hline
+\sttn{integer source, reqNum}
+\sttn{loop forever}
+\stt{\idt{}receive(request, source, reqNum)}
+\stt{\idt{}requested[source] \la{} max(requested[source], reqNum)}
+\stt{\idt{}if haveToken and not inCS}
+\stt{\idt{}\idt{}sendToken}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Data Structures for RA Token-Passing Algorithm}
+\begin{center}
+\begin{paenv}
+\unitlength=1pt
+\begin{picture}(250,70)
+\thicklines
+%\put(0,0){\framebox(250,70){}}
+\put(0,50){\makebox(50,20)[l]{requested}}
+\put(0,20){\makebox(50,20)[l]{granted}}
+\put(50,0){
+\put(0,0){\makebox(40,10){Aaron}}
+\put(40,0){\makebox(40,8){Becky}}
+\put(80,0){\makebox(40,10){Chloe}}
+\put(120,0){\makebox(40,10){Danielle}}
+\put(160,0){\makebox(40,10){Evan}}
+\put(0,20){\framebox(200,20){}}
+\multiput(40,20)(40,0){4}{\line(0,1){20}}
+\put(0,50){\framebox(200,20){}}
+\multiput(40,50)(40,0){4}{\line(0,1){20}}
+\put(0,20){\makebox(40,20){4}}
+\put(40,20){\makebox(40,20){2}}
+\put(80,20){\makebox(40,20){2}}
+\put(120,20){\makebox(40,20){4}}
+\put(160,20){\makebox(40,20){1}}
+\put(0,50){\makebox(40,20){4}}
+\put(40,50){\makebox(40,20){3}}
+\put(80,50){\makebox(40,20){0}}
+\put(120,50){\makebox(40,20){5}}
+\put(160,50){\makebox(40,20){1}}
+}
+\end{picture}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Distributed System for Neilsen-Mizuno Algorithm}
+\begin{center}
+\begin{paenv}
+\unitlength=1pt
+\begin{picture}(230,140)
+\thicklines
+%\put(0,0){\framebox(230,140){}}
+\put(20,20){
+\put(0,0){\framebox(50,20){Aaron}}
+\put(0,10){\line(-1,0){20}}
+\put(-20,10){\line(0,1){110}}
+\put(-20,120){\line(1,0){185}}
+\put(165,120){\vector(0,-1){20}}
+
+\put(0,80){\framebox(50,20){Danielle}}
+\put(25,100){\line(0,1){10}}
+\put(25,110){\line(1,0){175}}
+\put(200,110){\line(0,-1){100}}
+\put(200,10){\vector(-1,0){10}}
+
+\put(140,0){\framebox(50,20){Becky}}
+\put(165,0){\line(0,-1){10}}
+\put(165,-10){\line(-1,0){175}}
+\put(-10,-10){\line(0,1){100}}
+\put(-10,90){\vector(1,0){10}}
+
+\put(140,80){\framebox(50,20){Evan}}
+\put(190,90){\line(1,0){20}}
+\put(210,90){\line(0,-1){110}}
+\put(210,-20){\line(-1,0){185}}
+\put(25,-20){\vector(0,1){20}}
+
+\put(70,40){\framebox(50,20){Chloe}}
+\put(50,7){\vector(1,0){90}}
+\put(140,13){\vector(-1,0){90}}
+\put(50,87){\vector(1,0){90}}
+\put(140,93){\vector(-1,0){90}}
+\put(22,20){\vector(0,1){60}}
+\put(28,80){\vector(0,-1){60}}
+\put(162,20){\vector(0,1){60}}
+\put(168,80){\vector(0,-1){60}}
+\put(45,20){\vector(1,1){25}}
+\put(75,40){\vector(-1,-1){25}}
+\put(115,60){\vector(1,1){25}}
+\put(45,80){\vector(1,-1){25}}
+\put(75,60){\vector(-1,1){25}}
+\put(115,40){\vector(1,-1){25}}
+\put(145,20){\vector(-1,1){25}}
+\put(145,80){\vector(-1,-1){25}}
+}
+\end{picture}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Spanning Tree in Neilsen-Mizuno Algorithm}
+\begin{center}
+\begin{paenv}
+\unitlength=1pt
+\begin{picture}(190,100)
+\thicklines
+%\put(0,0){\framebox(190,100){}}
+\put(0,0){\framebox(50,20){Aaron}}
+\put(0,80){\framebox(50,20){Danielle}}
+\put(140,0){\framebox(50,20){Becky}}
+\put(140,80){\framebox(50,20){Evan}}
+\put(70,40){\framebox(50,20){Chloe}}
+\put(72,42){\framebox(46,16){}}
+\put(50,10){\vector(1,0){90}}
+\put(140,90){\vector(-1,0){90}}
+\put(140,20){\vector(-1,1){20}}
+\put(50,80){\vector(1,-1){20}}
+\end{picture}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Neilsen-Mizuno Algorithm (1)}
+\begin{center}
+\begin{paenv}
+\unitlength=0.9pt
+\begin{picture}(370,20)
+\thicklines
+\put(0,0){\framebox(50,20){Aaron}}
+\put(80,0){\framebox(50,20){Becky}}
+\put(160,0){\framebox(50,20){Chloe}}
+\put(162,2){\framebox(46,16){}}
+\put(240,0){\framebox(50,20){Danielle}}
+\put(320,0){\framebox(50,20){Evan}}
+%\put(80,10){\vector(1,0){30}}
+\put(130,10){\vector(1,0){30}}
+\put(240,10){\vector(-1,0){30}}
+\put(320,10){\vector(-1,0){30}}
+\end{picture}
+%\end{paenv}
+%\end{center}
+%\end{wideslide}
+
+\bigskip
+\bigskip
+
+%\begin{wideslide}[bm=,toc=]{\large }
+%\begin{center}
+%\begin{paenv}
+%\unitlength=0.9pt
+\begin{picture}(370,20)
+\thicklines
+\put(0,0){\framebox(50,20){Aaron}}
+\put(80,0){\framebox(50,20){Becky}}
+\put(160,0){\framebox(50,20){Chloe}}
+\put(162,2){\framebox(46,16){}}
+\put(240,0){\framebox(50,20){Danielle}}
+\put(320,0){\framebox(50,20){Evan}}
+\put(80,10){\vector(-1,0){30}}
+%\put(130,10){\vector(1,0){30}}
+\put(240,10){\vector(-1,0){30}}
+\put(320,10){\vector(-1,0){30}}
+\end{picture}
+%\end{paenv}
+%\end{center}
+%\end{wideslide}
+
+\bigskip
+\bigskip
+
+%\begin{wideslide}[bm=,toc=]{\large }
+%\begin{center}
+%\begin{paenv}
+%\unitlength=0.9pt
+\begin{picture}(370,30)
+\thicklines
+%\put(0,0){\framebox(370,30){}}
+\put(0,0){\framebox(50,20){Aaron}}
+\put(80,0){\framebox(50,20){Becky}}
+\put(160,0){\framebox(50,20){Chloe}}
+\put(162,2){\framebox(46,16){}}
+\put(240,0){\framebox(50,20){Danielle}}
+\put(320,0){\framebox(50,20){Evan}}
+\put(80,10){\vector(-1,0){30}}
+\put(160,10){\vector(-1,0){30}}
+\put(240,10){\vector(-1,0){30}}
+\put(320,10){\vector(-1,0){30}}
+\dashline{5}(185,30)(25,30)
+\put(25,30){\vector(0,-1){10}}
+\put(185,20){\line(0,1){10}}
+\end{picture}
+%\end{paenv}
+%\end{center}
+%\end{wideslide}
+
+\bigskip
+\bigskip
+
+%\begin{wideslide}[bm=,toc=]{\large }
+%\begin{center}
+%\begin{paenv}
+%\unitlength=0.9pt
+\begin{picture}(370,30)
+\thicklines
+%\put(0,0){\framebox(370,30){}}
+\put(0,0){\framebox(50,20){Aaron}}
+\put(80,0){\framebox(50,20){Becky}}
+\put(160,0){\framebox(50,20){Chloe}}
+\put(162,2){\framebox(46,16){}}
+\put(240,0){\framebox(50,20){Danielle}}
+\put(320,0){\framebox(50,20){Evan}}
+%\put(80,10){\vector(-1,0){30}}
+\put(130,10){\vector(1,0){30}}
+\put(210,10){\vector(1,0){30}}
+\put(290,10){\vector(1,0){30}}
+\dashline{5}(185,30)(25,30)
+\put(25,30){\vector(0,-1){10}}
+\put(185,20){\line(0,1){10}}
+\end{picture}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Neilsen-Mizuno Algorithm (2)}
+\begin{center}
+\begin{paenv}
+\unitlength=0.9pt
+\begin{picture}(370,40)
+\thicklines
+%\put(0,0){\framebox(370,40){}}
+\put(0,10){
+\put(0,0){\framebox(50,20){Aaron}}
+\put(80,0){\framebox(50,20){Becky}}
+\put(160,0){\framebox(50,20){Chloe}}
+\put(162,2){\framebox(46,16){}}
+\put(240,0){\framebox(50,20){Danielle}}
+\put(320,0){\framebox(50,20){Evan}}
+\put(50,10){\vector(1,0){30}}
+\put(130,10){\vector(1,0){30}}
+\put(210,10){\vector(1,0){30}}
+\put(290,10){\vector(1,0){30}}
+\dashline{5}(185,30)(25,30)
+\put(25,30){\vector(0,-1){10}}
+\put(185,20){\line(0,1){10}}
+}
+\put(25,10){\line(0,-1){10}}
+\dashline{5}(25,0)(345,0)
+\put(345,0){\vector(0,1){10}}
+\end{picture}
+%\end{paenv}
+%\end{center}
+%\end{wideslide}
+
+\bigskip
+\bigskip
+
+
+%\begin{wideslide}[bm=,toc=]{\large }
+%\begin{center}
+%\begin{paenv}
+%\unitlength=0.9pt
+\begin{picture}(370,40)
+\thicklines
+%\put(0,0){\framebox(370,40){}}
+\put(0,10){
+\put(0,0){\framebox(50,20){Aaron}}
+\put(2,2){\framebox(46,16){}}
+\put(80,0){\framebox(50,20){Becky}}
+\put(160,0){\framebox(50,20){Chloe}}
+\put(240,0){\framebox(50,20){Danielle}}
+\put(320,0){\framebox(50,20){Evan}}
+\put(50,10){\vector(1,0){30}}
+\put(130,10){\vector(1,0){30}}
+\put(210,10){\vector(1,0){30}}
+\put(290,10){\vector(1,0){30}}
+}
+\put(25,10){\line(0,-1){10}}
+\dashline{5}(25,0)(345,0)
+\put(345,0){\vector(0,1){10}}
+\end{picture}
+%\end{paenv}
+%\end{center}
+%\end{wideslide}
+
+\bigskip
+\bigskip
+
+%\begin{wideslide}[bm=,toc=]{\large }
+%\begin{center}
+%\begin{paenv}
+%\unitlength=0.9pt
+\begin{picture}(370,20)
+\thicklines
+%\put(0,0){\framebox(370,20){}}
+\put(0,0){\framebox(50,20){Aaron}}
+\put(80,0){\framebox(50,20){Becky}}
+\put(160,0){\framebox(50,20){Chloe}}
+\put(240,0){\framebox(50,20){Danielle}}
+\put(320,0){\framebox(50,20){Evan}}
+\put(322,2){\framebox(46,16){}}
+\put(50,10){\vector(1,0){30}}
+\put(130,10){\vector(1,0){30}}
+\put(210,10){\vector(1,0){30}}
+\put(290,10){\vector(1,0){30}}
+\end{picture}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Neilsen-Mizuno token-passing algorithm}%
+{integer parent \la{} (initialized to form a tree)}
+\decl{integer deferred \la{} 0}
+\decl{boolean holding \la{} true in the root, false in others}\hline
+\sttn{\bfseries Main}\hline
+\sttn{loop forever}
+\stt{\idt{}non-critical section}
+\stt{\idt{}if not holding}
+\stt{\idt{}\idt{}send(request, parent, myID, myID)}
+\stt{\idt{}\idt{}parent \la{} 0}
+\stt{\idt{}\idt{}receive(token)}
+\stt{\idt{}holding \la{} false}
+\stt{\idt{}critical section}
+\stt{\idt{}if deferred $\neq$ 0}
+\stt{\idt{}\idt{}send(token, deferred)}
+\stt{\idt{}\idt{}deferred \la{} 0}
+\stt{\idt{}else holding \la{} true}\hline
+\end{alg}
+\end{wideslide}
+
+\addtocounter{algcounter}{-1}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Neilsen-Mizuno token-passing algorithm (continued)}{}
+\sttn{\setcounter{lctr}{11}\bfseries Receive}\hline
+\sttn{integer source, originator}
+\sttn{loop forever}
+\stt{\idt{}receive(request, source, originator)}
+\stt{\idt{}if parent $=$ 0}
+\stt{\idt{}\idt{}if holding}
+\stt{\idt{}\idt{}\idt{}send(token, originator)}
+\stt{\idt{}\idt{}\idt{}holding \la{} false}
+\stt{\idt{}\idt{}else deferred \la{} originator}
+\stt{\idt{}else send(request, parent, myID, originator)}
+\stt{\idt{}parent \la{} source}
+\end{alg}
+\end{wideslide}

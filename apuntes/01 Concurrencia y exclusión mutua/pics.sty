@@ -1,0 +1,202 @@
+%
+%  Macros for drawing pictures
+%
+
+% Draw frogs labeled #5: oval at (#1,#2), box with label at (#3,#4)
+\newcommand*{\spc}{$\,\sqcup\:$}
+\newcommand*{\frogs}[5]{\put(#1,#2){\oval(40,10)}\put(#3,#4){\makebox(40,10){#5}}}
+
+% Draw a file (parallel lines with name) at (#1,#2) labeled #3
+\newcommand*{\store}[3]{%
+\put(#1,#2){\line(1,0){50}}
+\put(#1,#2){\put(0,25){\line(1,0){50}}}
+\put(#1,#2){\makebox(50,25){\textsf{#3}}}
+}
+
+%  Scenarios
+%
+% Draw a pair of gates for fast algorithms, parameters are names of gates
+\newcommand*{\gatepair}[2]{%
+\put(0,0){\framebox(30,15){}}%
+\put(0,31){\framebox(30,15){\textsf{#1}}}%
+\put(70,0){\framebox(30,15){}}%
+\put(70,31){\framebox(30,15){\textsf{#2}}}%
+}
+
+% Draw a stick figure person
+\newcommand*{\person}{%
+\put(0,0){\line(1,1){10}}
+\put(20,0){\line(-1,1){10}}
+\put(0,20){\line(1,1){10}}
+\put(20,20){\line(-1,1){10}}
+\put(10,10){\line(0,1){25}}
+\put(10,40){\circle{10}}
+}
+
+% Draw a small stick figure person
+\newcommand*{\smallperson}{%
+\put(2,2){\line(1,0){6}}
+\put(2,7){\line(1,0){6}}
+\put(5,0){\line(0,1){8}}
+\put(5,11){\circle{6}}
+}
+
+%
+%  State diagrams
+%
+
+% Draw a node (or medium or small node) at (#1,#2) labeled #3
+\newcommand*{\nod}[3]{%
+  \put(#1,#2){\put(0,0){\makebox(60,30){\textsf{#3}}}\put(30,14){\oval(60,30)}}}
+\newcommand*{\nodmd}[3]{%
+  \put(#1,#2){\put(0,0){\makebox(50,40){\textsf{#3}}}\put(25,20){\oval(50,40)}}}
+\newcommand*{\nodsm}[3]{%
+  \put(#1,#2){\put(0,0){\makebox(40,20){\textsf{#3}}}\put(20,10){\oval(40,20)}}}
+
+% Draw self-loop to node at (#1,#2)
+% Versions for left/right, regular size/small
+\newcommand*{\selfl}[2]{\put(#1,#2){\put(0,-1){
+    \put(0,0){\oval(40,28)[b]}
+    \put(0,0){\oval(40,28)[tl]}
+    \put(-1,14){\vector(1,0){1}}}}}
+\newcommand*{\selfr}[2]{\put(#1,#2){\put(40,-1){
+    \put(20,0){\oval(40,28)[b]}
+    \put(20,0){\oval(40,28)[tr]}
+    \put(21,14){\vector(-1,0){1}}}}}
+\newcommand*{\selflsm}[2]{\put(#1,#2){\put(0,0){
+    \put(0,0){\oval(20,18)[b]}
+    \put(0,0){\oval(20,18)[tl]}
+    \put(-1,9){\vector(1,0){1}}}}}
+\newcommand*{\selfrsm}[2]{\put(#1,#2){\put(30,0){
+    \put(10,0){\oval(20,18)[b]}
+    \put(10,0){\oval(20,18)[tr]}
+    \put(11,9){\vector(-1,0){1}}}}}
+
+% Draw arrows
+% #1 - X, #2 - Y, #3 - first right/left, #4 - second right/left,
+% #5 - up/down, #6 - delta out, #7 - delta in
+\newcommand*{\rightup}[7]{
+  \put(#1,#2){
+    \put(0,0){\line(0,-1){#6}}
+    \put(0,-#6){\line(1,0){#3}}
+    \put(#3,-#6){\line(0,1){#5}}
+    \put(#3,#5){\put(0,-#6){\line(1,0){#4}}}
+    \put(#3,#5){\put(#4,-#6){\vector(0,-1){#7}}}
+  }
+}
+
+\newcommand*{\leftup}[7]{
+  \put(#1,#2){
+    \put(0,0){\line(0,-1){#6}}
+    \put(0,-#6){\line(-1,0){#3}}
+    \put(-#3,-#6){\line(0,1){#5}}
+    \put(-#3,#5){\put(0,-#6){\line(-1,0){#4}}}
+    \put(-#3,#5){\put(-#4,-#6){\vector(0,-1){#7}}}
+  }
+}
+
+\newcommand*{\leftdown}[7]{
+  \put(#1,#2){
+    \put(0,0){\line(0,-1){#6}}
+    \put(0,-#6){\line(-1,0){#3}}
+    \put(-#3,-#6){\line(0,-1){#5}}
+    \put(-#3,-#5){\put(0,-#6){\line(-1,0){#4}}}
+    \put(-#3,-#5){\put(-#4,-#6){\vector(0,-1){#7}}}
+  }
+}
+
+%
+% Timing diagrams
+%
+% Horizontal line with bars at each end: #1 is x start position, #2 is x end position
+\newcommand*{\dl}[2]{\drawline(#1,0)(#2,0)\drawline(#1,-3)(#1,3)\drawline(#2,-3)(#2,3)}
+% Horizontal dashed line: #1 is x start position, #2 is x end position
+\newcommand*{\dsh}[2]{\dashline{4}(#1,0)(#2,0)}
+% Vertical dotted line: #1 is x location
+\newcommand*{\dtl}[1]{\put(0,20){\dottedline{6}(#1,0)(#1,160)}}
+% Caption of line underneath it: #1 is text
+\newcommand*{\dcap}[1]{\put(10,-20){\makebox(80,20)[l]{\textsf{#1}}}}
+
+% Critical section with arrows: #1 is width (not including arrows)
+\newcommand*{\cs}[1]{
+  \put(0,15){\vector(-1,0){20}}
+  \put(0,10){\makebox(#1,10){\textsf{CS}}}
+  \put(#1,15){\vector(1,0){20}}
+}
+
+% Horizontal axis with labeled tick marks
+\newcommand*{\ax}{\axx{180}}
+\newcommand*{\axx}[1]{
+\drawline(0,20)(300,20)
+\drawline(0,20)(0,#1)
+\multiput(0,15)(20,0){16}{\line(0,1){5}}
+\put(-5,5){\makebox(10,5){\textsf{\scriptsize 0}}}
+\put(15,5){\makebox(10,5){\textsf{\scriptsize 1}}}
+\put(35,5){\makebox(10,5){\textsf{\scriptsize 2}}}
+\put(55,5){\makebox(10,5){\textsf{\scriptsize 3}}}
+\put(75,5){\makebox(10,5){\textsf{\scriptsize 4}}}
+\put(95,5){\makebox(10,5){\textsf{\scriptsize 5}}}
+\put(115,5){\makebox(10,5){\textsf{\scriptsize 6}}}
+\put(135,5){\makebox(10,5){\textsf{\scriptsize 7}}}
+\put(155,5){\makebox(10,5){\textsf{\scriptsize 8}}}
+\put(175,5){\makebox(10,5){\textsf{\scriptsize 9}}}
+\put(195,5){\makebox(10,5){\textsf{\scriptsize 10}}}
+\put(215,5){\makebox(10,5){\textsf{\scriptsize 11}}}
+\put(235,5){\makebox(10,5){\textsf{\scriptsize 12}}}
+\put(255,5){\makebox(10,5){\textsf{\scriptsize 13}}}
+\put(275,5){\makebox(10,5){\textsf{\scriptsize 14}}}
+\put(295,5){\makebox(10,5){\textsf{\scriptsize 15}}}
+}
+%
+% Used for scheduling axis
+%
+\newcommand*{\axxx}{
+\drawline(0,20)(300,20)
+\drawline(0,20)(0,80)
+\multiput(0,15)(60,0){6}{\line(0,1){5}}
+\put(-5,5){\makebox(10,5){\textsf{\scriptsize 0}}}
+\put(55,5){\makebox(10,5){\textsf{\scriptsize 1}}}
+\put(115,5){\makebox(10,5){\textsf{\scriptsize 2}}}
+\put(175,5){\makebox(10,5){\textsf{\scriptsize 3}}}
+\put(235,5){\makebox(10,5){\textsf{\scriptsize 4}}}
+\put(295,5){\makebox(10,5){\textsf{\scriptsize 5}}}
+}
+
+%
+% Axis for temporal logic diagrams
+%
+\newsavebox{\tlaxis}
+\savebox{\tlaxis}{
+\unitlength=1.5pt
+\thicklines
+%\put(0,0){\framebox(120,80){}}
+\put(20,0){\makebox(100,15){\textsf{time}$\;\;\;\rightarrow$}}
+\put(0,30){\makebox(20,20){$\mathit{false}$}}
+\put(0,50){\makebox(20,20){$\mathit{true}$}}
+\put(20,20){\line(1,0){100}}
+\put(20,20){\line(0,1){60}}
+\multiput(30,17)(10,0){9}{\line(0,1){6}}
+\put(20,12){\vector(0,1){6}}
+\put(15,0){\makebox(11,15){\textsf{i}}}
+}
+
+%
+% Hatch marks for buffer
+%
+\newsavebox{\hatch}
+\savebox{\hatch}{
+\put(0,15){\line(2,1){10}}
+\put(0,5){\line(2,1){30}}
+\put(10,0){\line(2,1){30}}
+\put(30,0){\line(2,1){10}}
+}
+
+%
+%  Node boxes for RA algorithm
+%
+\newcommand*{\nodebox}[3]{
+\put(0,0){\framebox(90,45){}}
+\put(5,25){\framebox(50,15){#1}}
+\put(65,25){\framebox(20,15){#2}}
+\put(5,5){\framebox(80,15){#3}}
+}

@@ -1,0 +1,71 @@
+\begin{wideslide}[bm=,toc=]{\large Computer Time}
+\begin{center}
+\unitlength=1pt
+\begin{picture}(300,40)
+%\put(0,0){\framebox(300,40){}}
+\thicklines
+\put(20,35){\vector(-1,0){20}}
+\put(20,35){\vector(1,0){20}}
+\put(0,0){\makebox(300,10){\textsf{\small time {\bfseries (nanoseconds)} \ra{}}}}
+\drawline(0,30)(200,30)
+\dashline{4}(200,30)(300,30)
+\multiput(0,25)(40,0){6}{\line(0,1){5}}
+\put(-5,15){\makebox(10,5){\textsf{\scriptsize 0}}}
+\put(35,15){\makebox(10,5){\textsf{\scriptsize 100}}}
+\put(75,15){\makebox(10,5){\textsf{\scriptsize 200}}}
+\put(115,15){\makebox(10,5){\textsf{\scriptsize 300}}}
+\put(155,15){\makebox(10,5){\textsf{\scriptsize 400}}}
+\put(195,15){\makebox(10,5){\textsf{\scriptsize 500}}}
+\end{picture}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Human Time}
+\begin{center}
+\unitlength=1pt
+\begin{picture}(300,40)
+%\put(0,0){\framebox(300,40){}}
+\thicklines
+\put(20,35){\vector(-1,0){20}}
+\put(20,35){\vector(1,0){20}}
+\put(0,0){\makebox(300,10){\textsf{\small time {\bfseries (seconds)} \ra{}}}}
+\drawline(0,30)(200,30)
+\dashline{4}(200,30)(300,30)
+\multiput(0,25)(40,0){6}{\line(0,1){5}}
+\put(-5,15){\makebox(10,5){\textsf{\scriptsize 0}}}
+\put(35,15){\makebox(10,5){\textsf{\scriptsize 100}}}
+\put(75,15){\makebox(10,5){\textsf{\scriptsize 200}}}
+\put(115,15){\makebox(10,5){\textsf{\scriptsize 300}}}
+\put(155,15){\makebox(10,5){\textsf{\scriptsize 400}}}
+\put(195,15){\makebox(10,5){\textsf{\scriptsize 500}}}
+\end{picture}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Concurrency in an Operating System}
+\begin{center}
+\begin{paenv}
+\unitlength=2pt
+\begin{picture}(160,60)
+%\put(0,0){\framebox(160,60){}}
+\thicklines
+\put(35,0){\makebox(125,10){time$\;\;\;\rightarrow$}}
+\put(0,20){\makebox(35,20)[l]{Computation}}
+\put(0,40){\makebox(35,20)[l]{I/O}}
+\put(35,10){\line(1,0){125}}
+\put(35,10){\line(0,1){50}}
+\put(35,30){\line(1,0){50}}
+\put(95,30){\line(1,0){65}}
+\put(85,50){\line(1,0){10}}
+\dottedline{2}(85,30)(85,50)
+\dottedline{2}(95,30)(95,50)
+\put(65,10){\makebox(20,10)[r]{start I/O}}
+\put(95,10){\makebox(20,10)[l]{end I/O}}
+\put(85,20){\vector(0,1){8}}
+\put(95,20){\vector(0,1){8}}
+\end{picture}
+\end{paenv}
+%\caption{Overlapping I/O and computation}\label{f.overlap}
+\end{center}
+\end{wideslide}
+

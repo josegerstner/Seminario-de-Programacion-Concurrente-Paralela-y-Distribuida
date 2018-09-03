@@ -1,0 +1,24 @@
+monitor RW {
+  int readers = 0, writing = 1;
+  condition OKtoRead, OKtoWrite;
+
+  void StartRead() {
+    if (writing || !empty(OKtoWrite))  waitc(OKtoRead);
+    readers = readers + 1;
+    signalc(OKtoRead);
+  }
+  void EndRead() {
+    readers = readers - 1;
+    if (readers == 0)  signalc(OKtoWrite);
+  }
+
+  void StartWrite() {
+    if (writing || (readers != 0))  waitc(OKtoWrite);
+    writing = 1;
+  }
+  void EndWrite() {
+    writing = 0;
+    if (empty(OKtoRead)) signalc(OKtoWrite);
+    else                 signalc(OKtoRead);
+  }
+}

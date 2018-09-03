@@ -1,0 +1,402 @@
+\begin{wideslide}[bm=,toc=]{\large Distributed System with an Environment Node}
+\begin{center}
+\begin{paenv}
+\unitlength=1pt
+\begin{picture}(210,100)
+\thicklines
+%\put(0,0){\framebox(210,100){}}
+\put(0,40){\framebox(50,20){node1}}
+\put(80,0){\framebox(50,20){node3}}
+\put(80,80){\framebox(50,20){node2}}
+\put(160,40){\framebox(50,20){node4}}
+\thinlines
+\put(25,60){\vector(2,1){55}}
+\put(25,39){\vector(2,-1){54}}
+\put(131,88){\vector(2,-1){55}}
+\put(185,39){\vector(-2,-1){54}}
+\put(115,20){\vector(0,1){60}}
+\put(95,80){\vector(0,-1){60}}
+\end{picture}
+\end{paenv}\label{p.ds-graph}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Back Edges}
+\begin{center}
+\begin{paenv}
+\unitlength=1pt
+\begin{picture}(210,100)
+\thicklines
+%\put(0,0){\framebox(210,100){}}
+\put(0,40){\framebox(50,20){node1}}
+\put(80,0){\framebox(50,20){node3}}
+\put(80,80){\framebox(50,20){node2}}
+\put(160,40){\framebox(50,20){node4}}
+\thinlines
+\put(25,60){\vector(2,1){55}}
+\put(25,39){\vector(2,-1){54}}
+\put(131,88){\vector(2,-1){55}}
+\put(185,39){\vector(-2,-1){54}}
+\put(115,20){\vector(0,1){60}}
+\put(95,80){\vector(0,-1){60}}
+\thicklines
+\put(80,95){\vector(-2,-1){68}}
+\put(80,5){\vector(-2,1){68}}
+\put(200,60){\vector(-2,1){68}}
+\put(130,5){\vector(2,1){68}}
+\put(120,80){\vector(0,-1){60}}
+\put(90,20){\vector(0,1){60}}
+\end{picture}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Dijkstra-Scholten algorithm (preliminary)}%
+{integer array[incoming] inDeficit \la{} [0,\ldots,0]}
+\decl{integer inDeficit \la{} 0, integer outDeficit \la{} 0}\hline
+\sttn{\bfseries send message}\hline
+\stt{send(message, destination, myID)}
+\stt{increment outDeficit}\hline
+\sttn{\bfseries receive message}\hline
+\stt{receive(message, source)}
+\stt{increment inDeficit[source] and inDeficit}\hline
+\sttn{\bfseries send signal}\hline
+\stt{when inDeficit $>$ 1 or }
+\sttn{\idt{}\idt{}(inDeficit = 1 and isTerminated and outDeficit = 0)}
+\stt{\idt{}E \la{} some edge E with inDeficit[E] $\neq$ 0}
+\stt{\idt{}send(signal, E, myID)}
+\stt{\idt{}decrement inDeficit[E] and inDeficit}\hline
+\sttn{\bfseries receive signal}\hline
+\stt{receive(signal, \_)}
+\stt{decrement outDeficit}\hline
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Dijkstra-Scholten algorithm (env., preliminary)}%
+{integer outDeficit \la{} 0}\hline
+\sttn{\bfseries computation}\hline
+\stt{for all outgoing edges E}
+\stt{\idt{}send(message, E, myID)}
+\stt{\idt{}increment outDeficit}
+\stt{await outDeficit = 0}
+\stt{announce system termination}\hline
+\sttn{\bfseries receive signal}\hline
+\stt{receive(signal, source)}
+\stt{decrement outDeficit}\hline
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large The Preliminary DS Algorithm is Unsafe}
+\begin{center}
+\begin{paenv}
+\unitlength=1pt
+\begin{picture}(130,100)
+\thicklines
+%\put(0,0){\framebox(130,100){}}
+\put(0,40){\framebox(50,20){node1}}
+\put(80,0){\framebox(50,20){node3}}
+\put(80,80){\framebox(50,20){node2}}
+\thinlines
+\put(25,60){\vector(2,1){55}}
+\put(25,39){\vector(2,-1){54}}
+\put(115,20){\vector(0,1){60}}
+\put(95,80){\vector(0,-1){60}}
+\put(60,65){\makebox(10,10){e2}}
+\put(60,25){\makebox(10,10){e3}}
+\end{picture}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Spanning Tree}
+\begin{center}
+\begin{paenv}
+\unitlength=1pt
+\begin{picture}(210,100)
+\thicklines
+%\put(0,0){\framebox(210,100){}}
+\put(0,40){\framebox(50,20){node1}}
+\put(80,0){\framebox(50,20){node3}}
+\put(80,80){\framebox(50,20){node2}}
+\put(160,40){\framebox(50,20){node4}}
+\thinlines
+\put(25,60){\vector(2,1){55}}
+%\put(25,39){\vector(2,-1){54}}
+\put(131,88){\vector(2,-1){55}}
+%\put(185,39){\vector(-2,-1){54}}
+%\put(115,20){\vector(0,1){60}}
+\put(95,80){\vector(0,-1){60}}
+\end{picture}\label{p.ds-tree}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Dijkstra-Scholten algorithm}%
+{integer array[incoming] inDeficit \la{} [0,\ldots,0]}
+\decl{integer inDeficit \la{} 0}
+\decl{integer outDeficit \la{} 0}
+\decl{integer parent \la{} $-$1}\hline
+\sttn{\bfseries send message}\hline
+\stt{when parent $\neq$ $-$1  \hspace{3em} // Only active nodes send messages}
+\stt{\idt{}send(message, destination, myID)}
+\stt{\idt{}increment outDeficit}\hline
+\sttn{\bfseries receive message}\hline
+\stt{receive(message,source)}
+\stt{if parent = $-$1}
+\stt{\idt{}parent \la{} source}
+\stt{increment inDeficit[source] and inDeficit}\hline
+\end{alg}
+\end{wideslide}
+
+\addtocounter{algcounter}{-1}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Dijkstra-Scholten algorithm (continued)}{}
+\sttn{\bfseries send signal\setcounter{lctr}{7}}\hline
+\stt{when inDeficit $>$ 1}
+\stt{\idt{}E \la{} some edge E for which}
+\sttn{\idt{}\idt{}(inDeficit[E] $>$ 1) or (inDeficit[E] $=$ 1 and E $\neq$ parent)}
+\stt{\idt{}send(signal, E, myID)}
+\stt{\idt{}decrement inDeficit[E] and inDeficit}
+\stt{or when inDeficit = 1 and isTerminated and outDeficit = 0}
+\stt{\idt{}send(signal, parent, myID)}
+\stt{\idt{}inDeficit[parent] \la{} 0}
+\stt{\idt{}inDeficit \la{} 0}
+\stt{\idt{}parent \la{} $-$1}\hline
+\sttn{\bfseries receive signal}\hline
+\stt{receive(signal, \_)}
+\stt{decrement outDeficit}\hline
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Partial Scenario for DS Algorithm}
+\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\begin{paenv}
+\begin{tabular}{|l|c|c|c|c|}\hline
+Action & node1 & node2 & node3 & node4 \\\hline
+1 \chin{} 2 & (-1,[\,],0) & (-1,[0,0],0) & (-1,[0,0,0],0) & (-1,[0],0)  \\\hline
+2 \chin{} 4 & (-1,[\,],1) & (1,[1,0],0) & (-1,[0,0,0],0) & (-1,[0],0)  \\\hline
+2 \chin{} 3 & (-1,[\,],1) & (1,[1,0],1) & (-1,[0,0,0],0) & (2,[1],0)  \\\hline
+2 \chin{} 4 & (-1,[\,],1) & (1,[1,0],2) & (2,[0,1,0],0) & (2,[1],0)  \\\hline
+1 \chin{} 3 & (-1,[\,],1) & (1,[1,0],3) & (2,[0,1,0],0) & (2,[2],0)  \\\hline
+3 \chin{} 2 & (-1,[\,],2) & (1,[1,0],3) & (2,[1,1,0],0) & (2,[2],0)  \\\hline
+4 \chin{} 3 & (-1,[\,],2) & (1,[1,1],3) & (2,[1,1,0],1) & (2,[2],0)  \\\hline
+        & (-1,[\,],2) & (1,[1,1],3) & (2,[1,1,1],1) & (2,[2],1)  \\\hline
+\end{tabular}
+\end{paenv}
+\renewcommand{\arraystretch}{1}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Data Structures After Partial Scenario}
+\begin{center}
+\begin{paenv}
+\unitlength=1pt
+\begin{picture}(210,100)
+\thicklines
+%\put(0,0){\framebox(210,100){}}
+\put(0,40){\framebox(50,20){node1 (2)}}
+\put(80,0){\framebox(50,20){node3 (1)}}
+\put(80,80){\framebox(50,20){node2 (3)}}
+\put(160,40){\framebox(50,20){node4 (1)}}
+\thinlines
+\put(65,85){\makebox(10,10){1}}
+\put(115,65){\makebox(10,10){1}}
+\put(65,5){\makebox(10,10){1}}
+\put(85,25){\makebox(10,10){1}}
+\put(135,5){\makebox(10,10){1}}
+\put(180,65){\makebox(10,10){2}}
+\put(25,39){\vector(2,-1){54}}
+\put(185,39){\vector(-2,-1){54}}
+\put(115,20){\vector(0,1){60}}
+\thicklines
+\put(25,60){\vector(2,1){55}}
+\put(95,80){\vector(0,-1){60}}
+\put(131,88){\vector(2,-1){55}}
+\end{picture}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Credit-recovery algorithm (environment node)}%
+{float weight \la{} 1.0}\hline
+\sttn{\bfseries computation}\hline
+\stt{for all outgoing edges E}
+\stt{\idt{}weight \la{} weight / 2.0}
+\stt{\idt{}send(message, E, weight)}
+\stt{await weight = 1.0}
+\stt{announce system termination}\hline
+\sttn{\bfseries receive signal}\hline
+\stt{receive(signal, w)}
+\stt{weight \la{} weight + w}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Credit-recovery algorithm (non-environment node)}%
+{constant integer parent \la{} 0 // Environment node}
+\decl{boolean active \la{} false}
+\decl{float weight \la{} 0.0}\hline
+\sttn{\bfseries send message}\hline
+\stt{if active \hspace{3em} // Only active nodes send messages}
+\stt{\idt{}weight \la{} weight / 2.0}
+\stt{\idt{}send(message, destination, myID, weight)}\hline
+\sttn{\bfseries receive message}\hline
+\stt{receive(message, source, w)}
+\stt{active \la{} true}
+\stt{weight \la{} weight + w}\hline
+\sttn{\bfseries send signal}\hline
+\stt{when terminated}
+\stt{\idt{}send(signal, parent, weight)}
+\stt{\idt{}weight \la{} 0.0}
+\stt{\idt{}active \la{} false}\hline
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Messages on a Channel}
+\begin{center}
+\begin{paenv}
+\unitlength=1pt
+\begin{picture}(300,23)
+\thicklines
+\put(0,0){\framebox(50,20){node1}}
+\put(250,0){\framebox(50,20){node2}}
+\put(50,10){\vector(1,0){200}}
+\put(50,12){\makebox(200,10){m14, m13, m12, m11, m10}}
+\end{picture}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Sending a Marker}
+\begin{center}
+\begin{paenv}
+\unitlength=1pt
+\begin{picture}(300,23)
+\thicklines
+\put(0,0){\framebox(50,20){node1}}
+\put(250,0){\framebox(50,20){node2}}
+\put(50,10){\vector(1,0){200}}
+\put(50,12){\makebox(200,10){m14, m13, m12, marker, m11, m10}}
+\end{picture}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Chandy-Lamport algorithm for global snapshots}%
+{integer array[outgoing] lastSent \la{} [0, \ldots, 0]\hspace*{3em}}
+\decl{integer array[incoming] lastReceived \la{} [0, \ldots, 0]}
+\decl{integer array[outgoing] stateAtRecord \la{} [$-1$, \ldots, $-1$]}
+\decl{integer array[incoming] messageAtRecord \la{} [$-1$, \ldots, $-1$]}
+\decl{integer array[incoming] messageAtMarker \la{} [$-1$, \ldots, $-1$]}\hline
+\sttn{\bfseries send message}\hline
+\stt{send(message, destination, myID)}
+\stt{lastSent[destination] \la{} message}\hline
+\sttn{\bfseries receive message}\hline
+\stt{receive(message,source)}
+\stt{lastReceived[source] \la{} message}\hline
+\end{alg}
+\end{wideslide}
+
+\addtocounter{algcounter}{-1}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Chandy-Lamport algorithm (continued)}{}
+\sttn{\bfseries receive marker\setcounter{lctr}{5}}\hline
+\stt{receive(marker, source)}
+\stt{messageAtMarker[source] \la{} lastReceived[source]}
+\stt{if stateAtRecord = [$-1$,\ldots,$-1$] \hspace{1em} // Not yet recorded}
+%\stt{\idt{}recordedState \la{} true}
+\stt{\idt{}stateAtRecord \la{} lastSent}
+%\stt{\idt{}for all incoming edges E}
+\stt{\idt{}messageAtRecord \la{} lastReceived}
+\stt{\idt{}for all outgoing edges E}
+\stt{\idt{}\idt{}send(marker, E, myID)}\hline
+\sttn{\bfseries record state}\hline
+\stt{await markers received on all incoming edges}
+\stt{recordState}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Messages and Markers for a Scenario}
+\begin{center}
+\begin{paenv}
+\unitlength=1pt
+\begin{picture}(160,80)
+\thicklines
+\put(0,0){\framebox(40,20){node1}}
+\put(40,10){\vector(1,0){80}}
+\put(40,12){\makebox(80,10){M,3,2,1}}
+\put(120,0){\framebox(40,20){node3}}
+\put(20,20){\vector(1,1){40}}
+\put(0,40){\makebox(40,10){M,3,2,1}}
+\put(60,60){\framebox(40,20){node2}}
+\put(100,60){\vector(1,-1){40}}
+\put(120,40){\makebox(40,10){M,3,2,1}}
+\end{picture}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Scenario for CL Algorithm (1)}
+\begin{center}
+\begin{paenv}
+\begin{tabular}{|l|c|c|c|c|c|c|c|c|c|c|}\hline
+Action & \multicolumn{5}{|c|}{node1} & \multicolumn{5}{|c|}{node2}\\\hline
+&ls & lr & st &rc & mk &
+ls & lr & st &rc & mk \\\hline\hline
+&
+[3,3] &  &  &  &  &
+[3] & [3] & & &  \\\hline
+1M\chin{}2 &
+[3,3] &  & [3,3] &  &  &
+[3] & [3] & & &  \\\hline
+1M\chin{}3 &
+[3,3] &  & [3,3] &  &  &
+[3] & [3] & & &  \\\hline
+2\chout{}1M &
+[3,3] &  & [3,3] &  &  &
+[3] & [3] &  &  &  \\\hline
+2M\chin{}3 &
+[3,3] &  & [3,3] &  &  &
+[3] & [3] & [3] & [3] & [3] \\\hline
+\end{tabular}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Scenario for CL Algorithm (2)}
+\begin{center}
+\begin{paenv}
+\begin{tabular}{|l|c|c|c|c|c|}\hline
+Action & \multicolumn{5}{|c|}{node3}\\\hline
+&ls & lr & st &rc & mk \\\hline\hline
+3\chout{}2 &
+ &  & & & \\\hline
+3\chout{}2 &
+ & [0,1] & & & \\\hline
+3\chout{}2 &
+ & [0,2] & & & \\\hline
+3\chout{}2M &
+ & [0,3] &  &  &  \\\hline
+3\chout{}1 &
+ & [0,3] &  & [0,3] & [0,3] \\\hline
+3\chout{}1 &
+ & [1,3] &  & [0,3] & [0,3] \\\hline
+3\chout{}1 &
+ & [2,3] &  & [0,3] & [0,3] \\\hline
+3\chout{}1M &
+ & [3,3] &  & [0,3] & [0,3] \\\hline
+ &
+ & [3,3] &  & [0,3] & [3,3] \\\hline
+\end{tabular}
+\end{paenv}
+\end{center}
+\end{wideslide}
+

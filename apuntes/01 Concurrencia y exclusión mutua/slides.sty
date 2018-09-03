@@ -1,0 +1,131 @@
+%
+%   Style file for slides in:
+%   Principles of Concurrent and Distributed Programming (Second Edition)
+%   Moti Ben-Ari, 2005
+%
+
+\newcounter{lesson}
+\newcommand{\newlesson}{
+\stepcounter{lesson}
+\setcounter{slide}{0}
+\setcounter{algcounter}{0}
+}
+
+%%%%%%%%%%%%%%%%%%%%%% General commands and environments %%%%%%%%%%%%%%%%%%%%
+
+% Symbols
+\newcommand*{\ngg}{\mathop{\neg}}
+\newcommand*{\imp}{\mathbin{\rightarrow}}
+\newcommand*{\eqv}{\mathbin{\leftrightarrow}}
+\newcommand*{\logeqv}{\mathrel{\equiv}}
+\newcommand*{\la}{$\leftarrow$}
+\newcommand*{\ra}{$\rightarrow$}
+\newcommand*{\chin}{$\Rightarrow$}
+\newcommand*{\chout}{$\Leftarrow$}
+
+%%%%%%%%%%%%%%%%% Commands and environments for programs %%%%%%%%%%%%%%%%%
+%
+% Definitions for listings.sty
+\lstset{basicstyle=\sffamily\footnotesize,keywordstyle=\sffamily\bfseries,
+commentstyle=\sffamily,
+identifierstyle=\sffamily,stringstyle=\sffamily,showstringspaces=false,
+numbers=left,numberstyle=\scriptsize,escapechar=@,columns=[l]flexible,xleftmargin=2cm,
+aboveskip=0pt,belowskip=0pt,
+}
+
+% A program is typeset according to #1=language, #2=file name in listings directory
+\newcommand*{\program}[2]{\lstinputlisting[language=#1]{listings/#2}}
+
+%%%%%%%%%%%%%%%%% Commands and environments for algorithms %%%%%%%%%%%%%%%%%
+
+% Font for algorithm
+\newenvironment*{paenv}{\begin{sffamily}}{\end{sffamily}}
+
+% Counters and lengths
+\newcounter{lctr}                 % Line counter
+\newcounter{algcounter}%[section]  % Algorithm counter within chapter
+\newlength{\jus}                  % Justification length for global variables
+
+% Justification of line numbers prefixed with process name
+\newcommand*{\pln}[1]{
+\settowidth{\jus}{{\footnotesize #1\thelctr:}}%
+\addtolength{\jus}{-4ex}{\footnotesize #1\thelctr:}\hspace*{-\jus}}
+
+% Amount of indenting in algorithm
+\newcommand*{\idt}{\hspace*{12pt}}
+
+% Line numbers for processes p, q, r
+\newcommand*{\lnp}{\stepcounter{lctr}\pln{p}}
+\newcommand*{\lnq}{\pln{q}}
+\newcommand*{\lnr}{\pln{r}}
+
+% Declaration of global variable, centered
+\newcommand*{\decl}[1]{\multicolumn{2}{|@{\hspace{\jus}}l|}{#1}\\}
+
+% Line of global procedure, left justified
+\newcommand*{\proc}[1]{\multicolumn{2}{|l|}{#1}\\}
+
+% Process names, centered and bold
+\newcommand*{\procname}[2]{\multicolumn{1}{|c|}{\bfseries#1}&%
+\multicolumn{1}{|c|}{\bfseries #2}\\\hline}
+
+% Statements for two processes, p and q
+\newcommand*{\st}[2]{\lnp{}#1&\lnq{}#2\\}
+
+% Continuation of \st statement
+\newcommand*{\stn}[2]{\hspace*{16pt} #1& \hspace*{16pt} #2\\}
+
+% Statement for a single process p
+\newcommand*{\stt}[1]{\multicolumn{2}{|p{0.96\textwidth}|}{\lnp{}#1}\\}
+
+% Continuation of a statement for a single process p
+\newcommand*{\sttn}[1]{\multicolumn{2}{|p{0.96\textwidth}|}{\hspace*{16pt} #1}\\}
+
+% Declarations, statements and continuations for three processes p, q, r
+\newcommand*{\declthree}[1]{\multicolumn{3}{|@{\hspace{.7\jus}}l|}{#1}\\}
+\newcommand*{\stthree}[3]{\lnp{}#1&\lnq{}#2&\lnr{}#3\\}
+\newcommand*{\stnthree}[3]{#1&#2&#3\\}
+\newcommand*{\procnamethree}[3]{\multicolumn{1}{|c|}{\bfseries#1}&%
+\multicolumn{1}{|c|}{\bfseries #2}&\multicolumn{1}{|c|}{\bfseries #3}\\\hline}
+
+%
+% Environment for displaying algorithms, #1=title, #2=first declaration line
+%
+\newenvironment{alg}[2]{
+\stepcounter{algcounter}
+\settowidth{\jus}{#2}\addtolength{\jus}{-0.94\textwidth}\setlength{\jus}{-0.47\jus}
+\begin{center}
+\index{algorithm!#1}
+\begin{paenv}
+%\begin{small}
+\begin{minipage}{\textwidth}
+\renewcommand{\arraystretch}{0.95}
+\setcounter{lctr}{0}
+\begin{tabular}{|p{0.46\textwidth}|p{0.46\textwidth}|}\hline
+\multicolumn{2}{|c|}%
+{\textbf{Algorithm \thelesson.\thealgcounter: #1}}\\\hline\decl{#2}}
+{\hline\end{tabular}
+\end{minipage}
+%\end{small}
+\end{paenv}
+\end{center}
+}
+ 
+% Version for three process columns (first declaration is not used)
+\newenvironment{algthree}[1]{
+\stepcounter{algcounter}
+\setlength{\jus}{0.37\textwidth}%
+\begin{center}
+\index{algorithm!#1}
+\begin{paenv}
+\begin{minipage}{.99\textwidth}
+\renewcommand{\arraystretch}{0.95}
+\setcounter{lctr}{0}
+\begin{tabular}{|p{0.30\textwidth}|p{0.30\textwidth}|p{0.30\textwidth}|}\hline
+\multicolumn{3}{|c|}%
+{\textbf{Algorithm \thelesson.\thealgcounter: #1}}\\\hline}
+{\hline\end{tabular}
+\end{minipage}
+\end{paenv}
+\end{center}
+}

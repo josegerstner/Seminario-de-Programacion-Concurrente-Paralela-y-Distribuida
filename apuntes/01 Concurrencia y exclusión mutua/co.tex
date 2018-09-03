@@ -1,0 +1,940 @@
+\begin{wideslide}[bm=,toc=]{\large Architecture for a Reliable System}
+\begin{center}
+\begin{paenv}
+\unitlength=1pt
+\begin{picture}(290,100)
+\put(-60,0){
+\thicklines
+%\put(60,0){\framebox(290,100){}}
+\put(60,20){\makebox(40,20)[l]{Pressure}}
+\put(60,80){\makebox(40,20)[l]{Temperature}}
+\multiput(70,10)(10,0){3}{\circle{20}}
+\multiput(70,70)(10,0){3}{\circle{20}}
+\multiput(140,0)(0,30){3}{\framebox(40,20){CPU}}
+\put(100,10){\vector(2,3){40}}
+\put(100,10){\vector(3,2){40}}
+\put(100,10){\vector(1,0){40}}
+\put(100,70){\vector(2,-3){40}}
+\put(100,70){\vector(3,-2){40}}
+\put(100,70){\vector(1,0){40}}
+\put(180,70){\vector(2,-1){40}}
+\put(180,10){\vector(2,1){40}}
+\put(180,40){\vector(1,0){40}}
+\put(250,40){\oval(60,20)}
+\put(220,30){\makebox(60,20){Comparator}}
+\put(280,40){\vector(1,0){40}}
+\put(310,50){\makebox(40,20)[l]{Throttle}}
+\put(330,40){\circle{20}}
+}
+\end{picture}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Consensus - one-round algorithm}{planType finalPlan}
+\decl{planType array[generals] plan}\hline
+\stt{plan[myID] \la{} chooseAttackOrRetreat}
+\stt{for all {\itshape other} generals G}
+\stt{\idt{}send(G, myID, plan[myID])}
+\stt{for all {\itshape other} generals G}
+\stt{\idt{}receive(G, plan[G])}
+\stt{finalPlan \la{} majority(plan)}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Messages Sent in a One-Round Algorithm}
+\begin{center}
+\begin{paenv}
+\unitlength=1pt
+\begin{picture}(160,80)
+\thicklines
+\put(0,0){\framebox(40,20){Zoe A}}
+\put(120,0){\framebox(40,20){Leo R}}
+\put(60,60){\framebox(40,20){Basil A}}
+\put(40,5){\vector(1,0){80}}
+\put(120,15){\vector(-1,0){80}}
+\put(30,20){\vector(1,1){40}}
+\put(60,70){\vector(-1,-1){50}}
+\put(90,60){\vector(1,-1){40}}
+\put(150,20){\vector(-1,1){50}}
+\put(40,16){\makebox(80,10){R}}
+\put(40,-6){\makebox(80,10){A}}
+\put(20,40){\makebox(10,10){\textbf{--}}}
+\put(59,40){\makebox(10,10){A}}
+\put(92,40){\makebox(10,10){A}}
+\put(130,40){\makebox(10,10){R}}
+\end{picture}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Data Structures in a One-Round Algorithm}
+\begin{center}
+\begin{paenv}
+\begin{minipage}{.3\textwidth}
+\begin{tabular}{|l|c|}
+\hline
+\multicolumn{2}{|c|}{Leo}\\\hline
+general & plan \\\hline
+Basil & A\\\hline
+Leo & R \\\hline
+Zoe & A \\\hline
+majority&A\\\hline
+\end{tabular}
+\end{minipage}
+\hspace{.1\textwidth}
+\begin{minipage}{.3\textwidth}
+\begin{tabular}{|l|c|}
+\hline
+\multicolumn{2}{|c|}{Zoe}\\\hline
+general & plans \\\hline
+Basil & \textbf{--}\\\hline
+Leo & R \\\hline
+Zoe & A \\\hline
+majority &R\\\hline
+\end{tabular}
+\end{minipage}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\vspace*{-2ex}
+\begin{alg}{Consensus - Byzantine Generals algorithm}{planType finalPlan\hspace*{6em}}
+\decl{planType array[generals] plan, majorityPlan}
+\decl{planType array[generals, generals] reportedPlan}
+\hline
+\stt{plan[myID] \la{} chooseAttackOrRetreat}
+\stt{for all {\itshape other} generals G \hspace{8em} // First round}
+\stt{\idt{}send(G, myID, plan[myID])}
+\stt{for all {\itshape other} generals G}
+\stt{\idt{}receive(G, plan[G])}
+\stt{for all {\itshape other} generals G \hspace{8em} // Second round}
+\stt{\idt{}for all {\itshape other } generals G' except G}
+\stt{\idt{}\idt{}send(G', myID, G, plan[G])}
+\stt{for all {\itshape other} generals G}
+\stt{\idt{}for all {\itshape other} generals G' except G}
+\stt{\idt{}\idt{}receive(G, G', reportedPlan[G, G'])}
+\stt{for all {\itshape other} generals G \hspace{8em} // First vote}
+\stt{\idt{}majorityPlan[G] \la{} majority(plan[G] $\cup$ reportedPlan[*, G])}
+\stt{majorityPlan[myID] \la{} plan[myID]\hspace{3.5em} // Second vote}
+\stt{finalPlan \la{} majority(majorityPlan)}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Crash Failure - First Scenario (Leo)}
+\begin{center}
+\begin{paenv}
+\begin{tabular}{|l|c|c|c|c|}
+\hline
+\multicolumn{5}{|c|}{Leo}\\\hline
+general & plan & \multicolumn{2}{|c|}{reported by} & majority \\\hline
+ &  & Basil & Zoe & \\\hline
+Basil & A && \textbf{--}  & A \\\hline
+Leo & R & & & R\\\hline
+Zoe & A & \textbf{--} && A\\\hline
+majority &&&&A\\\hline
+\end{tabular}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Crash Failure - First Scenario (Zoe)}
+\begin{center}
+\begin{paenv}
+\begin{tabular}{|l|c|c|c|c|}
+\hline
+\multicolumn{5}{|c|}{Zoe}\\\hline
+general & plan & \multicolumn{2}{|c|}{reported by} & majority \\\hline
+ &  & Basil & Leo & \\\hline
+Basil & \textbf{--} & & {\bfseries A} & A\\\hline
+Leo & R & \textbf{--} & & R\\\hline
+Zoe & A & & & A\\\hline
+majority &&&&A\\\hline
+\end{tabular}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Crash Failure - Second Scenario (Leo)}
+\begin{center}
+\begin{paenv}
+\begin{tabular}{|l|c|c|c|c|}
+\hline
+\multicolumn{5}{|c|}{Leo}\\\hline
+general & plan & \multicolumn{2}{|c|}{reported by} & majority \\\hline
+ &  & Basil & Zoe & \\\hline
+Basil & A &  &A & A \\\hline
+Leo & R & & & R\\\hline
+Zoe & A & A&  & A\\\hline
+majority &&&&A\\\hline
+\end{tabular}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Crash Failure - Second Scenario (Zoe)}
+\begin{center}
+\begin{paenv}
+\begin{tabular}{|l|c|c|c|c|}
+\hline
+\multicolumn{5}{|c|}{Zoe}\\\hline
+general & plan & \multicolumn{2}{|c|}{reported by} & majority \\\hline
+ &  & Basil & Leo & \\\hline
+Basil & A & & A & A\\\hline
+Leo & R & \textbf{--} & & R\\\hline
+Zoe & A & & & A\\\hline
+majority &&&&A\\\hline
+\end{tabular}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Knowledge Tree about Basil - First Scenario}
+\begin{center}
+\begin{paenv}
+\unitlength=1pt
+\begin{picture}(160,100)
+\thicklines
+\put(0,0){\framebox(40,20){Leo A}}
+\put(120,0){\framebox(40,20){Zoe A}}
+\put(0,40){\framebox(40,20){Zoe A}}
+\put(120,40){\framebox(40,20){Leo A}}
+\put(60,80){\framebox(40,20){Basil A}}
+\put(20,60){\line(2,1){40}}
+\put(140,60){\line(-2,1){40}}
+\put(20,20){\line(0,1){20}}
+\put(140,20){\line(0,1){20}}
+\end{picture}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Knowledge Tree about Basil - Second Scenario}
+\begin{center}
+\begin{paenv}
+\unitlength=1pt
+\begin{picture}(160,100)
+\thicklines
+\put(120,0){\framebox(40,20){Zoe X}}
+\put(120,40){\framebox(40,20){Leo X}}
+\put(60,80){\framebox(40,20){Basil X}}
+\put(140,60){\line(-2,1){40}}
+\put(140,20){\line(0,1){20}}
+\end{picture}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Knowledge Tree about Leo}
+\begin{center}
+\begin{paenv}
+\unitlength=1pt
+\begin{picture}(160,100)
+\thicklines
+\put(0,0){\framebox(40,20){Basil X}}
+%\put(120,0){\dashbox{2}(40,20){Zoe \textbf{--}}}
+\put(0,40){\framebox(40,20){Zoe X}}
+\put(120,40){\framebox(40,20){Basil X}}
+\put(60,80){\framebox(40,20){Leo X}}
+\put(20,60){\line(2,1){40}}
+\put(140,60){\line(-2,1){40}}
+\put(20,20){\line(0,1){20}}
+\end{picture}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Byzantine Failure with Three Generals}
+\begin{center}
+\begin{paenv}
+\unitlength=1pt
+\begin{picture}(160,80)
+\thicklines
+\put(0,0){\framebox(40,20){Zoe A}}
+\put(120,0){\framebox(40,20){Leo R}}
+\put(60,60){\framebox(40,20){Basil}}
+\put(40,5){\vector(1,0){80}}
+\put(120,15){\vector(-1,0){80}}
+\put(30,20){\vector(1,1){40}}
+\put(60,70){\vector(-1,-1){50}}
+\put(90,60){\vector(1,-1){40}}
+\put(150,20){\vector(-1,1){50}}
+\put(40,16){\makebox(80,10){R}}
+\put(40,-6){\makebox(80,10){A}}
+\put(20,40){\makebox(10,10){R}}
+\put(59,40){\makebox(10,10){A}}
+\put(92,40){\makebox(10,10){A}}
+\put(130,40){\makebox(10,10){R}}
+\end{picture}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Data Stuctures for Leo and Zoe After First Round}
+\begin{center}
+\begin{paenv}
+\begin{minipage}{.3\textwidth}
+\begin{tabular}{|l|c|}
+\hline
+\multicolumn{2}{|c|}{Leo}\\\hline
+general & plans \\\hline
+Basil & A\\\hline
+Leo & R \\\hline
+Zoe & A \\\hline
+majority &A\\\hline
+\end{tabular}
+\end{minipage}
+\hspace{.1\textwidth}
+\begin{minipage}{.3\textwidth}
+\begin{tabular}{|l|c|}
+\hline
+\multicolumn{2}{|c|}{Zoe}\\\hline
+general & plans \\\hline
+Basil & R\\\hline
+Leo & R \\\hline
+Zoe & A \\\hline
+majority &R\\\hline
+\end{tabular}
+\end{minipage}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Data Stuctures for Leo After Second Round}
+\begin{center}
+\begin{paenv}
+\begin{tabular}{|l|c|c|c|c|}
+\hline
+\multicolumn{5}{|c|}{Leo}\\\hline
+general & plans & \multicolumn{2}{|c|}{reported by} & majority \\\hline
+ &  & Basil & Zoe & \\\hline
+Basil & A &  & A& A \\\hline
+Leo & R & & & R\\\hline
+Zoe & A & \bfseries R&  & R\\\hline
+majority &&&&R\\\hline
+\end{tabular}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Data Stuctures for Zoe After Second Round}
+\begin{center}
+\begin{paenv}
+\begin{tabular}{|l|c|c|c|c|}
+\hline
+\multicolumn{5}{|c|}{Zoe}\\\hline
+general & plans & \multicolumn{2}{|c|}{reported by} & majority \\\hline
+ &  & Basil & Leo & \\\hline
+Basil & A & & A & A\\\hline
+Leo & R & R & & R\\\hline
+Zoe & A & & & A\\\hline
+majority &&&&A\\\hline
+\end{tabular}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Knowledge Tree About Zoe}
+\begin{center}
+\begin{paenv}
+\unitlength=1pt
+\begin{picture}(160,100)
+\put(0,0){\framebox(40,20){Basil A}}
+\put(120,40){\framebox(40,20){Basil A}}
+\put(60,80){\framebox(40,20){Zoe A}}
+\thicklines
+\put(20,60){\line(2,1){40}}
+\put(140,60){\line(-2,1){40}}
+\put(20,20){\line(0,1){20}}
+\put(140,20){\line(0,1){20}}
+\thicklines
+%\linethickness{1pt}
+\put(120,0){\framebox(40,20){Leo R}}
+\put(0,40){\framebox(40,20){Leo A}}
+\end{picture}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Four Generals: Data Structure of Basil (1)}
+\begin{center}
+\begin{paenv}
+\begin{tabular}{|l|c|c|c|c|c|}
+\hline
+\multicolumn{6}{|c|}{Basil}\\\hline
+general & plan & \multicolumn{3}{|c|}{reported by} & majority \\\hline
+        &       & John & Leo & Zoe & \\\hline
+Basil   & A     &      &     &     & A\\\hline
+John    & {\bfseries A}     &      & {\bfseries A} & ? & A\\\hline
+Leo     & R     & R    &     & ?   & R\\\hline
+Zoe     & ?     & ?    & ?   &     & ? \\\hline
+majority & &&&&? \\\hline
+\end{tabular}\label{p.scenario}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Four Generals: Data Structure of Basil (2)}
+\begin{center}
+\begin{paenv}
+\begin{tabular}{|l|c|c|c|c|c|}
+\hline
+\multicolumn{6}{|c|}{Basil}\\\hline
+general & plans & \multicolumn{3}{|c|}{reported by} & majority \\\hline
+        &       & John & Leo & Zoe & \\\hline
+Basil   & A     &      &     &     & A\\\hline
+John    & A     &      & A   & ?   & A\\\hline
+Leo     & R     & R    &     & ?   & R\\\hline
+Zoe     & {\bfseries R}     & {\bfseries A}    & {\bfseries R}   &    & R \\\hline
+&&&&&R\\\hline
+\end{tabular}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Knowledge Tree About Loyal General Leo}
+\begin{center}
+\begin{paenv}
+\unitlength=1pt
+\begin{picture}(340,120)\label{p.knowledge}
+\thinlines\put(150,100){\framebox(40,20){Leo X}}
+
+\thicklines\put(30,40){\dashbox{2}(40,20){Basil X}}
+\thicklines\put(150,40){\framebox(40,20){John X}}
+\thinlines\put(270,40){\framebox(40,20){Zoe X}}
+
+\thicklines\put(0,0){\framebox(40,20){John X}}
+\thinlines\put(60,0){\framebox(40,20){Zoe X}}
+\thicklines\put(120,0){\dashbox{2}(40,20){Basil X}}
+\thinlines\put(180,0){\framebox(40,20){Zoe X}}
+\thicklines\put(240,0){\dashbox{2}(40,20){Basil Y}}
+\thicklines\put(300,0){\framebox(40,20){John Z}}
+\thicklines
+\multiput(30,40)(120,0){3}{\line(-1,-2){10}}
+\multiput(70,40)(120,0){3}{\line(1,-2){10}}
+\put(150,100){\line(-2,-1){80}}
+\put(170,100){\line(0,-1){40}}
+\put(190,100){\line(2,-1){80}}
+\end{picture}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Knowledge Tree About Traitor Zoe}
+\begin{center}
+\begin{paenv}
+\unitlength=1pt
+\begin{picture}(340,120)
+\thinlines\put(150,100){\framebox(40,20){Zoe}}
+
+\thicklines\put(30,40){\dashbox{2}(40,20){Basil X}}
+\thicklines\put(150,40){\framebox(40,20){John Y}}
+\thinlines\put(270,40){\framebox(40,20){Leo Z}}
+
+\thicklines\put(0,0){\framebox(40,20){John X}}
+\thinlines\put(60,0){\framebox(40,20){Leo X}}
+\thicklines\put(120,0){\dashbox{2}(40,20){Basil Y}}
+\thinlines\put(180,0){\framebox(40,20){Leo Y}}
+\thicklines\put(240,0){\dashbox{2}(40,20){Basil Z}}
+\thicklines\put(300,0){\framebox(40,20){John Z}}
+\thicklines
+\multiput(30,40)(120,0){3}{\line(-1,-2){10}}
+\multiput(70,40)(120,0){3}{\line(1,-2){10}}
+\put(150,100){\line(-2,-1){80}}
+\put(170,100){\line(0,-1){40}}
+\put(190,100){\line(2,-1){80}}
+\end{picture}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Complexity of the Byzantine Generals Algorithm}
+\begin{center}
+\begin{paenv}
+\begin{tabular}{|c|c|c|}\hline
+traitors & generals & messages\\\hline
+$1$ & $4$ & $36$ \\\hline
+$2$ & $7$ & $392$ \\\hline
+$3$ & $10$ & $1790$ \\\hline
+$4$ & $13$ & $5408$\\\hline
+\end{tabular}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Consensus - flooding algorithm}{planType finalPlan\hspace*{5em}}
+\decl{set of planType plan \la{} $\{\,$chooseAttackOrRetreat$\,\}$}
+\decl{set of planType receivedPlan}\hline
+\stt{do $t+1$ times}
+\stt{\idt{}for all {\itshape other} generals G}
+\stt{\idt{}\idt{}send(G, plan)}
+\stt{\idt{}for all {\itshape other} generals G}
+\stt{\idt{}\idt{}receive(G, receivedPlan)}
+\stt{\idt{}\idt{}plan \la{} plan $\cup$ receivedPlan}
+\stt{finalPlan \la{} majority(plan)}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Flooding Algorithm with No Crash:\\Knowledge Tree About Leo}
+\vspace*{2ex}
+\begin{center}
+\begin{paenv}
+\unitlength=1.2pt
+\begin{picture}(300,140)
+\thicklines
+%\put(0,0){\framebox(300,140){}}
+\put(110,120){\framebox(40,20){Leo X}}
+\put(130,120){\vector(0,-1){20}}
+\put(140,120){\line(0,-1){10}}
+\put(140,110){\line(1,0){110}}
+\put(250,110){\vector(0,-1){10}}
+
+\multiput(0,0)(0,40){3}{\framebox(40,20){Zoe X}}
+\put(115,120){\line(0,-1){5}}
+\put(115,115){\line(-1,0){65}}
+\put(50,115){\line(0,-1){25}}
+\put(50,90){\vector(-1,0){10}}
+
+\put(120,120){\line(0,-1){10}}
+\put(120,110){\line(-1,0){65}}
+\put(55,110){\line(0,-1){60}}
+\put(55,50){\vector(-1,0){15}}
+
+\put(125,120){\line(0,-1){15}}
+\put(125,105){\line(-1,0){65}}
+\put(60,105){\line(0,-1){95}}
+\put(60,10){\vector(-1,0){20}}
+
+\put(80,0){
+\put(60,40){\framebox(40,20){John X}}
+\put(30,80){\framebox(40,20){Basil X}}
+\put(180,40){\framebox(40,20){Basil X}}
+\put(150,80){\framebox(40,20){John X}}
+\multiput(0,0)(120,0){2}{
+\put(0,0){\framebox(40,20){Zoe X}}
+\put(60,0){\framebox(40,20){Zoe X}}
+\put(0,40){\framebox(40,20){Zoe X}}
+\put(40,80){\vector(-1,-1){20}}
+\put(60,80){\vector(1,-1){20}}
+\put(80,40){\vector(0,-1){20}}
+\put(20,30){\vector(0,-1){10}}
+\put(20,30){\line(1,0){30}}
+\put(50,30){\line(0,1){50}}
+}
+}
+\end{picture}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Flooding Algorithm with Crash:\\Knowledge Tree About Leo (1)}
+\vspace*{2ex}
+\begin{center}
+\begin{paenv}
+\unitlength=1.2pt
+\begin{picture}(100,140)
+\thicklines
+%\put(0,0){\framebox(100,140){}}
+\put(30,120){\framebox(40,20){Leo X}}
+\put(50,120){\vector(0,-1){20}}
+\put(0,0){
+\put(60,40){\framebox(40,20){John X}}
+\put(30,80){\framebox(40,20){Basil X}}
+\put(0,0){\framebox(40,20){Zoe X}}
+\put(60,0){\framebox(40,20){Zoe X}}
+\put(0,40){\framebox(40,20){Zoe X}}
+\put(40,80){\vector(-1,-1){20}}
+\put(60,80){\vector(1,-1){20}}
+\put(80,40){\vector(0,-1){20}}
+\put(20,30){\vector(0,-1){10}}
+\put(20,30){\line(1,0){30}}
+\put(50,30){\line(0,1){50}}
+}
+\end{picture}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Flooding Algorithm with Crash:\\Knowledge Tree About Leo (2)}
+\vspace*{2ex}
+\begin{center}
+\begin{paenv}
+\unitlength=1.2pt
+\begin{picture}(100,140)
+\thicklines
+\put(30,120){\framebox(40,20){Leo X}}
+\put(50,120){\vector(0,-1){20}}
+\put(0,0){
+\put(60,40){\framebox(40,20){John X}}
+\put(30,80){\framebox(40,20){Basil X}}
+\put(60,0){\framebox(40,20){Zoe X}}
+\put(60,80){\vector(1,-1){20}}
+\put(80,40){\vector(0,-1){20}}
+}
+\end{picture}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Consensus - King algorithm}{planType finalPlan, myMajority, kingPlan}
+\decl{planType array[generals] plan}
+\decl{integer votesMajority}\hline
+\stt{plan[myID] \la{} chooseAttackOrRetreat}
+\sttn{}
+\stt{do {\bfseries two} times}
+\stt{\idt{}for all {\itshape other} generals G \hspace*{4em} // First and third rounds}
+\stt{\idt{}\idt{}send(G, myID, plan[myID])}
+\stt{\idt{}for all {\itshape other} generals G}
+\stt{\idt{}\idt{}receive(G, plan[G])}
+\stt{\idt{}myMajority \la{} majority(plan)}
+\stt{\idt{}votesMajority \la{} number of votes for myMajority}
+\end{alg}
+\end{wideslide}
+
+\addtocounter{algcounter}{-1}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Consensus - King algorithm (continued)\setcounter{lctr}{8}}{}
+\stt{\idt{}if my turn to be king \hspace*{4em} // Second and fourth rounds}
+\stt{\idt{}\idt{}for all {\itshape other} generals G}
+\stt{\idt{}\idt{}\idt{}send(G, myID, myMajority)}
+\stt{\idt{}\idt{}plan[myID] \la{} myMajority}
+\sttn{\idt{}else}
+\stt{\idt{}\idt{}receive(kingID, kingPlan)}
+\stt{\idt{}\idt{}if votesMajority > 3}
+\stt{\idt{}\idt{}\idt{}plan[myID] \la{} myMajority}
+\sttn{\idt{}\idt{}else}
+\stt{\idt{}\idt{}\idt{}plan[myID] \la{} kingPlan}
+\sttn{}
+\stt{finalPlan \la{} plan[myID] \hspace*{4em} // Final decision}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Scenario for King Algorithm:\\First King Loyal General Zoe (1)}
+\begin{center}
+\begin{paenv}
+
+\begin{tabular}{|c|c|c|c|c||c|c|c|}
+\hline
+\multicolumn{8}{|c|}{Basil}\\\hline
+Basil & John & Leo & Mike & Zoe & myMajority & votesMajority & kingPlan \\\hline
+A&A&R&R&R&R&3&\\\hline
+\end{tabular}
+\smallskip
+
+\begin{tabular}{|c|c|c|c|c||c|c|c|}
+\hline
+\multicolumn{8}{|c|}{John}\\\hline
+Basil & John & Leo & Mike & Zoe & myMajority & votesMajority & kingPlan \\\hline
+A&A&R&A&R&A&3&\\\hline
+\end{tabular}
+\smallskip
+
+\begin{tabular}{|c|c|c|c|c||c|c|c|}
+\hline
+\multicolumn{8}{|c|}{Leo}\\\hline
+Basil & John & Leo & Mike & Zoe & myMajority & votesMajority & kingPlan \\\hline
+A&A&R&A&R&A&3&\\\hline
+\end{tabular}
+\smallskip
+
+\begin{tabular}{|c|c|c|c|c||c|c|c|}
+\hline
+\multicolumn{8}{|c|}{Zoe}\\\hline
+Basil & John & Leo & Mike & Zoe & myMajority & votesMajority & kingPlan \\\hline
+A&A&R&R&R&R&3&\\\hline
+\end{tabular}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Scenario for King Algorithm:\\First King Loyal General Zoe (2)}
+\vspace*{2ex}
+\begin{center}
+\begin{paenv}
+
+\begin{tabular}{|c|c|c|c|c||c|c|c|}
+\hline
+\multicolumn{8}{|c|}{Basil}\\\hline
+Basil & John & Leo & Mike & Zoe & myMajority & votesMajority & kingPlan \\\hline
+R&&&&&&&R\\\hline
+\end{tabular}
+\smallskip
+
+\begin{tabular}{|c|c|c|c|c||c|c|c|}
+\hline
+\multicolumn{8}{|c|}{John}\\\hline
+Basil & John & Leo & Mike & Zoe & myMajority & votesMajority & kingPlan \\\hline
+&R&&&&&&R\\\hline
+\end{tabular}
+\smallskip
+
+\begin{tabular}{|c|c|c|c|c||c|c|c|}
+\hline
+\multicolumn{8}{|c|}{Leo}\\\hline
+Basil & John & Leo & Mike & Zoe & myMajority & votesMajority & kingPlan \\\hline
+&&R&&&&&R\\\hline
+\end{tabular}
+\smallskip
+
+\begin{tabular}{|c|c|c|c|c||c|c|c|}
+\hline
+\multicolumn{8}{|c|}{Zoe}\\\hline
+Basil & John & Leo & Mike & Zoe & myMajority & votesMajority & kingPlan \\\hline
+&&&&R&&&\\\hline
+\end{tabular}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Scenario for King Algorithm:\\First King Loyal General Zoe (3)}
+\vspace*{2ex}
+\begin{center}
+\begin{paenv}
+
+\begin{tabular}{|c|c|c|c|c||c|c|c|}
+\hline
+\multicolumn{8}{|c|}{Basil}\\\hline
+Basil & John & Leo & Mike & Zoe & myMajority & votesMajority & kingPlan \\\hline
+R&R&R&?&R&R&4--5&\\\hline
+\end{tabular}
+\smallskip
+
+\begin{tabular}{|c|c|c|c|c||c|c|c|}
+\hline
+\multicolumn{8}{|c|}{John}\\\hline
+Basil & John & Leo & Mike & Zoe & myMajority & votesMajority & kingPlan \\\hline
+R&R&R&?&R&R&4--5&\\\hline
+\end{tabular}
+\smallskip
+
+\begin{tabular}{|c|c|c|c|c||c|c|c|}
+\hline
+\multicolumn{8}{|c|}{Leo}\\\hline
+Basil & John & Leo & Mike & Zoe & myMajority & votesMajority & kingPlan \\\hline
+R&R&R&?&R&R&4--5&\\\hline
+\end{tabular}
+\smallskip
+
+\begin{tabular}{|c|c|c|c|c||c|c|c|}
+\hline
+\multicolumn{8}{|c|}{Zoe}\\\hline
+Basil & John & Leo & Mike & Zoe & myMajority & votesMajority & kingPlan \\\hline
+R&R&R&?&R&R&4--5&\\\hline
+\end{tabular}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Scenario for King Algorithm:\\First King Traitor Mike (1)}
+\vspace*{2ex}
+\begin{center}
+\begin{paenv}
+
+\begin{tabular}{|c|c|c|c|c||c|c|c|}
+\hline
+\multicolumn{8}{|c|}{Basil}\\\hline
+Basil & John & Leo & Mike & Zoe & myMajority & votesMajority & kingPlan \\\hline
+R&&&&&&&R\\\hline
+\end{tabular}
+\smallskip
+
+\begin{tabular}{|c|c|c|c|c||c|c|c|}
+\hline
+\multicolumn{8}{|c|}{John}\\\hline
+Basil & John & Leo & Mike & Zoe & myMajority & votesMajority & kingPlan \\\hline
+&A&&&&&&A\\\hline
+\end{tabular}
+\smallskip
+
+\begin{tabular}{|c|c|c|c|c||c|c|c|}
+\hline
+\multicolumn{8}{|c|}{Leo}\\\hline
+Basil & John & Leo & Mike & Zoe & myMajority & votesMajority & kingPlan \\\hline
+&&A&&&&&A\\\hline
+\end{tabular}
+\smallskip
+
+\begin{tabular}{|c|c|c|c|c||c|c|c|}
+\hline
+\multicolumn{8}{|c|}{Zoe}\\\hline
+Basil & John & Leo & Mike & Zoe & myMajority & votesMajority & kingPlan \\\hline
+&&&&R&&&R\\\hline
+\end{tabular}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Scenario for King Algorithm:\\First King Traitor Mike (2)}
+\vspace*{2ex}
+\begin{center}
+\begin{paenv}
+
+\begin{tabular}{|c|c|c|c|c||c|c|c|}
+\hline
+\multicolumn{8}{|c|}{Basil}\\\hline
+Basil & John & Leo & Mike & Zoe & myMajority & votesMajority & kingPlan \\\hline
+R&A&A&?&R&?&3&\\\hline
+\end{tabular}
+\smallskip
+
+\begin{tabular}{|c|c|c|c|c||c|c|c|}
+\hline
+\multicolumn{8}{|c|}{John}\\\hline
+Basil & John & Leo & Mike & Zoe & myMajority & votesMajority & kingPlan \\\hline
+R&A&A&?&R&?&3&\\\hline
+\end{tabular}
+\smallskip
+
+\begin{tabular}{|c|c|c|c|c||c|c|c|}
+\hline
+\multicolumn{8}{|c|}{Leo}\\\hline
+Basil & John & Leo & Mike & Zoe & myMajority & votesMajority & kingPlan \\\hline
+R&A&A&?&R&?&3&\\\hline
+\end{tabular}
+\smallskip
+
+\begin{tabular}{|c|c|c|c|c||c|c|c|}
+\hline
+\multicolumn{8}{|c|}{Zoe}\\\hline
+Basil & John & Leo & Mike & Zoe & myMajority & votesMajority & kingPlan \\\hline
+R&A&A&?&R&?&3&\\\hline
+\end{tabular}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Scenario for King Algorithm:\\First King Traitor Mike (3)}
+\vspace*{2ex}
+\begin{center}
+\begin{paenv}
+
+\begin{tabular}{|c|c|c|c|c||c|c|c|}
+\hline
+\multicolumn{8}{|c|}{Basil}\\\hline
+Basil & John & Leo & Mike & Zoe & myMajority & votesMajority & kingPlan \\\hline
+A&&&&&&&A\\\hline
+\end{tabular}
+\smallskip
+
+\begin{tabular}{|c|c|c|c|c||c|c|c|}
+\hline
+\multicolumn{8}{|c|}{John}\\\hline
+Basil & John & Leo & Mike & Zoe & myMajority & votesMajority & kingPlan \\\hline
+&A&&&&&&A\\\hline
+\end{tabular}
+\smallskip
+
+\begin{tabular}{|c|c|c|c|c||c|c|c|}
+\hline
+\multicolumn{8}{|c|}{Leo}\\\hline
+Basil & John & Leo & Mike & Zoe & myMajority & votesMajority & kingPlan \\\hline
+&&A&&&&&A\\\hline
+\end{tabular}
+\smallskip
+
+\begin{tabular}{|c|c|c|c|c||c|c|c|}
+\hline
+\multicolumn{8}{|c|}{Zoe}\\\hline
+Basil & John & Leo & Mike & Zoe & myMajority & votesMajority & kingPlan \\\hline
+&&&&A&&&\\\hline
+\end{tabular}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Complexity of\\Byzantine Generals and King Algorithms}
+\vspace*{4ex}
+
+\begin{center}
+\begin{paenv}
+\begin{tabular}{|c|c|c|}\hline
+traitors & generals & messages\\\hline
+$1$ & $4$ & $36$ \\\hline
+$2$ & $7$ & $392$ \\\hline
+$3$ & $10$ & $1790$ \\\hline
+$4$ & $13$ & $5408$\\\hline
+\end{tabular}
+\hspace{.1\textwidth}
+\begin{tabular}{|c|c|c|}\hline
+traitors & generals &  messages\\\hline
+$1$ & $5$ & $48$ \\\hline
+$2$ & $9$ & $240$ \\\hline
+$3$ & $13$ & $672$ \\\hline
+$4$ & $17$ & $1440$ \\\hline
+\end{tabular}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Impossibility with Three Generals (1)}
+\begin{center}
+\begin{paenv}
+\unitlength=1.2pt
+\begin{picture}(280,100)
+\thicklines
+%\put(0,0){\framebox(280,100){}}
+\put(40,80){\framebox(40,20){Zoe X}}
+\put(80,40){\framebox(40,20){John}}
+\put(0,40){\framebox(40,20){\shortstack{Leo\\$x_{1},\ldots,x_{n}$}}}
+\put(80,0){\framebox(40,20){\shortstack{Leo\\$u_{1},\ldots,u_{m}$}}}
+\put(20,60){\line(1,1){20}}
+\put(100,60){\line(-1,1){20}}
+\put(100,20){\line(0,1){20}}
+\put(160,0){
+\put(40,80){\framebox(40,20){Leo Y}}
+\put(80,40){\framebox(40,20){John}}
+\put(0,40){\framebox(40,20){\shortstack{Zoe\\$y_{1},\ldots,y_{n}$}}}
+\put(80,0){\framebox(40,20){\shortstack{Zoe\\$v_{1},\ldots,v_{m}$}}}
+\put(20,60){\line(1,1){20}}
+\put(100,60){\line(-1,1){20}}
+\put(100,20){\line(0,1){20}}
+}
+\end{picture}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Impossibility with Three Generals (2)}
+\begin{center}
+\begin{paenv}
+\unitlength=1.2pt
+\begin{picture}(120,100)
+\thicklines
+%\put(0,0){\framebox(120,100){}}
+\put(40,80){\framebox(40,20){John}}
+\put(0,0){\framebox(40,20){\shortstack{Zoe\\$x_{1},\ldots,x_{n}$}}}
+\put(80,40){\framebox(40,20){\shortstack{Zoe\\$y_{1},\ldots,y_{n}$}}}
+\put(0,40){\framebox(40,20){\shortstack{Leo\\$x_{1},\ldots,x_{n}$}}}
+\put(80,0){\framebox(40,20){\shortstack{Leo\\$y_{1},\ldots,y_{n}$}}}
+\put(20,60){\line(1,1){20}}
+\put(100,60){\line(-1,1){20}}
+\put(100,20){\line(0,1){20}}
+\put(20,20){\line(0,1){20}}
+\end{picture}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Exercise for Byzantine Generals Algorithm}
+\begin{center}
+\begin{paenv}
+\begin{tabular}{|l|c|c|c|c|c|}
+\hline
+\multicolumn{6}{|c|}{Zoe}\\\hline
+general & plan & \multicolumn{3}{|c|}{reported by} & majority \\\hline
+        &       & Basil & John & Leo & \\\hline
+Basil   & R     &      &   A  &  R   & ?\\\hline
+John    & A     &  R    &    & A    & ?\\\hline
+Leo     & R     & R    &  R   &     & ?\\\hline
+Zoe     & A     &      &     &     & A \\\hline
+&&&&& ? \\\hline
+\end{tabular}
+\end{paenv}
+\end{center}
+\end{wideslide}
+

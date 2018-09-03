@@ -1,0 +1,672 @@
+\begin{wideslide}[bm=,toc=]{\large Interleaving as Choosing Among Processes}
+\begin{center}
+\begin{paenv}
+\unitlength=1pt
+\begin{picture}(160,135)
+\thicklines
+%\put(0,0){\framebox(160,135){}}
+\put(120,0){
+\put(0,115){\makebox(40,20)[l]{p3, \ldots}}
+\put(9,100){\makebox(10,10)[l]{$\mathit{cp}_{p}$}}
+\put(6,105){\vector(0,1){10}}
+
+\put(0,65){\makebox(40,20)[l]{q2, \ldots}}
+\put(9,50){\makebox(10,10)[l]{$\mathit{cp}_{q}$}}
+\put(6,55){\vector(0,1){10}}
+
+\put(0,15){\makebox(40,20)[l]{r2, \ldots}}
+\put(9,0){\makebox(10,10)[l]{$\mathit{cp}_{r}$}}
+\put(6,5){\vector(0,1){10}}
+}
+\put(0,65){\makebox(80,20){p1, r1, p2, q1}}
+\put(115,125){\vector(-1,-1){30}}
+\put(115,75){\vector(-1,0){30}}
+\put(115,25){\vector(-1,1){30}}
+\end{picture}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Possible Interleavings}
+\begin{center}
+\begin{paenv}
+\begin{tabular}{l}
+p1\ra{}q1\ra{}p2\ra{}q2,\\
+p1\ra{}q1\ra{}q2\ra{}p2,\\
+p1\ra{}p2\ra{}q1\ra{}q2,\\
+q1\ra{}p1\ra{}q2\ra{}p2,\\
+q1\ra{}p1\ra{}p2\ra{}q2,\\
+q1\ra{}q2\ra{}p1\ra{}p2.
+\end{tabular}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Trivial concurrent program}{integer n \la{} 0}\hline
+\procname{p}{q}
+\stn{integer k1 \la{} 1}{integer k2 \la{} 2}
+\st{n \la{} k1}{n \la{} k2}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Trivial sequential program}{integer n \la{} 0}\hline
+\sttn{integer k1 \la{} 1}
+\sttn{integer k2 \la{} 2}
+\stt{n \la{} k1}
+\stt{n \la{} k2}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large State Diagram for a Sequential Program}
+\begin{center}
+\unitlength=1.4pt
+\begin{picture}(250,30)
+\thicklines
+%\put(0,0){\framebox(250,30){}}
+\put(0,15){\vector(1,0){10}}
+\put(0,15){\circle*{3}}
+\nod{10}{0}{\shortstack[c]{\rule{0pt}{1ex}\\p1: n \la{} k1\\$k1=1,k2=2$\\$n=0$}}
+\nod{100}{0}{\shortstack[c]{\rule{0pt}{1ex}\\p2: n \la{} k2\\$k1=1,k2=2$\\$n=1$}}
+\nod{190}{0}{\shortstack[c]{\rule{0pt}{1ex}\\(end)\\$k1=1,k2=2$\\$n=2$}}
+\put(70,15){\vector(1,0){30}}
+\put(160,15){\vector(1,0){30}}
+\end{picture}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large State Diagram for a Concurrent Program}
+\begin{center}
+\unitlength=1.7pt
+\begin{picture}(160,130)
+\thicklines
+%\put(0,0){\framebox(160,130){}}
+\put(80,130){\vector(0,-1){10}}
+\put(80,130){\circle*{2}}
+\nod{50}{90}{\shortstack[c]{\rule{0pt}{4pt}\\p1: n \la{} k1\\q1: n \la{} k2\\$k1=1,k2=2$\\$n=0$\\\rule{0pt}{1pt}}}
+\nod{0}{45}{\shortstack[c]{\rule{0pt}{4pt}\\(end)\\q1: n \la{} k2\\$k1=1,k2=2$\\$n=1$\\\rule{0pt}{1pt}}}
+\nod{0}{0}{\shortstack[c]{\rule{0pt}{4pt}\\(end)\\(end)\\$k1=1,k2=2$\\$n=2$\\\rule{0pt}{1pt}}}
+\nod{100}{45}{\shortstack[c]{\rule{0pt}{4pt}\\p1: n \la{} k1\\(end)\\$k1=1,k2=2$\\$n=2$\\\rule{0pt}{1pt}}}
+\nod{100}{0}{\shortstack[c]{\rule{0pt}{4pt}\\(end)\\(end)\\$k1=1,k2=2$\\$n=1$\\\rule{0pt}{1pt}}}
+\put(51,95){\vector(-1,-1){21}}
+\put(30,44){\vector(0,-1){15}}
+\put(109,95){\vector(1,-1){21}}
+\put(130,44){\vector(0,-1){15}}
+\end{picture}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Scenario for a Concurrent Program}
+\begin{center}
+\begin{paenv}
+\begin{tabular}{|l|l|c|c|c|}\hline
+Process p & Process q & n & k1 & k2\\\hline
+\bfseries p1: n\la{}k1 & q1: n\la{}k2 & $0$ & $1$ & $2$\\\hline
+(end) & \bfseries q1: n\la{}k2 & $1$ & $1$ & $2$\\\hline
+(end) & (end) & $2$ & $1$ & $2$\\\hline
+\end{tabular}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Multitasking System}
+\begin{center}
+\begin{paenv}
+\unitlength=1.2pt
+\begin{picture}(300,90)
+\thicklines
+\put(120,0){
+\put(5,30){\vector(2,1){60}}
+\put(0,0){\framebox(60,30){}}
+\put(10,0){\makebox(50,30){CPU}}
+\put(0,0){\makebox(10,30){\shortstack{R\\e\\g}}}
+\put(10,0){\dashline{2}(0,0)(0,30)}
+}
+\put(0,60){
+\put(5,-1){\vector(4,-1){115}}
+\put(0,0){\framebox(300,30){}}
+\multiput(60,0)(60,0){4}{\line(0,1){30}}
+\multiput(10,0)(60,0){5}{\dashline{2}(0,0)(0,30)}
+\multiput(0,0)(60,0){5}{\makebox(10,30){\shortstack{R\\e\\g}}}
+\put(10,0){\makebox(50,30){\shortstack{Operating\\System}}}
+\put(70,0){\makebox(50,30){Program 1}}
+\put(130,0){\makebox(50,30){Program 2}}
+\put(190,0){\makebox(50,30){Program 3}}
+\put(250,0){\makebox(50,30){Program 4}}
+}
+\end{picture}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Multiprocessor Computer}
+\begin{center}
+\begin{paenv}
+\unitlength=1pt
+\begin{picture}(250,150)
+\thicklines
+\multiput(0,0)(100,0){3}{
+   \put(0,0){\framebox(50,25){\shortstack{Local\\Memory}}}
+   \put(0,45){\framebox(50,25){CPU}}
+   \put(25,25){\line(0,1){20}}
+   \put(25,70){\line(0,1){20}}
+}
+\multiput(0,90)(0,10){2}{\line(1,0){250}}
+\put(125,100){\line(0,1){20}}
+\put(100,120){\framebox(50,25){\shortstack{Global\\Memory}}}
+\end{picture}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Inconsistency Caused by Overlapped Execution}
+\begin{center}
+\begin{paenv}
+\unitlength=1.1pt
+\begin{picture}(260,100)
+\thicklines
+%\put(0,0){\framebox(260,100){}}
+\multiput(0,0)(160,0){2}{\makebox(100,20){Local memory}}
+\put(0,20){\framebox(100,20){0000 0000 0000 0001}}
+\put(160,20){\framebox(100,20){0000 0000 0000 0010}}
+\put(80,60){\framebox(100,20){0000 0000 0000 0011}}
+\put(80,80){\makebox(100,20){Global memory}}
+\put(80,45){\vector(2,1){20}}
+\put(180,45){\vector(-2,1){20}}
+\end{picture}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Distributed Systems Architecture}
+\begin{center}
+\begin{paenv}
+\unitlength=1.25pt
+\begin{picture}(260,100)
+\thicklines
+\put(0,0){
+\multiput(0,0)(70,0){2}{\framebox(30,30){Node}}
+\multiput(0,70)(70,0){2}{\framebox(30,30){Node}}
+\put(30,10){\vector(1,0){40}}
+\put(90,30){\vector(0,1){40}}
+\put(70,80){\vector(-1,0){40}}
+\put(10,70){\vector(0,-1){40}}
+\put(70,20){\vector(-1,0){40}}
+\put(80,70){\vector(0,-1){40}}
+\put(30,90){\vector(1,0){40}}
+\put(20,30){\vector(0,1){40}}
+\put(32,28){\vector(1,1){40}}
+\put(68,72){\vector(-1,-1){40}}
+\put(32,72){\vector(1,-1){40}}
+\put(68,28){\vector(-1,1){40}}
+}
+\put(160,0){
+\multiput(0,0)(70,0){2}{\framebox(30,30){Node}}
+\multiput(0,70)(70,0){2}{\framebox(30,30){Node}}
+\put(30,15){\vector(1,0){40}}
+\put(85,30){\vector(0,1){40}}
+\put(70,85){\vector(-1,0){40}}
+\put(15,70){\vector(0,-1){40}}
+}
+\end{picture}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Atomic assignment statements}{integer n \la{} 0}\hline
+\procname{p}{q}
+\st{n \la{} n $+$ 1}{n \la{} n $+$ 1}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Scenario for Atomic Assignment Statements}
+\begin{center}
+\begin{paenv}
+\begin{tabular}{|l|l|c|}\hline
+Process p & Process q & n \\\hline
+\bfseries p1: n\la{}n+1 & q1: n\la{}n+1 & $0$\\\hline
+(end) & \bfseries q1: n\la{}n+1 & $1$\\\hline
+(end) & (end) & $2$ \\\hline
+\end{tabular}
+\end{paenv}
+\end{center}
+
+\begin{center}
+\begin{paenv}
+\begin{tabular}{|l|l|c|}\hline
+Process p & Process q & n \\\hline
+p1: n\la{}n+1 & \bfseries q1: n\la{}n+1 & $0$\\\hline
+\bfseries p1: n\la{}n+1 & (end) & $1$\\\hline
+(end) & (end) & $2$ \\\hline
+\end{tabular}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Assignment statements with one global reference}{integer n \la{} 0}\hline
+\procname{p}{q}
+\stn{integer temp}{integer temp}
+\st{temp \la{} n}{temp \la{} n}
+\st{n \la{} temp $+$ 1}{n \la{} temp $+$ 1}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Correct Scenario for Assignment Statements}
+\begin{center}
+\begin{paenv}
+\begin{tabular}{|l|l|c|c|c|}\hline
+Process p & Process q & n & p.temp & q.temp \\\hline
+\bfseries p1: temp\la{}n & q1: temp\la{}n & $0$ & ? & ?\\\hline
+\bfseries p2: n\la{}temp+1 & q1: temp\la{}n & $0$ & $0$ & ?\\\hline
+(end) & \bfseries q1: temp\la{}n & $1$ & $0$ & ?\\\hline
+(end) & \bfseries q2: n\la{}temp+1 & $1$ & $0$ & $1$\\\hline
+(end) & (end) & $2$ & $0$ & $1$\\\hline
+\end{tabular}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Incorrect Scenario for Assignment Statements}
+\begin{center}
+\begin{paenv}
+\begin{tabular}{|l|l|c|c|c|}\hline
+Process p & Process q & n & p.temp & q.temp \\\hline
+\bfseries p1: temp\la{}n & q1: temp\la{}n & $0$ & ? & ?\\\hline
+p2: n\la{}temp+1 & \bfseries q1: temp\la{}n & $0$ & $0$ & ?\\\hline
+\bfseries p2: n\la{}temp+1 & q2: n\la{}temp+1 & $0$ & $0$ & $0$\\\hline
+(end) & \bfseries q2: n\la{}temp+1 & $1$ & $0$ & $0$\\\hline
+(end) & (end) & $1$ & $0$ & $0$\\\hline
+\end{tabular}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Stop the loop A}{integer n \la{} 0}
+\decl{boolean flag \la{} false}\hline
+\procname{p}{q}
+\st{while flag = false}{flag \la{} true}
+\st{\idt{}n \la{} 1 $-$ n}{}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Assignment statement for a register machine}{integer n \la{} 0}\hline
+\procname{p}{q}
+\st{load R1,n}{load R1,n}
+\st{add R1,\#1}{add R1,\#1}
+\st{store R1,n}{store R1,n}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Register Machine}
+\begin{center}
+\begin{paenv}
+\unitlength=1pt
+\begin{picture}(340,120)
+\thicklines
+\multiput(0,0)(130,0){3}{
+   \put(0,0){\makebox(80,20)[b]{Registers}}
+   \put(0,90){\makebox(80,20)[t]{Memory}}
+   \multiput(0,20)(30,0){3}{\framebox(20,20){}}
+   \put(0,70){\framebox(80,20){}}
+   \put(0,70){\makebox(30,20){$\cdots$}}
+   \put(50,70){\makebox(30,20){$\cdots$}}
+   \put(30,70){\line(0,1){20}}
+   \put(50,70){\line(0,1){20}}
+}
+\put(30,70){\makebox(20,20){0}}
+\put(160,70){\makebox(20,20){0}}
+\put(290,70){\makebox(20,20){1}}
+\put(30,20){\makebox(20,20){0}}
+\put(160,20){\makebox(20,20){1}}
+\put(290,20){\makebox(20,20){1}}
+\put(40,65){\vector(0,-1){20}}
+\put(300,45){\vector(0,1){20}}
+\put(0,45){\makebox(40,20){Load}}
+\put(300,45){\makebox(40,20){Store}}
+\end{picture}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Scenario for a Register Machine}
+\begin{center}
+\begin{paenv}
+\begin{tabular}{|l|l|c|c|c|}\hline
+Process p & Process q & n & p.R1 & q.R1 \\\hline
+\bfseries p1: load R1,n & q1: load R1,n & $0$ & ? & ?\\\hline
+p2: add R1,\#1 & \bfseries q1: load R1,n & $0$ & $0$ & ?\\\hline
+\bfseries p2: add R1,\#1 & q2: add R1,\#1 & $0$ & $0$ & $0$\\\hline
+p3: store R1,n & \bfseries q2: add R1,\#1 & $0$ & $1$ & $0$\\\hline
+\bfseries p3: store R1,n & q3: store R1,n & $0$ & $1$ & $1$\\\hline
+(end) & \bfseries q3: store R1,n & $1$ & $1$ & $1$\\\hline
+(end) & (end) & $1$ & $1$ & $1$\\\hline
+\end{tabular}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Assignment statement for a stack machine}{integer n \la{} 0}\hline
+\procname{p}{q}
+\st{push n}{push n}
+\st{push \#1}{push \#1}
+\st{add}{add}
+\st{pop n}{pop n}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Stack Machine}
+\begin{center}
+\begin{paenv}
+\unitlength=1pt
+\begin{picture}(340,120)
+\thicklines
+\multiput(0,0)(130,0){3}{
+   \put(0,0){\makebox(80,20)[b]{Stack}}
+   \put(0,90){\makebox(80,20)[t]{Memory}}
+   \put(0,70){\framebox(80,20){}}
+   \put(0,70){\makebox(30,20){$\cdots$}}
+   \put(50,70){\makebox(30,20){$\cdots$}}
+   \put(30,70){\line(0,1){20}}
+   \put(50,70){\line(0,1){20}}
+}
+\put(0,20){\framebox(80,20){}}
+\put(0,20){\makebox(40,20){$\cdots$}}
+\put(40,20){\line(0,1){20}}
+\put(60,20){\line(0,1){20}}
+\put(40,20){\makebox(20,20){0}}
+\put(60,20){\makebox(20,20){1}}
+\put(40,65){\vector(1,-2){10}}
+\put(30,70){\makebox(20,20){0}}
+\put(130,0){
+\put(0,20){\framebox(60,20){}}
+\put(0,20){\makebox(40,20){$\cdots$}}
+\put(40,20){\line(0,1){20}}
+\put(40,20){\makebox(20,20){1}}
+\put(30,70){\makebox(20,20){0}}
+}
+\put(260,0){
+\put(0,20){\framebox(40,20){}}
+\put(0,20){\makebox(40,20){$\cdots$}}
+\put(40,20){\makebox(20,20){1}}
+\put(50,45){\vector(-1,2){10}}
+\put(30,70){\makebox(20,20){1}}
+}
+\put(0,45){\makebox(40,20){Push}}
+\put(300,45){\makebox(40,20){Pop}}
+\end{picture}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Volatile variables}{integer n \la{} 0}\hline
+\procname{p}{q}
+\stn{integer local1, local2}{integer local}
+\st{n \la{} \textit{some expression}}{local \la{} n $+$ 6}
+\st{\textit{computation not using n}}{}
+\st{local1 \la{} (n $+$ 5) $*$ 7}{}
+\st{local2 \la{} n $+$ 5}{}
+\st{n \la{} local1 * local2}{}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Concurrent counting algorithm}{integer n \la{} 0}\hline
+\procname{p}{q}
+\stn{integer temp}{integer temp}
+\st{do 10 times}{do 10 times}
+\st{\idt{}temp \la{} n}{\idt{}temp \la{} n}
+\st{\idt{}n \la{} temp $+$ 1}{\idt{}n \la{} temp $+$ 1}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Concurrent Program in Pascal}
+\vspace*{-3ex}
+\program{Pascal}{count.pm}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Concurrent Program in C}
+\program{C}{count.cm}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Concurrent Program in Ada}
+\program{Ada}{count.ada}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Concurrent Program in Java}
+\vspace*{-2ex}
+\program{Java}{Count.java}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Concurrent Program in Promela}
+\program{Promela}{count.pml}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Frog Puzzle}
+\begin{center}
+\unitlength=1.1pt
+\begin{picture}(340,20)
+%\put(0,0){\framebox(340,20){}}
+\multiput(10,10)(40,0){9}{\circle{20}}
+\multiput(0,0)(40,0){4}{\makebox(20,20){M$\rightarrow$}}
+\multiput(200,0)(40,0){4}{\makebox(20,20){$\leftarrow$F}}
+\end{picture}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large One Step of the Frog Puzzle}
+\begin{center}
+\unitlength=1.1pt
+\begin{picture}(340,20)
+%\put(0,0){\framebox(340,20){}}
+\multiput(10,10)(40,0){9}{\circle{20}}
+\multiput(0,0)(40,0){4}{\makebox(20,20){M$\rightarrow$}}
+\multiput(160,0)(40,0){2}{\makebox(20,20){$\leftarrow$F}}
+\multiput(280,0)(40,0){2}{\makebox(20,20){$\leftarrow$F}}
+\end{picture}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Final State of the Frog Puzzle}
+\begin{center}
+\unitlength=1.1pt
+\begin{picture}(340,20)
+%\put(0,0){\framebox(340,20){}}
+\multiput(10,10)(40,0){9}{\circle{20}}
+\multiput(0,0)(40,0){4}{\makebox(20,20){$\leftarrow$F}}
+\multiput(200,0)(40,0){4}{\makebox(20,20){M$\rightarrow$}}
+\end{picture}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large (Partial) State Diagram for the Frog Puzzle}
+\vspace*{-2ex}
+\begin{center}
+\begin{paenv}
+\unitlength=1pt
+\begin{picture}(320,250)
+%\put(0,0){\framebox(320,250){}}
+\thicklines
+\put(0,30){
+\frogs{260}{215}{240}{210}{\scriptsize MM\spc{}FF}
+\put(250,210){\vector(-2,-1){38}}
+\put(270,210){\vector(2,-1){38}}
+\put(240,210){\vector(-4,-1){80}}
+\put(280,210){\vector(4,-1){38}}
+\put(300,180){\makebox(20,10)[r]{$\cdots$}}
+\put(120,170){\makebox(40,10){$\times$}}
+\frogs{140}{185}{120}{180}{\scriptsize \spc{}MMFF}
+\frogs{200}{185}{180}{180}{\scriptsize M\spc{}MFF}
+\put(200,180){\vector(0,-1){20}}
+\put(180,185){\vector(-1,0){20}}
+\frogs{200}{155}{180}{150}{\scriptsize MFM\spc{}F}
+\put(190,150){\vector(-2,-1){38}}
+\put(210,150){\vector(2,-1){38}}
+\frogs{140}{125}{120}{120}{\scriptsize MF\spc{}MF}
+\frogs{260}{125}{240}{120}{\scriptsize MFMF\spc{}}
+\put(130,120){\vector(-2,-1){38}}
+\put(150,120){\vector(2,-1){38}}
+\put(260,120){\vector(0,-1){20}}
+\frogs{80}{95}{60}{90}{\scriptsize \spc{}FMMF}
+\frogs{200}{95}{180}{90}{\scriptsize MFFM\spc{}}
+\frogs{260}{95}{240}{90}{\scriptsize MF\spc{}FM}
+\put(70,90){\vector(-2,-1){38}}
+\put(190,90){\vector(-2,-1){38}}
+\put(250,90){\vector(-2,-1){38}}
+\put(270,90){\line(0,-1){10}}
+\put(270,80){\line(-1,0){130}}
+\put(140,80){\vector(0,-1){10}}
+\frogs{20}{65}{0}{60}{\scriptsize F\spc{}MMF}
+\put(0,50){\makebox(40,10){$\times$}}
+\frogs{140}{65}{120}{60}{\scriptsize MFF\spc{}M}
+\put(120,50){\makebox(40,10){$\times$}}
+\frogs{200}{65}{180}{60}{\scriptsize \spc{}FMFM}
+\put(200,60){\vector(0,-1){20}}
+\frogs{200}{35}{180}{30}{\scriptsize F\spc{}MFM}
+\put(200,30){\vector(0,-1){20}}
+\frogs{200}{5}{180}{0}{\scriptsize FFM\spc{}M}
+\put(200,0){\vector(0,-1){20}}
+\frogs{200}{-25}{180}{-30}{\scriptsize FF\spc{}MM}
+\put(180,-40){\makebox(40,10){$\times$}}
+}
+\end{picture}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Incrementing and decrementing}{integer n \la{} 0}\hline
+\procname{p}{q}
+\stn{integer temp}{integer temp}
+\st{do K times}{do K times}
+\st{\idt{}temp \la{} n}{\idt{}temp \la{} n}
+\st{\idt{}n \la{} temp $+$ 1}{\idt{}n \la{} temp $-$ 1}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Zero A}{boolean found}\hline
+\procname{p}{q}
+\stn{integer i \la{} 0}{integer j \la{} 1}
+\st{found \la{} false}{found \la{} false}
+\st{while not found}{while not found}
+\st{\idt{}i \la{} i $+$ 1}{\idt{}j \la{} j $-$ 1}
+\st{\idt{}found \la{} f(i) = 0}{\idt{}found \la{} f(j) = 0}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Zero B}{boolean found \la{} false}\hline
+\procname{p}{q}
+\stn{integer i \la{} 0}{integer j \la{} 1}
+\st{while not found}{while not found}
+\st{\idt{}i \la{} i $+$ 1}{\idt{}j \la{} j $-$ 1}
+\st{\idt{}found \la{} f(i) = 0}{\idt{}found \la{} f(j) = 0}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Zero C}{boolean found \la{} false}\hline
+\procname{p}{q}
+\stn{integer i \la{} 0}{integer j \la{} 1}
+\st{while not found}{while not found}
+\st{\idt{}i \la{} i $+$ 1}{\idt{}j \la{} j $-$ 1}
+\st{\idt{}if f(i) = 0}{\idt{}if f(j) = 0}
+\st{\idt{}\idt{}found \la{} true}{\idt{}\idt{}found \la{} true}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Zero D}{boolean found \la{} false}
+\decl{integer turn \la{} 1}\hline
+\procname{p}{q}
+\stn{integer i \la{} 0}{integer j \la{} 1}
+\st{while not found}{while not found}
+\st{\idt{}await turn = 1}{\idt{}await turn = 2}
+\stn{\idt{}\idt{}turn \la{} 2}{\idt{}\idt{}turn \la{} 1}
+\st{\idt{}i \la{} i $+$ 1}{\idt{}j \la{} j $-$ 1}
+\st{\idt{}if f(i) = 0}{\idt{}if f(j) = 0}
+\st{\idt{}\idt{}found \la{} true}{\idt{}\idt{}found \la{} true}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Zero E}{boolean found \la{} false}
+\decl{integer turn \la{} 1}\hline
+\procname{p}{q}
+\stn{integer i \la{} 0}{integer j \la{} 1}
+\st{while not found}{while not found}
+\st{\idt{}await turn = 1}{\idt{}await turn = 2}
+\stn{\idt{}\idt{}turn \la{} 2}{\idt{}\idt{}turn \la{} 1}
+\st{\idt{}i \la{} i $+$ 1}{\idt{}j \la{} j $-$ 1}
+\st{\idt{}if f(i) = 0}{\idt{}if f(j) = 0}
+\st{\idt{}\idt{}found \la{} true}{\idt{}\idt{}found \la{} true}
+\st{turn \la{} 2}{turn \la{} 1}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Concurrent algorithm A}{%
+integer array [1..10] C \la{} ten {\itshape distinct} initial values}
+\decl{integer array [1..10] D}\hline
+\sttn{integer myNumber, count}
+\stt{myNumber \la{} C[i]}
+\stt{count \la{} number of elements of C less than myNumber}
+\stt{D[count $+$ 1] \la{} myNumber}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Concurrent algorithm B}{integer n \la{} 0}\hline
+\procname{p}{q}
+\st{while n $<$ 2}{n \la{} n $+$ 1}
+\st{\idt{}write(n)}{n \la{} n $+$ 1}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Concurrent algorithm C}{integer n \la{} 1}\hline
+\procname{p}{q}
+\st{while n $<$ 1}{while n $>=$ 0}
+\st{\idt{}n \la{} n $+$ 1}{\idt{}n \la{} n $-$ 1}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Stop the loop B}{integer n \la{} 0}
+\decl{boolean flag \la{} false}\hline
+\procname{p}{q}
+\st{while flag = false}{while flag = false}
+\st{\idt{}n \la{} 1 $-$ n}{\idt{}if n = 0}
+\st{}{\idt{}\idt{}flag \la{} true}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Stop the loop C}{integer n \la{} 0}
+\decl{boolean flag \la{} false}\hline
+\procname{p}{q}
+\st{while flag = false}{while n = 0 // Do nothing}
+\st{\idt{}n \la{} 1 $-$ n}{flag \la{} true}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Welfare crook problem}{integer array[0..N] a, b, c \la{} \ldots (as required)}
+\decl{integer i \la{} 0, j \la{} 0, k \la{} 0}\hline
+\sttn{loop}
+\stt{\idt{}if condition-1}
+\stt{\idt{}\idt{}i \la{} i $+$ 1}
+\stt{\idt{}else if condition-2}
+\stt{\idt{}\idt{}j \la{} j $+$ 1}
+\stt{\idt{}else if condition-3}
+\stt{\idt{}\idt{}k \la{} k $+$ 1}
+\sttn{\idt{}else exit loop}
+\end{alg}
+\end{wideslide}

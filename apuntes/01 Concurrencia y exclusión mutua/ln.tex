@@ -1,0 +1,145 @@
+\begin{wideslide}[bm=,toc=]{\large A Space}
+\begin{center}
+\begin{paenv}
+\unitlength=1.2pt
+\begin{picture}(250,100)
+\thicklines
+\put(0,0){\framebox(250,100){}}
+\put(10,10){\put(35,10){\oval(70,20)}
+\put(0,0){\makebox(70,20){('a',10,20)}}}
+\put(60,70){\put(35,10){\oval(70,20)}
+\put(0,0){\makebox(70,20){('a',30)}}}
+\put(100,20){\put(35,10){\oval(70,20)}
+\put(0,0){\makebox(70,20){('a',false,40)}}}
+\put(170,50){\put(35,10){\oval(70,20)}
+\put(0,0){\makebox(70,20){('a',true,50)}}}
+\end{picture}
+\end{paenv}
+\end{center}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Critical section problem in Linda}{}
+\sttn{loop forever}
+\stt{\idt{}non-critical section}
+\stt{\idt{}removenote('s')}
+\stt{\idt{}critical section}
+\stt{\idt{}postnote('s')}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Client-server algorithm in Linda}{}\hline
+\procname{client}{server}
+\stn{constant integer me \la{} \ldots}{integer client}
+\stn{serviceType service}{serviceType s}
+\stn{dataType result, parm}{dataType r, p}
+\st{service \la{} // Service requested}{removenote('S', client, s, p)}
+\st{postnote('S', me, service, parm)}{r \la{} do (s, p)}
+\st{removenote('R', me, result)}{postnote('R', client, r)}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Specific service}{}\hline
+\procname{client}{server}
+\stn{constant integer me \la{} \ldots}{integer client}
+\stn{serviceType service}{serviceType s}
+\stn{dataType result, parm}{dataType r, p}
+\st{service \la{} // Service requested}{s \la{} // Service provided}
+\st{postnote('S', me, service, parm)}{removenote('S', client, s=, p)}
+\st{}{r \la{} do (s, p)}
+\st{removenote('R', me, result)}{postnote('R', client, r)}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Buffering in a space}{}\hline
+\procname{producer}{consumer}
+\stn{integer count \la{} 0}{integer count \la{} 0}
+\stn{integer v}{integer v}
+\stn{loop forever}{loop forever}
+\st{\idt{}v \la{} produce}{\idt{}removenote('B', count=, v)}
+\st{\idt{}postnote('B', count, v)}{\idt{}consume(v)}
+\st{\idt{}count \la{} count $+$ 1}{\idt{}count \la{} count $+$ 1}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Multiplier process with channels in Linda}%
+{parameters: integer FirstElement}
+\decl{parameters: integer North, East, South, West}
+\decl{integer Sum, integer SecondElement}\hline
+\decl{integer Sum, integer SecondElement}\hline
+\sttn{loop forever}
+\stt{\idt{}removenote('E', North=, SecondElement)}
+\stt{\idt{}removenote('S', East=, Sum)}
+\stt{\idt{}Sum \la{} Sum $+$ FirstElement $\cdot$ SecondElement}
+\stt{\idt{}postnote('E', South, SecondElement)}
+\stt{\idt{}postnote('S', West, Sum)}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Matrix multiplication in Linda}{constant integer n \la{} \ldots}\hline
+\procname{master}{worker}
+\stn{integer i, j, result}{integer r, c, result}
+\stn{integer r, c}{integer array[1..n] vec1, vec2}
+\stn{}{loop forever}
+\st{for i from 1 to n}{\idt{}removenote('T', r, c)}
+\st{\idt{}for j from 1 to n}{\idt{}readnote('A', r=, vec1)}
+\st{\idt{}\idt{}postnote('T', i, j)}{\idt{}readnote('B', c=, vec2)}
+\st{for i from 1 to n}{\idt{}result \la{} vec1 $\cdot$ vec2}
+\st{\idt{}for j from 1 to n}{\idt{}postnote('R', r, c, result)}
+\st{\idt{}\idt{}removenote('R', r, c, result)}{}
+\st{\idt{}\idt{}print r, c, result}{}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Matrix multiplication in Linda with granularity}{constant integer n \la{} \ldots}
+\decl{constant integer chunk \la{} \ldots}\hline
+\procname{master}{worker}
+\stn{integer i, j, result}{integer r, c, k, result}
+\stn{integer r, c}{integer array[1..n] vec1, vec2}
+\stn{}{loop forever}
+\st{for i from 1 to n}{\idt{}removenote('T', r, k)}
+\st{\idt{}for j from 1 to n step by chunk}{\idt{}readnote('A', r=, vec1)}
+\st{\idt{}\idt{}postnote('T', i, j)}{\idt{}for c from k to k+chunk-1}
+\st{for i from 1 to n}{\idt{}\idt{}readnote('B', c=, vec2)}
+\st{\idt{}for j from 1 to n}{\idt{}\idt{}result \la{} vec1 $\cdot$ vec2}
+\st{\idt{}\idt{}removenote('R', r, c, result)}{\idt{}\idt{}postnote('R', r, c, result)}
+\st{\idt{}\idt{}print r, c, result}{}
+\end{alg}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Definition of Notes in Java}
+\program{Java}{Note.java}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Matrix Multiplication in Java}
+\program{Java}{MM.java}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large Matrix Multiplication in Promela}
+\program{Promela}{Linda.pml}
+\end{wideslide}
+
+\begin{wideslide}[bm=,toc=]{\large }
+\begin{alg}{Matrix multiplication in Linda (exercise)}{constant integer n \la{} \ldots}\hline
+\procname{master}{worker}
+\stn{integer i, j, result}{integer i, r, c, result}
+\stn{integer r, c}{integer array[1..n] vec1, vec2}
+\stn{}{loop forever}
+\st{postnote('T', 0)}{\idt{}removenote('T' i)}
+\st{}{\idt{}if i < (n $\cdot$ n) $-$ 1}
+\st{}{\idt{}\idt{}postnote('T', i$+$1)}
+\st{}{\idt{}r \la{} (i $/$ n) $+$ 1}
+\st{}{\idt{}c \la{} (i modulo n) $+$ 1}
+\st{for i from 1 to n}{\idt{}readnote('A', r=, vec1)}
+\st{\idt{}for j from 1 to n}{\idt{}readnote('B', c=, vec2)}
+\st{\idt{}\idt{}removenote('R', r, c, result)}{\idt{}result \la{} vec1 $\cdot$ vec2}
+\st{\idt{}\idt{}print r, c, result}{\idt{}postnote('R', r, c, result)}
+\end{alg}
+\end{wideslide}
+
