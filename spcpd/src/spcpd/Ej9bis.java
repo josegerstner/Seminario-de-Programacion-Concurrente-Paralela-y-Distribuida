@@ -60,7 +60,7 @@ class P3 implements Runnable {
 			while (ej.C != 1) {
 			}
 			seccion_critica_1();
-			if (ej.t1.getState() == ej.t2.getState()) {
+			if (Ej9bis.t1.getState() == Ej9bis.t2.getState()) {
 				ej.C = 2;
 			}
 			i++;
