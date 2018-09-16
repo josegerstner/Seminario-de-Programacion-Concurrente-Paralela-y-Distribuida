@@ -5,7 +5,7 @@ package tp1;
  */
 public class TP1 {
 	
-	public int C = 0;
+	public int C = 1;
 	
 	AlgoritmoDeTurno p1;
 	AlgoritmoDeTurno p2;

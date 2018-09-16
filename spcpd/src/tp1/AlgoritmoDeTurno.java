@@ -6,7 +6,7 @@ package tp1;
  * ver que cumpla las 4 propiedades (exclusión mutua, deadlock, inanición, contención) 
  */
 public class AlgoritmoDeTurno implements Runnable {
-	public int turno = 0;
+	public int turno;
 	public TP1 tp;
 	AlgoritmoDeTurno otro;
 	String turnoTxt = "0";
@@ -39,10 +39,13 @@ public class AlgoritmoDeTurno implements Runnable {
 		while (i < 100)
 		{
 			seccion_no_critica();
-			while (tp.C != this.turno) { }
-			tp.C = 0;
+			
+			while (tp.C != this.turno) {} // precondición
+			
 			seccion_critica();
-			tp.C = otro.turno;
+			
+			tp.C = otro.turno;// postcondición
+			
 			i++;
 		}
 	}
