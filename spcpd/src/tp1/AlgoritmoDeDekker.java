@@ -1,22 +1,18 @@
 package tp1;
 
-/* 
- * Crear rutina que implemente el "algoritmo de turno" (p y q)
- * loop forever = 1000 veces
- * ver que cumpla las 4 propiedades (exclusión mutua, deadlock, inanición, contención) 
- */
-public class AlgoritmoDeTurno implements Runnable {
+public class AlgoritmoDeDekker implements Runnable {
 	public int turno;
+	public Boolean want = false;
 	public TP1 tp;
-	AlgoritmoDeTurno otro;
+	AlgoritmoDeDekker otro;
 	String turnoTxt = "0";
-	int i = 0;
+	private int i = 0;
 	
-	public AlgoritmoDeTurno(int C) {
+	public AlgoritmoDeDekker(int C) {
 		this.turno = C;
 	}
 
-	public void setOtroAlgoritmoDeTurno(AlgoritmoDeTurno otro) {
+	public void setOtroAlgoritmoDeDekker(AlgoritmoDeDekker otro) {
 		this.otro = otro;
 	}
 	
@@ -41,7 +37,14 @@ public class AlgoritmoDeTurno implements Runnable {
 			seccion_no_critica();
 			
 			// precondición
-			while (tp.C != this.turno) {}
+			this.want = true;
+			while(otro.want) {
+				if(tp.C == otro.turno) {
+					this.want = false;
+					while (tp.C != this.turno) {}
+					this.want = true;
+				}
+			}
 			
 			seccion_critica();
 			

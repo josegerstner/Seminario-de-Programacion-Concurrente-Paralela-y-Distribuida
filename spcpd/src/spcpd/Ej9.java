@@ -11,8 +11,6 @@ public class Ej9 {
 //	public int c2 = 1;
 	P1 p1;
 	P2 p2;
-	Runnable r1;
-	Runnable r2;
 	static Thread t1, t2;
 
 	public Ej9() {

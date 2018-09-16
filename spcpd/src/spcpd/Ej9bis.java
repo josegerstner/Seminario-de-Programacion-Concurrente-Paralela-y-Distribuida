@@ -9,8 +9,6 @@ public class Ej9bis {
 	public int C = 1;
 	P3 p1;
 	P4 p2;
-	Runnable r1;
-	Runnable r2;
 	static Thread t1, t2;
 
 	public Ej9bis() {
@@ -100,7 +98,7 @@ class P4 implements Runnable {
 			while (ej.C != 2) {
 			}
 			seccion_critica_2();
-			if (ej.t1.getState() == ej.t2.getState()) {
+			if (Ej9bis.t1.getState() == Ej9bis.t2.getState()) {
 				ej.C = 1;
 			}
 
