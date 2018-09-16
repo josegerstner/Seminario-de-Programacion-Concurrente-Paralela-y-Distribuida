@@ -15,4 +15,7 @@
 ## Encontraremos:
 
 - Algoritmo de turnos
-- 
+- Algoritmo de Dekker
+- Algoritmo de Peterson
+- Algoritmo de Manna-Pnueli
+- Algoritmo de Doran-Thomas
