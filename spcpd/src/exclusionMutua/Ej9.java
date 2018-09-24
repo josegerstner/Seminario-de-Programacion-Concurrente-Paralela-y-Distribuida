@@ -1,4 +1,4 @@
-package spcpd;
+package exclusionMutua;
 
 //9. Indicar si el siguiente mecanismo entre P1 y P2 resuelve para ellos: 
 // exclusión mutua, starvation, deadlock y si funciona si alguno termina

@@ -1,4 +1,4 @@
-package spcpd;
+package logicaTemporal;
 
 public class RandezVous {
 	public Integer S1 = 1, S2 = 1;
