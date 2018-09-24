@@ -23,11 +23,13 @@ public class AlgoritmoDeDekker implements Runnable {
 	void seccion_no_critica() {
 		turnoTxt = String.valueOf(Integer.valueOf(turno));
 		System.out.println("SNC" + turnoTxt);
+		
 	}
 
 	void seccion_critica() {
 		turnoTxt = String.valueOf(Integer.valueOf(turno));
-		System.out.println("SC" + turnoTxt);
+		System.out.println("Entra SC" + turnoTxt);
+		System.out.println("Sale SC" + turnoTxt);
 	}
 
 	@Override

@@ -91,7 +91,7 @@ public class TP1 {
 //		hiloDeMannaPnueli2.start();
 //		hiloDeMannaPnueli1.start();
 		
-//		System.out.println("Prueba con hilos de Doran-Thomas");
+		System.out.println("Prueba con hilos de Doran-Thomas");
 		hiloDeDoranThomas2.start();
 		hiloDeDoranThomas1.start();
 	}

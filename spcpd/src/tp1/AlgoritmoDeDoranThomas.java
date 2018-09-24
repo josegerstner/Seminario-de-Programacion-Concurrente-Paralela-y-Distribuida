@@ -27,7 +27,8 @@ public class AlgoritmoDeDoranThomas implements Runnable {
 
 	void seccion_critica() {
 		turnoTxt = String.valueOf(Integer.valueOf(turno));
-		System.out.println("SC" + turnoTxt);
+		System.out.println("Entra SC" + turnoTxt);
+		System.out.println("Sale SC" + turnoTxt);
 	}
 
 	@Override
