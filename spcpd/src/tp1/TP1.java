@@ -1,11 +1,12 @@
 package tp1;
 
 /*
- * Se pide: 2 métodos diferentes de exclusión mutua entre los vistos 
+ * Se pide: 2 mï¿½todos diferentes de exclusiï¿½n mutua entre los vistos 
  */
 public class TP1 {
 	
 	public int C = 1;
+	public int last = 1;
 	
 	AlgoritmoDeTurno turno1, turno2;
 	AlgoritmoDeDekker dekker1, dekker2;
@@ -83,17 +84,17 @@ public class TP1 {
 //		hiloDeDekker2.start();
 //		hiloDeDekker1.start();
 		
-//		System.out.println("Prueba con hilos de Peterson");
-//		hiloDePeterson2.start();
-//		hiloDePeterson1.start();
+		System.out.println("Prueba con hilos de Peterson");
+		hiloDePeterson2.start();
+		hiloDePeterson1.start();
 		
 //		System.out.println("Prueba con hilos de Manna-Pnueli");
 //		hiloDeMannaPnueli2.start();
 //		hiloDeMannaPnueli1.start();
 		
-		System.out.println("Prueba con hilos de Doran-Thomas");
-		hiloDeDoranThomas2.start();
-		hiloDeDoranThomas1.start();
+//		System.out.println("Prueba con hilos de Doran-Thomas");
+//		hiloDeDoranThomas2.start();
+//		hiloDeDoranThomas1.start();
 	}
 
 }
