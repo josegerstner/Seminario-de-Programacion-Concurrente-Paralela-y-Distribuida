@@ -52,7 +52,7 @@ public class AlgoritmoDeMannaPnueli implements Runnable {
 			this.logger.println("");
 			seccion_no_critica();
 			
-			// precondici�n
+			// precondicion
 			if(otro.want == -1) {
 				if(this.turno == 1) {
 					this.logger.println("P" + turno + ".2: this.want = -1; INICIO");
@@ -79,7 +79,7 @@ public class AlgoritmoDeMannaPnueli implements Runnable {
 			
 			seccion_critica();
 			
-			// postcondici�n
+			// postcondicion
 			this.logger.println("P" + turno + ".2: this.want = 0; INICIO");
 			this.want = 0;
 			
