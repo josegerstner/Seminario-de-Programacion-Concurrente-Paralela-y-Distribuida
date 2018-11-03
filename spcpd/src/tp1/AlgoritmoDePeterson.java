@@ -3,7 +3,7 @@ package tp1;
 import java.io.PrintStream;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
+//import java.util.function.Function;
 
 public class AlgoritmoDePeterson implements Runnable {
 	public int id;
