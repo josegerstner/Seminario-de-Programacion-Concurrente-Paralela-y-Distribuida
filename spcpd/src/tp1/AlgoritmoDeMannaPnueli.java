@@ -9,12 +9,26 @@ public class AlgoritmoDeMannaPnueli implements Runnable {
 	public int want = 0;
 	public TP1 tp;
 	AlgoritmoDeMannaPnueli otro;
-	String turnoTxt = "0";
 	private int i = 0;
+	private int repeticiones = 100;
 	private String caracterEspecial = "";
 	private PrintStream logger;
+	private int tiempoAEsperar = 10;
+
 	
 	public AlgoritmoDeMannaPnueli(int C) {
+		this.turno = C;
+		if( turno == 1) {
+			this.caracterEspecial = "***************************";
+			this.logger = System.err;
+		} else {
+			this.caracterEspecial = "---------------------------";
+			this.logger = System.out;
+		}
+	}
+	
+	public AlgoritmoDeMannaPnueli(int C, int repeticiones) {
+		this.repeticiones = repeticiones;
 		this.turno = C;
 		if( turno == 1) {
 			this.caracterEspecial = "***************************";
@@ -47,7 +61,7 @@ public class AlgoritmoDeMannaPnueli implements Runnable {
 
 	@Override
 	public void run() {
-		while (i < 100)
+		while (this.i < this.repeticiones)
 		{
 			this.logger.println("");
 			this.logger.println("P" + turno + " ITERACION " + i );
@@ -60,11 +74,13 @@ public class AlgoritmoDeMannaPnueli implements Runnable {
 					this.logger.println("P" + turno + ".2: this.want = -1; INICIO");
 					this.want = -1;
 					this.logger.println("P" + turno + ".2: this.want = -1; FIN");
+					esperar();
 				}
 				else {
 					this.logger.println("P" + turno + ".2: this.want = 1; INICIO");
 					this.want = 1;
 					this.logger.println("P" + turno + ".2: this.want = 1; FIN");
+					esperar();
 				}
 			}
 			else
@@ -72,29 +88,44 @@ public class AlgoritmoDeMannaPnueli implements Runnable {
 					this.logger.println("P" + turno + ".2: this.want = 1; INICIO");
 					this.want = 1;
 					this.logger.println("P" + turno + ".2: this.want = 1; FIN");
+					esperar();
 				}
 				else {
 					this.logger.println("P" + turno + ".2: this.want = -1; INICIO");
 					this.want = -1;
 					this.logger.println("P" + turno + ".2: this.want = -1; FIN");
+					esperar();
 				}
 			
-			while(otro.want == this.want) {
-				try {
-					Random random = new Random();
-					TimeUnit.MILLISECONDS.sleep( random.nextInt(1000) );
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				} 
+			this.logger.println("P" + turno + ".3: this.want = " + this.want + " | otro.want = " + otro.want + ";");
+			if(this.turno == 1) {
+				while(otro.want == this.want) {
+					esperar();
+				}
+			} else {
+				while(otro.want == -this.want) {
+					esperar();
+				}
 			}
 			
 			seccion_critica();
+			esperar();
+
 			
 			// postcondicion
 			this.logger.println("P" + turno + ".3: this.want = 0; INICIO");
 			this.want = 0;
 			this.logger.println("P" + turno + ".3: this.want = 0; FIN");			
+			esperar();
 			i++;
+		}
+	}
+	private void esperar() {
+		Random random = new Random();
+		try {
+			TimeUnit.MILLISECONDS.sleep( random.nextInt(tiempoAEsperar) );
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
 	}
 }
