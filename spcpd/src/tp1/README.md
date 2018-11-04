@@ -5,17 +5,19 @@
 - Se pide: 2 métodos diferentes de exclusión mutua entre los vistos
 ------------------------------------------------------------------------
 
-## Alumnos:
+### Alumnos:
 
-- Facundo Lopez Chaves
+- Facundo Nahuel Lopez Chaves
 - Leonel Hernán Arancibia Kloiber
+- Cristian Maggiorano
 - José Ernesto Gerstner Javid
 
 ------------------------------------------------------------------------
-## Encontraremos:
+### Encontraremos:
 
 - Algoritmo de turnos
 - Algoritmo de Dekker
 - Algoritmo de Peterson
 - Algoritmo de Manna-Pnueli
 - Algoritmo de Doran-Thomas
+- Algoritmo de Lamport
