@@ -3,7 +3,7 @@ package tp1;
 public class DoranThomas implements Runnable {
 
 	Boolean want = false;
-	Boolean turn = true;
+	Integer turn;
 	private Integer number;
 	private DoranThomas otro;
 	private Integer cantidadDeVecesQueSeEjecuta = 100;
@@ -41,7 +41,7 @@ public class DoranThomas implements Runnable {
 		for (int i = 0; i < cantidadDeVecesQueSeEjecuta; i++) {
 			seccionNoCritica();
 			want = true;
-			if (getOtro().want()) {
+			if (otro.want()) {
 				comprobarTurno();
 			}
 
@@ -52,24 +52,20 @@ public class DoranThomas implements Runnable {
 	}
 
 	private void comprobarTurno() {
-		if (turn) {
+		if (turn == otro.number) {
 			want = false;
-			while (turn) {
+			while (turn == otro.number) {
 			}
 			want = true;
-			while (getOtro().want) {
+			while (otro.want) {
 			}
 		}
 	}
 
 	void terminarEjecucion() {
 		want = false;
-		turn = !turn;
-		getOtro().turn = !getOtro().turn;
-	}
-
-	public DoranThomas getOtro() {
-		return otro;
+		turn = otro.number;
+		otro.turn = otro.number;
 	}
 
 	public void setOtro(DoranThomas otro) {
