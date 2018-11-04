@@ -1,6 +1,8 @@
 package tp1;
 
 import java.io.PrintStream;
+import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 public class AlgoritmoDeMannaPnueli implements Runnable {
 	public int turno;
@@ -57,32 +59,41 @@ public class AlgoritmoDeMannaPnueli implements Runnable {
 				if(this.turno == 1) {
 					this.logger.println("P" + turno + ".2: this.want = -1; INICIO");
 					this.want = -1;
+					this.logger.println("P" + turno + ".2: this.want = -1; FIN");
 				}
 				else {
 					this.logger.println("P" + turno + ".2: this.want = 1; INICIO");
 					this.want = 1;
+					this.logger.println("P" + turno + ".2: this.want = 1; FIN");
 				}
 			}
 			else
 				if(this.turno == 1) {
 					this.logger.println("P" + turno + ".2: this.want = 1; INICIO");
 					this.want = 1;
+					this.logger.println("P" + turno + ".2: this.want = 1; FIN");
 				}
 				else {
 					this.logger.println("P" + turno + ".2: this.want = -1; INICIO");
 					this.want = -1;
+					this.logger.println("P" + turno + ".2: this.want = -1; FIN");
 				}
-			if(this.turno == 1)
-				while(otro.want == this.want) {}
-			else
-				while(otro.want == - this.want) {}
+			
+			while(otro.want == this.want) {
+				try {
+					Random random = new Random();
+					TimeUnit.MILLISECONDS.sleep( random.nextInt(1000) );
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				} 
+			}
 			
 			seccion_critica();
 			
 			// postcondicion
-			this.logger.println("P" + turno + ".2: this.want = 0; INICIO");
+			this.logger.println("P" + turno + ".3: this.want = 0; INICIO");
 			this.want = 0;
-			
+			this.logger.println("P" + turno + ".3: this.want = 0; FIN");			
 			i++;
 		}
 	}
