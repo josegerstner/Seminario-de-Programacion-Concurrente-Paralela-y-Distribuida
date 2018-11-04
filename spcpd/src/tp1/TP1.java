@@ -84,13 +84,13 @@ public class TP1 {
 //		hiloDeDekker2.start();
 //		hiloDeDekker1.start();
 		
-//		System.out.println("Prueba con hilos de Peterson");
-//		hiloDePeterson2.start();
-//		hiloDePeterson1.start();
+		System.out.println("Prueba con hilos de Peterson");
+		hiloDePeterson2.start();
+		hiloDePeterson1.start();
 		
-		System.out.println("Prueba con hilos de Manna-Pnueli");
-		hiloDeMannaPnueli2.start();
-		hiloDeMannaPnueli1.start();
+//		System.out.println("Prueba con hilos de Manna-Pnueli");
+//		hiloDeMannaPnueli2.start();
+//		hiloDeMannaPnueli1.start();
 		
 //		System.out.println("Prueba con hilos de Doran-Thomas");
 //		hiloDeDoranThomas2.start();

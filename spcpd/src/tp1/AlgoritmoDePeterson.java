@@ -13,6 +13,7 @@ public class AlgoritmoDePeterson implements Runnable {
 	private int i = 0;
 	private String caracterEspecial = "";
 	private PrintStream logger;
+	private int tiempoAEsperar = 10;
 	
 	public AlgoritmoDePeterson(int id) {
 		this.id = id;
@@ -57,28 +58,26 @@ public class AlgoritmoDePeterson implements Runnable {
 			// precondici�n
 			this.logger.println("P" + id + ".2: this.want = true; INICIO");
 			this.want = true;//Activo el flag de que quiero entrar a la seccion critica
+			esperar();
 			this.logger.println("P" + id + ".2: this.want = true; FIN");
 			
 			this.logger.println("P" + id + ".3: tp.last = this.id; INICIO");
 			tp.last = this.id;//Me notifico como el ultimo
+			esperar();
 			this.logger.println("P" + id + ".3: tp.last = this.id; FIN");
 			
 			this.logger.println("P" + id + ".4: while(otro.want && tp.last == this.id) {}| "  + (otro.want && tp.last == this.id) + " | want = " + want + " | otro.want = " + otro.want + " | tp.last = " + tp.last + "| ");
 			while(otro.want && tp.last == this.id) { 
-				try {
-					Random random = new Random();
-					TimeUnit.MILLISECONDS.sleep( random.nextInt(1000) );
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} 
+				esperar(); 
 			}//Si el otro tambien quiere, y el ultimo soy yo, me quedo esperando hasta que cambie uno de los dos flags. 
 			
 			seccion_critica();
+			esperar();
 			
 			this.logger.println("P" + id + ".5: this.want = false; INICIO");
 			// postcondici�n
 			this.want = false;// Notifico que termine poniendo que no quiero mas la seccion critica.
+			esperar();
 			this.logger.println("P" + id + ".5: this.want = false; FIN");
 			
 			i++;
@@ -97,6 +96,16 @@ public class AlgoritmoDePeterson implements Runnable {
 
 			ejecutarSincronizado( ()->{i++;}, "P" + turnoTxt + ".6: i++;" );
 			 */
+		}
+	}
+	
+	private void esperar() {
+		Random random = new Random();
+		try {
+			TimeUnit.MILLISECONDS.sleep( random.nextInt(tiempoAEsperar) );
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	
