@@ -24,9 +24,9 @@ public class DoranThomas implements Runnable {
 	public void seccionCritica() {
 		System.out.println("\n");
 
-		System.out.println("Entra en Seccion Critica" + number);
-		System.out.println("Ejecuta Seccion Critica" + number);
-		System.out.println("Sale de Seccion Critica" + number);
+		System.err.println("Entra en Seccion Critica" + number);
+		System.err.println("Ejecuta Seccion Critica" + number);
+		System.err.println("Sale de Seccion Critica" + number);
 
 		System.out.println("\n");
 	}
