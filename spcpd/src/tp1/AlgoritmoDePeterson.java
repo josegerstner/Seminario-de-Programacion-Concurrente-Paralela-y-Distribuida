@@ -13,7 +13,7 @@ public class AlgoritmoDePeterson implements Runnable {
 	private int i = 0;
 	private String caracterEspecial = "";
 	private PrintStream logger;
-	private int tiempoAEsperar = 10;
+	private int tiempoAEsperar = 100;
 	
 	public AlgoritmoDePeterson(int id) {
 		this.id = id;
