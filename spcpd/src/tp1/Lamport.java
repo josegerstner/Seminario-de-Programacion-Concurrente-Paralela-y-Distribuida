@@ -10,7 +10,6 @@ public class Lamport extends Thread {
 	Boolean want = false;
 	Integer number;
 	Integer ejecuciones = 20;
-	Boolean inRun = false;
 
 	public Lamport(EjecutarLamport el, Integer n) {
 		parent = el;
@@ -26,45 +25,40 @@ public class Lamport extends Thread {
 	@Override
 	public void run() {
 
-		// if (!inRun) {
-		// inRun = true;
-
-		for (int i = 0; i < ejecuciones; i++) {
-			seccionNoCritica();
+		for (int i = 0; i < ejecuciones; i++) {// loop infinito
+			seccionNoCritica();// SNC
+			// esperar();
+			prueba();// for hasta el go to
 			esperar();
-			prueba();
-			esperar();
-			seccionCritica();
+			seccionCritica();// seccion Critica
 			esperar();
 			want = false;
 		}
 	}
-	// inRun = false;
-	// }
+
+//	private void prueba() {
+//		want = true;
+//		Lamport aux = primeroQueCumpla();
+//		if (aux != null) {
+//			want = false;
+//			while (aux.want) {
+//			}
+//			prueba();
+//		}
+//	}
 
 	private void prueba() {
 		want = true;
-		Lamport aux = primeroQueCumpla();
-		if (aux != null) {
+		if (algunoEsVerdadero()) {
 			want = false;
-			while (aux.want) {
+			while (algunoEsVerdadero()) {
 			}
-			prueba();
+			want = true;
+			 prueba();
+		}
+		while (algunoEsVerdadero()) {
 		}
 	}
-
-	// private void prueba() {
-	// want = true;
-	// if (algunoEsVerdadero()) {
-	// want = false;
-	// while (algunoEsVerdadero()) {
-	// }
-	// want = true;
-	//// prueba();
-	// }
-	// while (algunoEsVerdadero()) {
-	// }
-	// }
 
 	private void seccionCritica() {
 		System.err.println("\nEntra Seccion Critica " + number);
@@ -74,7 +68,7 @@ public class Lamport extends Thread {
 	}
 
 	private void seccionNoCritica() {
-		System.out.println("Seccion No Critica " + number + "\n");
+		System.out.println("\nSeccion No Critica " + number + "\n");
 	}
 
 	private Boolean algunoEsVerdadero() {
