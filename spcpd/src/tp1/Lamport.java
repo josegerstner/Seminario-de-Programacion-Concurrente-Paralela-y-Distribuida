@@ -1,5 +1,7 @@
 package tp1;
 
+import java.util.ArrayList;
+
 public class Lamport implements Runnable {
 
 	EjecutarLamport parent;
@@ -23,24 +25,31 @@ public class Lamport implements Runnable {
 
 		for (int i = 0; i < ejecuciones; i++) {
 			seccionNoCritica();
-			if (algunoEsVerdadero()) {
-				want = false;
-				while (algunoEsVerdadero()) {
-				}
-				run();
-			}
-			while (algunoEsVerdadero()) {
-			}
+			prueba();
 			seccionCritica();
 			want = false;
 		}
+		System.out.println(parent.vecesSeccionCritica);
+	}
 
+	private void prueba() {
+		want = true;
+		if (algunoEsVerdadero()) {
+			want = false;
+			while (algunoEsVerdadero()) {
+			}
+			want = true;
+//			prueba();
+		}
+		while (algunoEsVerdadero()) {
+		}
 	}
 
 	private void seccionCritica() {
-		System.err.println("Entra Seccion Critica " + number);
+		System.err.println("\nEntra Seccion Critica " + number);
 		System.err.println("Ejecuta Seccion Critica " + number);
 		System.err.println("Sale Seccion Critica " + number + "\n");
+		parent.vecesSeccionCritica++;
 	}
 
 	private void seccionNoCritica() {
@@ -48,8 +57,10 @@ public class Lamport implements Runnable {
 	}
 
 	private Boolean algunoEsVerdadero() {
+//		ArrayList<Lamport> aux = new ArrayList<>(parent.procesos);
+//		aux.remove(this);
 		for (Lamport lamp : parent.procesos) {
-			if (lamp.want) {
+			if (lamp.want && !lamp.equals(this)) {
 				return true;
 			}
 		}
