@@ -6,7 +6,6 @@ import java.util.concurrent.TimeUnit;
 
 public class Algoritmo implements Runnable {
 	public int turno;
-	public int want = 0;
 	public TP1 tp;
 	Algoritmo otro;
 	protected int i = 0;

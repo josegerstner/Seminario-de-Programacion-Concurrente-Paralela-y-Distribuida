@@ -2,6 +2,8 @@ package tp1;
 
 public class AlgoritmoDeMannaPnueli extends Algoritmo {
 	
+	public int want = 0;
+	
 	public AlgoritmoDeMannaPnueli(int C) {
 		super(C);
 	}

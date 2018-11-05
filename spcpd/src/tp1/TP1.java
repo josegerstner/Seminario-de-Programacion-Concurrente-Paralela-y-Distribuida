@@ -53,8 +53,8 @@ public class TP1 {
 		hiloDePeterson2 = new Thread(peterson2);
 		
 		// le doy los turnos a los algoritmos de Manna-Pnueli
-		mannaPnueli1 = new AlgoritmoDeMannaPnueli(1, 50);
-		mannaPnueli2 = new AlgoritmoDeMannaPnueli(2, 50);
+		mannaPnueli1 = new AlgoritmoDeMannaPnueli(1, 1500);
+		mannaPnueli2 = new AlgoritmoDeMannaPnueli(2, 500);
 		mannaPnueli1.setej(this);
 		mannaPnueli2.setej(this);
 		mannaPnueli1.setOtroAlgoritmoDeMannaPnueli(mannaPnueli2);
