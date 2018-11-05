@@ -1,13 +1,16 @@
 package tp1;
 
 import java.util.ArrayList;
+import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
-public class Lamport implements Runnable {
+public class Lamport extends Thread {
 
 	EjecutarLamport parent;
 	Boolean want = false;
 	Integer number;
-	Integer ejecuciones = 100;
+	Integer ejecuciones = 20;
+	Boolean inRun = false;
 
 	public Lamport(EjecutarLamport el, Integer n) {
 		parent = el;
@@ -23,27 +26,45 @@ public class Lamport implements Runnable {
 	@Override
 	public void run() {
 
+		// if (!inRun) {
+		// inRun = true;
+
 		for (int i = 0; i < ejecuciones; i++) {
 			seccionNoCritica();
+			esperar();
 			prueba();
+			esperar();
 			seccionCritica();
+			esperar();
 			want = false;
 		}
-		System.out.println(parent.vecesSeccionCritica);
 	}
+	// inRun = false;
+	// }
 
 	private void prueba() {
 		want = true;
-		if (algunoEsVerdadero()) {
+		Lamport aux = primeroQueCumpla();
+		if (aux != null) {
 			want = false;
-			while (algunoEsVerdadero()) {
+			while (aux.want) {
 			}
-			want = true;
-//			prueba();
-		}
-		while (algunoEsVerdadero()) {
+			prueba();
 		}
 	}
+
+	// private void prueba() {
+	// want = true;
+	// if (algunoEsVerdadero()) {
+	// want = false;
+	// while (algunoEsVerdadero()) {
+	// }
+	// want = true;
+	//// prueba();
+	// }
+	// while (algunoEsVerdadero()) {
+	// }
+	// }
 
 	private void seccionCritica() {
 		System.err.println("\nEntra Seccion Critica " + number);
@@ -57,14 +78,33 @@ public class Lamport implements Runnable {
 	}
 
 	private Boolean algunoEsVerdadero() {
-//		ArrayList<Lamport> aux = new ArrayList<>(parent.procesos);
-//		aux.remove(this);
+		// ArrayList<Lamport> aux = new ArrayList<>(parent.procesos);
+		// aux.remove(this);
 		for (Lamport lamp : parent.procesos) {
 			if (lamp.want && !lamp.equals(this)) {
 				return true;
 			}
 		}
 		return false;
+	}
+
+	private Lamport primeroQueCumpla() {
+		for (Lamport lamp : parent.procesos) {
+			if (lamp.want && !lamp.equals(this)) {
+				return lamp;
+			}
+		}
+
+		return null;
+	}
+
+	private void esperar() {
+		// Random random = new Random();
+		try {
+			TimeUnit.MILLISECONDS.sleep(1);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

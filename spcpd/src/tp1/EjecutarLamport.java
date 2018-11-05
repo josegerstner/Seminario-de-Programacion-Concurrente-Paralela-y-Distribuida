@@ -7,11 +7,11 @@ public class EjecutarLamport {
 	static Thread t1, t2, t3, t4, t5;
 	Integer vecesSeccionCritica = 0;
 
-	Lamport proceso1 = new Lamport(this, 1);
-	Lamport proceso2 = new Lamport(this, 2);
-	Lamport proceso3 = new Lamport(this, 3);
-	Lamport proceso4 = new Lamport(this, 4);
-	Lamport proceso5 = new Lamport(this, 5);
+	Lamport proceso1 = new Lamport(this, 1,20);
+	Lamport proceso2 = new Lamport(this, 2,30);
+	Lamport proceso3 = new Lamport(this, 3,30);
+	Lamport proceso4 = new Lamport(this, 4,10);
+	Lamport proceso5 = new Lamport(this, 5,50);
 
 	ArrayList<Lamport> procesos = new ArrayList<>();
 
@@ -33,6 +33,7 @@ public class EjecutarLamport {
 	public static void main(String[] Args) {
 
 		new EjecutarLamport();
+		System.out.println("Algoritmo de lamport one bit.");
 
 		t1.start();
 		t2.start();
