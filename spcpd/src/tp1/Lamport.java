@@ -45,6 +45,8 @@ public class Lamport extends Thread {
 //			}
 //			prueba();
 //		}
+//		while (algunoEsVerdadero()) {
+//		}
 //	}
 
 	private void prueba() {
