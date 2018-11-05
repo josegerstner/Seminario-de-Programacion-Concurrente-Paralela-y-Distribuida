@@ -36,18 +36,18 @@ public class Lamport extends Thread {
 		}
 	}
 
-//	private void prueba() {
-//		want = true;
-//		Lamport aux = primeroQueCumpla();
-//		if (aux != null) {
-//			want = false;
-//			while (aux.want) {
-//			}
-//			prueba();
-//		}
-//		while (algunoEsVerdadero()) {
-//		}
-//	}
+	// private void prueba() {
+	// want = true;
+	// Lamport aux = primeroQueCumpla();
+	// if (aux != null) {
+	// want = false;
+	// while (aux.want) {
+	// }
+	// prueba();
+	// }
+	// while (algunoEsVerdadero()) {
+	// }
+	// }
 
 	private void prueba() {
 		want = true;
@@ -56,7 +56,7 @@ public class Lamport extends Thread {
 			while (algunoEsVerdadero()) {
 			}
 			want = true;
-			 prueba();
+			prueba();
 		}
 		while (algunoEsVerdadero()) {
 		}

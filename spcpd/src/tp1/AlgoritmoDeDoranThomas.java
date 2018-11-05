@@ -1,56 +1,56 @@
 package tp1;
 
-public class AlgoritmoDeDoranThomas implements Runnable {
-	public int turno;
-	public Boolean want = false;
-	public TP1 tp;
+public class AlgoritmoDeDoranThomas extends Algoritmo {
+	
 	AlgoritmoDeDoranThomas otro;
-	String turnoTxt = "0";
-	private int i = 0;
+	public boolean want = false;
+	public int turn = 1;
 	
 	public AlgoritmoDeDoranThomas(int C) {
-		this.turno = C;
+		super(C);
+	}
+	
+	public AlgoritmoDeDoranThomas(int C, int repeticiones) {
+		super(C, repeticiones);
 	}
 
 	public void setOtroAlgoritmoDeDoranThomas(AlgoritmoDeDoranThomas otro) {
 		this.otro = otro;
 	}
 	
-	public void setej(TP1 tp) {
-		this.tp = tp;
+	@Override
+	void precondicion(){
+		want = true;
+		if (otro.want) {
+			comprobarTurno();
+		}
 	}
 	
-	void seccion_no_critica() {
-		turnoTxt = String.valueOf(Integer.valueOf(turno));
-		System.out.println("SNC" + turnoTxt);
-	}
-
-	void seccion_critica() {
-		turnoTxt = String.valueOf(Integer.valueOf(turno));
-		System.out.println("Entra SC" + turnoTxt);
-		System.out.println("Sale SC" + turnoTxt);
-	}
-
 	@Override
-	public void run() {
-		while (i < 100)
-		{
-			seccion_no_critica();
-			
-			// precondición
-			if(tp.C == otro.turno) {
-				this.want = false;
-				while(tp.C != this.turno) {}
-				this.want = true;
+	void postcondicion() {
+		this.logger.println("P" + turno + ".3: this.want = 0; INICIO");
+		want = false;
+		turn = otro.turno;
+		otro.turn = otro.turno;
+		this.logger.println("P" + turno + ".3: this.want = 0; FIN");	
+	}
+	
+	private void comprobarTurno() {
+		if (turn == otro.turno) {
+			want = false;
+			while (turn != turno) {
+				esperar();
 			}
-			while(otro.want != false) {}
-			
-			seccion_critica();
-			
-			// postcondición
-			this.want = false;
-			tp.C = otro.turno;
-			i++;
+			want = true;
 		}
+		while (otro.want) {
+			esperar();
+		}
+	}
+
+	void terminarEjecucion() {
+		want = false;
+		turn = otro.turno;
+		otro.turn = otro.turno;
 	}
 }

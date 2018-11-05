@@ -53,8 +53,8 @@ public class TP1 {
 		hiloDePeterson2 = new Thread(peterson2);
 		
 		// le doy los turnos a los algoritmos de Manna-Pnueli
-		mannaPnueli1 = new AlgoritmoDeMannaPnueli(1, 1500);
-		mannaPnueli2 = new AlgoritmoDeMannaPnueli(2, 500);
+		mannaPnueli1 = new AlgoritmoDeMannaPnueli(1, 50);
+		mannaPnueli2 = new AlgoritmoDeMannaPnueli(2, 50);
 		mannaPnueli1.setej(this);
 		mannaPnueli2.setej(this);
 		mannaPnueli1.setOtroAlgoritmoDeMannaPnueli(mannaPnueli2);
@@ -63,8 +63,8 @@ public class TP1 {
 		hiloDeMannaPnueli2 = new Thread(mannaPnueli2);
 		
 		// le doy los turnos a los algoritmos de Doran-Thomas
-		doranThomas1 = new AlgoritmoDeDoranThomas(1);
-		doranThomas2 = new AlgoritmoDeDoranThomas(2);
+		doranThomas1 = new AlgoritmoDeDoranThomas(1,50);
+		doranThomas2 = new AlgoritmoDeDoranThomas(2,40);
 		doranThomas1.setej(this);
 		doranThomas2.setej(this);
 		doranThomas1.setOtroAlgoritmoDeDoranThomas(doranThomas2);
@@ -88,13 +88,13 @@ public class TP1 {
 //		hiloDePeterson2.start();
 //		hiloDePeterson1.start();
 		
-		System.out.println("Prueba con hilos de Manna-Pnueli");
-		hiloDeMannaPnueli2.start();
-		hiloDeMannaPnueli1.start();
+//		System.out.println("Prueba con hilos de Manna-Pnueli");
+//		hiloDeMannaPnueli2.start();
+//		hiloDeMannaPnueli1.start();
 		
-//		System.out.println("Prueba con hilos de Doran-Thomas");
-//		hiloDeDoranThomas2.start();
-//		hiloDeDoranThomas1.start();
+		System.out.println("Prueba con hilos de Doran-Thomas");
+		hiloDeDoranThomas2.start();
+		hiloDeDoranThomas1.start();
 	}
 
 }

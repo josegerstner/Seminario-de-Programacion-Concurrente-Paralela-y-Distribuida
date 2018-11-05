@@ -8,10 +8,10 @@ public class EjecutarLamport {
 	Integer vecesSeccionCritica = 0;
 
 	Lamport proceso1 = new Lamport(this, 1,20);
-	Lamport proceso2 = new Lamport(this, 2,30);
-	Lamport proceso3 = new Lamport(this, 3,30);
-	Lamport proceso4 = new Lamport(this, 4,10);
-	Lamport proceso5 = new Lamport(this, 5,50);
+	Lamport proceso2 = new Lamport(this, 2,20);
+	Lamport proceso5 = new Lamport(this, 5,20);
+	Lamport proceso3 = new Lamport(this, 3,20);
+	Lamport proceso4 = new Lamport(this, 4,20);
 
 	ArrayList<Lamport> procesos = new ArrayList<>();
 

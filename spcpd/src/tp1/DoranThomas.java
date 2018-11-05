@@ -1,5 +1,7 @@
 package tp1;
 
+import java.util.concurrent.TimeUnit;
+
 public class DoranThomas implements Runnable {
 
 	Boolean want = false;
@@ -18,7 +20,7 @@ public class DoranThomas implements Runnable {
 	}
 
 	public void seccionNoCritica() {
-		System.out.println("Seccion NO Critica" + number);
+		System.out.println("Seccion NO Critica " + number);
 	}
 
 	public void seccionCritica() {
@@ -40,11 +42,11 @@ public class DoranThomas implements Runnable {
 
 		for (int i = 0; i < cantidadDeVecesQueSeEjecuta; i++) {
 			seccionNoCritica();
+			esperar();
 			want = true;
 			if (otro.want()) {
 				comprobarTurno();
 			}
-
 			seccionCritica();
 			terminarEjecucion();
 		}
@@ -54,11 +56,13 @@ public class DoranThomas implements Runnable {
 	private void comprobarTurno() {
 		if (turn == otro.number) {
 			want = false;
-			while (turn == otro.number) {
+			while (turn != number) {
+				esperar();
 			}
 			want = true;
-			while (otro.want) {
-			}
+		}
+		while (otro.want) {
+			esperar();
 		}
 	}
 
@@ -70,6 +74,15 @@ public class DoranThomas implements Runnable {
 
 	public void setOtro(DoranThomas otro) {
 		this.otro = otro;
+	}
+
+	private void esperar() {
+		// Random random = new Random();
+		try {
+			TimeUnit.MILLISECONDS.sleep(50);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 
 }
