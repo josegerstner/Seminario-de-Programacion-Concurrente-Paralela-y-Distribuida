@@ -11,7 +11,7 @@ public class AlgoritmoDeMannaPnueli extends Algoritmo {
 	}
 
 	public void setOtroAlgoritmoDeMannaPnueli(AlgoritmoDeMannaPnueli otro) {
-		this.otro = otro;
+		super.setOtroAlgoritmo(otro);
 	}
 	
 	@Override
