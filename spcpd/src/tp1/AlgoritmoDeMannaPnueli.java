@@ -2,6 +2,7 @@ package tp1;
 
 public class AlgoritmoDeMannaPnueli extends Algoritmo {
 	
+	AlgoritmoDeMannaPnueli otro;
 	public int want = 0;
 	
 	public AlgoritmoDeMannaPnueli(int C) {
@@ -13,7 +14,7 @@ public class AlgoritmoDeMannaPnueli extends Algoritmo {
 	}
 
 	public void setOtroAlgoritmoDeMannaPnueli(AlgoritmoDeMannaPnueli otro) {
-		super.setOtroAlgoritmo(otro);
+		this.otro = otro;
 	}
 	
 	@Override

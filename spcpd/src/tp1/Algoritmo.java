@@ -7,7 +7,6 @@ import java.util.concurrent.TimeUnit;
 public class Algoritmo implements Runnable {
 	public int turno;
 	public TP1 tp;
-	Algoritmo otro;
 	protected int i = 0;
 	protected int repeticiones = 100;
 	protected String caracterEspecial = "";
@@ -36,9 +35,6 @@ public class Algoritmo implements Runnable {
 			this.caracterEspecial = "---------------------------";
 			this.logger = System.out;
 		}
-	}
-	public void setOtroAlgoritmo(Algoritmo otro) {
-		this.otro = otro;
 	}
 	
 	public void setej(TP1 tp) {
